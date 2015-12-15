@@ -1,0 +1,9 @@
+{
+  "name": "renTRMNL",
+  "description": "A saas base application for rentals churvalooo",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "backbone": "~1.2.3"
+  }
+}
