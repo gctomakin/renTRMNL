@@ -1,6 +1,6 @@
 {
   "name": "renTRMNL",
-  "description": "A saas base application for rentals churvalooo",
+  "description": "A Software-as-a-Service for Rental Shops",
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "~3.3.6",
