@@ -62,6 +62,9 @@
                         <a class="page-scroll" href="#portfolio">Portfolio</a>
                     </li>
                     <li>
+                        <a class="page-scroll" href="#signup">Signup</a>
+                    </li>
+                    <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
                 </ul>
@@ -89,7 +92,7 @@
                     <h2 class="section-heading">We've got what you need!</h2>
                     <hr class="light">
                     <p class="text-faded">renTRMNL has everything you need to get your new website up and running in no time! All of the templates and themes on renTRMNL are open source, free to download, and easy to use. No strings attached!</p>
-                    <a href="#" class="btn btn-default btn-xl">Get Started!</a>
+                    <a href="#signup" class="btn btn-default btn-xl page-scroll">Get Started!</a>
                 </div>
             </div>
         </div>
@@ -243,6 +246,18 @@
             </div>
         </div>
     </aside>
+
+    <section class="bg-primary" id="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Sign Up</h2>
+                    <hr class="light">
+                    <p class="text-faded">TODO</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section id="contact">
         <div class="container">
