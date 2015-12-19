@@ -5,6 +5,12 @@ class Main extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('main');
+
+    $this->load->view('templates/mainHeader');
+    $this->load->view('templates/mainNav');
+    $this->load->view('pages/main');
+    $this->load->view('templates/mainFooter');
+
 	}
+
 }
