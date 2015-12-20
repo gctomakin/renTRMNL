@@ -55,7 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 /* Main Routes */
 $route['admin'] = 'main/admin';
-$route['lessee/signup'] = 'lessees/signUp';
+$route['signup'] = 'main/signUp';
 $route['signin'] = 'lessees/signIn';
 $route['signin-page'] = 'lessees/signinPage';
 $route['logout'] = 'main/logout';
