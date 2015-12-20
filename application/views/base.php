@@ -19,15 +19,16 @@
   <link rel="stylesheet" href="<?php echo site_url("assets/css/animate.min.css"); ?>" type="text/css">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="<?php echo site_url("assets/css/creative.css"); ?>" type="text/css">
-	
+  <link rel="stylesheet" href="<?php echo site_url("assets/css/style.css"); ?>" type="text/css">
+
 	<!-- ADDITIONAL STYLES -->
 	<?php
 		if (!empty($styles)) { echo $styles; }
 	?>
 </head>
 <body <?php echo empty($bodyId) ? '' : "id='$bodyId'" ; ?> >
-	
-	<?php echo empty($content) ? '' : $content; ?>	
+
+	<?php echo empty($content) ? '' : $content; ?>
 
 
 	<!-- DEFAULT SCRIPTS -->
