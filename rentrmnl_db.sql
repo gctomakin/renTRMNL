@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `rentrmnl_lessee` (
-  `lesse_id` int(11) NOT NULL,
+  `lessee_id` int(11) NOT NULL,
   `lessee_fname` varchar(255) NOT NULL,
   `lessee_lname` varchar(255) NOT NULL,
   `lessee_phoneno` varchar(255) NOT NULL,
