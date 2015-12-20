@@ -21,13 +21,13 @@
                     <a class="page-scroll" href="#services">Services</a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#portfolio">Portfolio</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#signup">Signup</a>
-                </li>
-                <li>
                     <a class="page-scroll" href="#contact">Contact</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#signup">Sign Up</a>
+                </li>
+                <li>
+                    <a href="#" class="btn btn-primary btn-xsm" role="button" data-toggle="modal" data-target="#login-modal">Sign In</a>
                 </li>
             </ul>
         </div>
