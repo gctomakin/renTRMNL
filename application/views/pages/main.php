@@ -70,7 +70,7 @@
         <div class="row no-gutter">
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/1.jpg" class="img-responsive" alt="">
+ assets/img/portfolio/1.jpg src="" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -85,7 +85,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/2.jpg" class="img-responsive" alt="">
+                    <img src="<?php echo site_url("assets/img/portfolio/2.jpg"); ?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -100,7 +100,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/3.jpg" class="img-responsive" alt="">
+                    <img src="<?php echo site_url("assets/img/portfolio/3.jpg"); ?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -115,7 +115,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/4.jpg" class="img-responsive" alt="">
+                    <img src="<?php echo site_url("assets/img/portfolio/4.jpg"); ?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -130,7 +130,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/5.jpg" class="img-responsive" alt="">
+                    <img src="<?php echo site_url("assets/img/portfolio/5.jpg"); ?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -145,7 +145,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
-                    <img src="assets/img/portfolio/6.jpg" class="img-responsive" alt="">
+                    <img src="<?php echo site_url("assets/img/portfolio/6.jpg"); ?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
@@ -175,9 +175,40 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading">Sign Up</h2>
+                <h2 class="section-heading">Lessee Sign Up</h2>
                 <hr class="light">
-                <p class="text-faded">TODO</p>
+                <?php echo '<div class="alert alert-danger">'.validation_errors().'</div>';?>
+                <?php echo form_open('lessee/signup'); ?>
+                  <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" class="form-control" id="username">
+                  </div>
+                  <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" name="password" class="form-control" id="pwd">
+                  </div>
+                  <div class="form-group">
+                    <label for="pwd2">Confirm Password:</label>
+                    <input type="password" name="password2" class="form-control" id="pwd2">
+                  </div>
+                  <div class="form-group">
+                    <label for="fname">First Name:</label>
+                    <input type="text" name="lessee_fname" class="form-control" id="fname">
+                  </div>
+                  <div class="form-group">
+                    <label for="lname">Last Name:</label>
+                    <input type="text" name="lessee_lname" class="form-control" id="lname">
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" name="lessee_email" class="form-control" id="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="phoneno">Phone no:</label>
+                    <input type="number" name="lessee_phoneno" class="form-control" id="phoneno">
+                  </div>
+                  <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
+                <?php echo form_close(); ?>
             </div>
         </div>
     </div>
