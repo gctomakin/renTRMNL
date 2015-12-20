@@ -5,20 +5,28 @@ class Main extends CI_Controller {
 
 	public function index()
   {
-
-    $this->load->view('templates/mainHeader');
-    $this->load->view('templates/mainNav');
-    $this->load->view('pages/main');
-    $this->load->view('templates/mainFooter');
-
+    // $data['title'] = 'New Title';
+    
+    $data['content'] = $this->load->view('pages/main', '', true);
+    
+    /* SAMPLE of Additional Styles and Scripts */
+    
+    // $data['style'] = array(
+    //   'folder/thestyle',
+    //   'folder/thestyle2'
+    // );
+    // $data['script'] = array(
+    //   'folder/script1',
+    //   'folder/script2'
+    // );
+    
+    $this->load->view('common/main', $data);
 	}
 
   public function admin()
   {
-    $this->load->view('templates/mainHeader');
-    $this->load->view('templates/mainNav');
-    $this->load->view('pages/admin');
-    $this->load->view('templates/mainFooter');
+    $data['content'] = $this->load->view('pages/admin', '', true);
+    $this->load->view('common/main', $data);
   }
 
 
