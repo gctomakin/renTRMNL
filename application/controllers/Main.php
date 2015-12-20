@@ -48,7 +48,8 @@ class Main extends CI_Controller {
 
     if($this->form_validation->run() == FALSE):
 
-      $this->index();
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('main#signup','refresh');
 
     else:
 
@@ -76,19 +77,20 @@ class Main extends CI_Controller {
 
     if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password):
 
-      $newdata = array('lessee_id' => $user['lessee_id'],
+      $userdata = array('lessee_id' => $user['lessee_id'],
                        'username' => $user['username'],
                        'lessee_fname' => $user['lessee_fname'],
                        'lessee_lname' => $user['lessee_lname'],
                        'lessee_email' => $user['lessee_email'],
                        'lessee_phoneno' => $user['lessee_phoneno'],
                        'logged_in' => TRUE);
-      $this->session->set_userdata($newdata);
+
+      $this->session->set_userdata($userdata);
       redirect(base_url().'main/lesseeDashboard');
 
     else:
 
-      $this->session->set_flashdata('error  ', TRUE);
+      $this->session->set_flashdata('error', TRUE);
       $this->load->view('common/main', $data);
 
     endif;
