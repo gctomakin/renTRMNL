@@ -59,9 +59,9 @@ class Main extends CI_Controller {
                     'lessee_email'=>$this->input->post('lessee_email'),
                     'lessee_phoneno'=>$this->input->post('lessee_phoneno'));
 
-      $result = $this->Lessees->create($data);
-
-      echo $result;
+      $this->Lessees->create($data);
+      $this->session->set_flashdata('success', TRUE);
+      $this->index();
 
     endif;
 
@@ -70,7 +70,6 @@ class Main extends CI_Controller {
 
   public function lesseeLogin()
   {
-    $data['error']=0;
     $username = $this->input->post('username',TRUE);
     $password = $this->input->post('password',TRUE);
     $user = $this->Lessees->login($username,$password);
@@ -89,7 +88,7 @@ class Main extends CI_Controller {
 
     else:
 
-      $data['error']=1;
+      $this->session->set_flashdata('error', TRUE);
       $this->load->view('common/main', $data);
 
     endif;
