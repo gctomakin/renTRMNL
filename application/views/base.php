@@ -23,7 +23,13 @@
 
 	<!-- ADDITIONAL STYLES -->
 	<?php
-		if (!empty($styles)) { echo $styles; }
+		if (!empty($style)) {
+      $css = "";
+      foreach ($style as $key => $value) {
+        $css .= "<link rel='stylesheet' href='". site_url('assets/css/') ."$value.css'>\n";
+      }
+      echo $css;
+    }
 	?>
 </head>
 <body <?php echo empty($bodyId) ? '' : "id='$bodyId'" ; ?> >
@@ -45,7 +51,14 @@
 
 	<!-- ADDITIONAL SCRIPTS -->
 	<?php
-		if (!empty($scripts)) { echo $scripts; }
+		if (!empty($script)) {
+      /** Additional Scripts */
+      $js = "";
+      foreach ($script as $key => $value) {
+        $js .= "<script src='". site_url('assets/js/') ."$value.js'></script>\n";
+      }
+      echo $js; 
+    }
 	?>
 </body>
 </html>
