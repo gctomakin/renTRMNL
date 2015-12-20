@@ -71,32 +71,28 @@ class Main extends CI_Controller {
   public function lesseeLogin()
   {
     $data['error']=0;
+    $username = $this->input->post('username',TRUE);
+    $password = $this->input->post('password',TRUE);
+    $user = $this->Lessees->login($username,$password);
 
-    if($_POST){
+    if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password):
 
-      $username = $this->input->post('username',TRUE);
-      $password = $this->input->post('password',TRUE);
-      $user = $this->Lessees->login($username,$password);
+      $newdata = array('lessee_id' => $user['lessee_id'],
+                       'username' => $user['username'],
+                       'lessee_fname' => $user['lessee_fname'],
+                       'lessee_lname' => $user['lessee_lname'],
+                       'lessee_email' => $user['lessee_email'],
+                       'lessee_phoneno' => $user['lessee_phoneno'],
+                       'logged_in' => TRUE);
+      $this->session->set_userdata($newdata);
+      redirect(base_url().'main/lesseeDashboard');
 
-      if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password){
+    else:
 
-        $newdata = array('lessee_id' => $user['lessee_id'],
-                         'username' => $user['username'],
-                         'lessee_fname' => $user['lessee_fname'],
-                         'lessee_lname' => $user['lessee_lname'],
-                         'lessee_email' => $user['lessee_email'],
-                         'lessee_phoneno' => $user['lessee_phoneno'],
-                         'logged_in' => TRUE);
-        $this->session->set_userdata($newdata);
-        redirect(base_url().'main/lesseeDashboard');
+      $data['error']=1;
+      $this->load->view('common/main', $data);
 
-      } else {
-
-        $data['error']=1;
-        $this->load->view('common/main', $data);
-
-      }
-    }
+    endif;
   }
 
   public function lesseeDashboard()
