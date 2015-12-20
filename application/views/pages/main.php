@@ -179,7 +179,7 @@
                 <hr class="light">
                 <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('error').'</div>'; }?>
                 <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success"><strong>Successfully</strong> Signed Up!</div>';} ?>
-                <?php echo form_open('lessee/signup'); ?>
+                <?php echo form_open('signup'); ?>
                   <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" name="username" class="form-control" id="username">
@@ -194,19 +194,28 @@
                   </div>
                   <div class="form-group">
                     <label for="fname">First Name:</label>
-                    <input type="text" name="lessee_fname" class="form-control" id="fname">
+                    <input type="text" name="fname" class="form-control" id="fname">
                   </div>
                   <div class="form-group">
                     <label for="lname">Last Name:</label>
-                    <input type="text" name="lessee_lname" class="form-control" id="lname">
+                    <input type="text" name="lname" class="form-control" id="lname">
                   </div>
                   <div class="form-group">
                     <label for="email">Email address:</label>
-                    <input type="email" name="lessee_email" class="form-control" id="email">
+                    <input type="email" name="email" class="form-control" id="email">
                   </div>
                   <div class="form-group">
                     <label for="phoneno">Phone no:</label>
-                    <input type="number" name="lessee_phoneno" class="form-control" id="phoneno">
+                    <input type="number" name="phoneno" class="form-control" id="phoneno">
+                  </div>
+                  <div class="form-group">
+                      <label for="usertype" class="control-label col-lg-12">Type of User:</label>
+                      <label for="lesseeType" class="control-label col-lg-6">
+                        <input type="radio" id="lesseeType" name="user_type" value="lessee" checked> Lessee 
+                      </label>
+                      <label for="lessorType" class="control-label col-lg-6">
+                        <input type="radio" id="lessorType" name="user_type" value="lessor"> Lessor  
+                      </label>
                   </div>
                   <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
                 <?php echo form_close(); ?>
@@ -273,7 +282,3 @@
         </div>
     </div>
 </div>
-
-
-
-
