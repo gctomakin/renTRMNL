@@ -70,7 +70,7 @@
         <div class="row no-gutter">
             <div class="col-lg-4 col-sm-6">
                 <a href="#" class="portfolio-box">
- assets/img/portfolio/1.jpg src="" class="img-responsive" alt="">
+                <img src="<?php echo site_url("assets/img/portfolio/1.jpg");?>" class="img-responsive" alt="">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
                             <div class="project-category text-faded">
