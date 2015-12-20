@@ -19,7 +19,7 @@
                 <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                 <?php echo form_close(); ?>
             </div>
-            <a href="<?php echo site_url("/"); ?>" class="text-center new-account">Go back to home page </a>
+            <a href="<?php echo site_url("/"); ?>" class="text-center new-account"><i class="fa fa-home"></i> Go back to home page </a>
         </div>
     </div>
 </div>
