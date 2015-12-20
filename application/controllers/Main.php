@@ -69,7 +69,7 @@ class Main extends CI_Controller {
 
   }
 
-  public function lesseeLogin()
+  public function signIn()
   {
     $username = $this->input->post('username',TRUE);
     $password = $this->input->post('password',TRUE);
@@ -78,27 +78,40 @@ class Main extends CI_Controller {
     if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password):
 
       $userdata = array('lessee_id' => $user['lessee_id'],
-                       'username' => $user['username'],
-                       'lessee_fname' => $user['lessee_fname'],
-                       'lessee_lname' => $user['lessee_lname'],
-                       'lessee_email' => $user['lessee_email'],
-                       'lessee_phoneno' => $user['lessee_phoneno'],
-                       'logged_in' => TRUE);
+                        'username' => $user['username'],
+                        'lessee_fname' => $user['lessee_fname'],
+                        'lessee_lname' => $user['lessee_lname'],
+                        'lessee_email' => $user['lessee_email'],
+                        'lessee_phoneno' => $user['lessee_phoneno'],
+                        'logged_in' => TRUE);
 
       $this->session->set_userdata($userdata);
-      redirect(base_url().'main/lesseeDashboard');
+      print_r($this->session->all_userdata());
+      //redirect(base_url().'main/lesseeDashboard');
 
     else:
 
       $this->session->set_flashdata('error', TRUE);
-      $this->load->view('common/main', $data);
+      redirect('signin-page','refresh');
 
     endif;
+  }
+
+  public function signinPage()
+  {
+    $data['content'] = $this->load->view('pages/signin', '', TRUE);
+    $this->load->view('common/main', $data);
   }
 
   public function lesseeDashboard()
   {
     echo 'TODO';
+  }
+
+  public function logout()
+  {
+    $this->session->sess_destroy();
+    redirect('main', 'refresh');
   }
 
 
