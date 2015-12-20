@@ -1,6 +1,6 @@
 <?php
 
-class Lessees extends CI_Model{
+class Lessee extends CI_Model{
 
   public function create($data)
   {
