@@ -61,7 +61,7 @@ class Main extends CI_Controller {
 
       $this->Lessees->create($data);
       $this->session->set_flashdata('success', TRUE);
-      $this->index();
+      redirect('main#signup','refresh');
 
     endif;
 
@@ -88,7 +88,7 @@ class Main extends CI_Controller {
 
     else:
 
-      $this->session->set_flashdata('error', TRUE);
+      $this->session->set_flashdata('error  ', TRUE);
       $this->load->view('common/main', $data);
 
     endif;
