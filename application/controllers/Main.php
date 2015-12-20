@@ -11,21 +11,22 @@ class Main extends CI_Controller {
 
 	public function index()
   {
-    // $data['title'] = 'New Title';
+    /*
+    | $data['title'] = 'New Title';
+    */
 
     $data['content'] = $this->load->view('pages/main', '', TRUE);
 
-    /* SAMPLE of Additional Styles and Scripts */
-
-    // $data['style'] = array(
-    //   'folder/thestyle',
-    //   'folder/thestyle2'
-    // );
-    // $data['script'] = array(
-    //   'folder/script1',
-    //   'folder/script2'
-    // );
-
+    /* SAMPLE of Additional Styles and Scripts
+    | $data['style'] = array(
+    |   'folder/thestyle',
+    |   'folder/thestyle2'
+    | );
+    | $data['script'] = array(
+    |   'folder/script1',
+    |   'folder/script2'
+    | );
+    */
     $this->load->view('common/main', $data);
 	}
 
@@ -37,7 +38,9 @@ class Main extends CI_Controller {
 
   public function signUp()
   {
-    // field name, error message, validation rules
+    /*
+    | field name, error message, validation rules
+    */
     $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
     $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
     $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
