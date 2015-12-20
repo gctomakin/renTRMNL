@@ -234,3 +234,46 @@
         </div>
     </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="text-center login-title">Sign in to continue to renTRMNL</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                            alt="">
+                        <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('signin', $attributes); ?>
+                            <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">
+                                Sign in</button>
+                            <label class="checkbox pull-left">
+                                <input type="checkbox" value="remember-me">
+                                Remember me
+                            </label>
+                            <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                        <?php echo form_close(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
