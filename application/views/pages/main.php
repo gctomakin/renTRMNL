@@ -210,12 +210,18 @@
                   </div>
                   <div class="form-group">
                       <label for="usertype" class="control-label col-lg-12">Type of User:</label>
-                      <label for="lesseeType" class="control-label col-lg-6">
-                        <input type="radio" id="lesseeType" name="user_type" value="lessee" checked> Lessee
-                      </label>
-                      <label for="lessorType" class="control-label col-lg-6">
-                        <input type="radio" id="lessorType" name="user_type" value="lessor"> Lessor
-                      </label>
+                      <div class="form-group text-center">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default active">
+                                    Lessee
+                                    <input type="radio" name="user_type" value="lessee" checked />
+                                </label>
+                                <label class="btn btn-default">
+                                    Lessor
+                                    <input type="radio" name="user_type" value="lessor" />
+                                </label>
+                            </div>
+                        </div>
                   </div>
                   <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
                 <?php echo form_close(); ?>
@@ -264,6 +270,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('signin', $attributes); ?>
+                            <div class="form-group text-center">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary btn-signin-type active">
+                                        Lessee
+                                        <input type="radio" name="usertype" value="lessee" checked />
+                                    </label>
+                                    <label class="btn btn-primary btn-signin-type">
+                                        Lessor
+                                        <input type="radio" name="usertype" value="lessor" />
+                                    </label>
+                                </div>
+                            </div>
                             <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -280,3 +298,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var signinLesseeUrl = "<?php echo site_url('signin'); ?>";
+    var signinLessorUrl = "<?php echo site_url('lessors/signin'); ?>";
+</script>
