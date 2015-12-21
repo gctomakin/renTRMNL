@@ -16,6 +16,10 @@
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="<?php echo site_url("assets/font-awesome/css/font-awesome.min.css"); ?>" type="text/css">
   
+  <!-- Custom Theme CSS -->
+  <link rel="stylesheet" href="<?php echo site_url("assets/css/creative.css"); ?>" type="text/css">
+  <link rel="stylesheet" href="<?php echo site_url("assets/css/style.css"); ?>" type="text/css">
+  
 	<!-- ADDITIONAL STYLES -->
 	<?php
 		if (!empty($style) && is_array($style)) {
