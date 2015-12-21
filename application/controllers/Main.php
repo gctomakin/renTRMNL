@@ -26,8 +26,6 @@ class Main extends CI_Controller {
     |   'folder/script2'
     | );
     */
-    $data['script'] = array('/particle',
-                            '/app');
     $this->load->view('common/main', $data);
 	}
 

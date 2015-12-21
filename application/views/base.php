@@ -15,18 +15,13 @@
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="<?php echo site_url("assets/font-awesome/css/font-awesome.min.css"); ?>" type="text/css">
-  <!-- Plugin CSS -->
-  <link rel="stylesheet" href="<?php echo site_url("assets/css/animate.min.css"); ?>" type="text/css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="<?php echo site_url("assets/css/creative.css"); ?>" type="text/css">
-  <link rel="stylesheet" href="<?php echo site_url("assets/css/style.css"); ?>" type="text/css">
-
+  
 	<!-- ADDITIONAL STYLES -->
 	<?php
-		if (!empty($style)) {
+		if (!empty($style) && is_array($style)) {
       $css = "";
       foreach ($style as $key => $value) {
-        $css .= "<link rel='stylesheet' href='". site_url('assets/css/') ."$value.css'>\n";
+        $css .= "<link rel='stylesheet' href='". site_url('assets/css') ."/$value.css'>\n";
       }
       echo $css;
     }
@@ -42,20 +37,14 @@
   <script src="<?php echo site_url("bower_components/jquery/dist/jquery.min.js"); ?>"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="<?php echo site_url("bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>"></script>
-  <!-- Plugin JavaScript -->
-  <script src="<?php echo site_url("assets/js/jquery.easing.min.js"); ?>"></script>
-  <script src="<?php echo site_url("assets/js/jquery.fittext.js"); ?>"></script>
-  <script src="<?php echo site_url("assets/js/wow.min.js"); ?>"></script>
-  <!-- Custom Theme JavaScript -->
-  <script src="<?php echo site_url("assets/js/creative.js"); ?>"></script>
-
+  
 	<!-- ADDITIONAL SCRIPTS -->
 	<?php
 		if (!empty($script)) {
       /** Additional Scripts */
       $js = "";
       foreach ($script as $key => $value) {
-        $js .= "<script src='". site_url('assets/js/') ."$value.js'></script>\n";
+        $js .= "<script src='". site_url('assets/js') ."/$value.js'></script>\n";
       }
       echo $js;
     }
