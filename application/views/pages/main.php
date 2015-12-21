@@ -1,4 +1,4 @@
-<header>
+<header id="particles-js">
     <div class="header-content">
         <div class="header-content-inner">
             <h1>A Software-as-a-Service for Rental Shops</h1>
@@ -211,10 +211,10 @@
                   <div class="form-group">
                       <label for="usertype" class="control-label col-lg-12">Type of User:</label>
                       <label for="lesseeType" class="control-label col-lg-6">
-                        <input type="radio" id="lesseeType" name="user_type" value="lessee" checked> Lessee 
+                        <input type="radio" id="lesseeType" name="user_type" value="lessee" checked> Lessee
                       </label>
                       <label for="lessorType" class="control-label col-lg-6">
-                        <input type="radio" id="lessorType" name="user_type" value="lessor"> Lessor  
+                        <input type="radio" id="lessorType" name="user_type" value="lessor"> Lessor
                       </label>
                   </div>
                   <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
@@ -263,8 +263,6 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                            alt="">
                         <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('signin', $attributes); ?>
                             <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
