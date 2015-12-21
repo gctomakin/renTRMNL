@@ -57,7 +57,7 @@
       foreach ($script as $key => $value) {
         $js .= "<script src='". site_url('assets/js/') ."$value.js'></script>\n";
       }
-      echo $js; 
+      echo $js;
     }
 	?>
 </body>
