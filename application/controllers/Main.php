@@ -26,7 +26,8 @@ class Main extends CI_Controller {
     |   'folder/script2'
     | );
     */
-   
+    $data['script'] = array('/particle',
+                            '/app');
     $this->load->view('common/main', $data);
 	}
 
@@ -51,7 +52,7 @@ class Main extends CI_Controller {
 
     else:
       $post = $this->input->post();
-      
+
       $data = array(
         'username'=> $post['username'],
         'password'=> $this->encrypt->encode($post['password'])
@@ -62,7 +63,7 @@ class Main extends CI_Controller {
         $data['lessee_lname'] = $post['lname'];
         $data['lessee_email'] = $post['email'];
         $data['lessee_phoneno'] = $post['phoneno'];
-        
+
         $this->load->model('Lessee');
         $this->Lessee->create($data);
       } else {
@@ -71,7 +72,7 @@ class Main extends CI_Controller {
         $data[$this->Subscriber->getLname()] = $post['lname'];
         $data[$this->Subscriber->getEmail()] = $post['email'];
         $data[$this->Subscriber->getTelno()] = $post['phoneno'];
-       
+
         $this->Subscriber->create($data);
       }
       $this->session->set_flashdata('success', TRUE);
