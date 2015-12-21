@@ -18,6 +18,7 @@ class Lessees extends CI_Controller {
   {
     $username = $this->input->post('username',TRUE);
     $password = $this->input->post('password',TRUE);
+    $usertype = $this->input->post('usertype',TRUE);
     $user = $this->Lessee->login($username,$password);
 
     if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password):
@@ -32,6 +33,11 @@ class Lessees extends CI_Controller {
 
       $this->session->set_userdata($userdata);
       redirect('/lessees/');
+
+    elseif($usertype != 'lessee'):
+
+      $this->session->set_flashdata('warning', TRUE);
+      redirect('signin-page','refresh');
 
     else:
 
