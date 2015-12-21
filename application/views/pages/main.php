@@ -3,7 +3,7 @@
         <div class="header-content-inner">
             <h1>A Software-as-a-Service for Rental Shops</h1>
             <hr>
-            <p>renTRMNL can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!</p>
+            <p>renTRMNL facilitates the rental management process and transactions. Design to help users to find the nearest rental shops and to increase the effectiveness and efficiency of renting services. </p>
             <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out More</a>
         </div>
     </div>
@@ -15,7 +15,7 @@
             <div class="col-lg-8 col-lg-offset-2 text-center">
                 <h2 class="section-heading">We've got what you need!</h2>
                 <hr class="light">
-                <p class="text-faded">renTRMNL has everything you need to get your new website up and running in no time! All of the templates and themes on renTRMNL are open source, free to download, and easy to use. No strings attached!</p>
+                <p class="text-faded">renTRMNL  provides web and mobile platforms that allow the rental shop owners, freelance lessors, and lessee to perform rental-related transactions. </p>
                 <a href="#signup" class="btn btn-default btn-xl page-scroll">Get Started!</a>
             </div>
         </div>
