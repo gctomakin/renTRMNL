@@ -22,9 +22,9 @@ class Subscriber extends CI_Model{
 		parent::__construct();
 		$this->id = "subscriber_id";
 		$this->fname = "subscriber_fname";
-		$this->mi = "subscriber_midinit";
+		$this->mi = "subscriber_midint";
 		$this->lname = "subscriber_lname";
-		$this->email = "subscriber_email_add";
+		$this->email = "subscriber_email";
 		$this->addr = "subscriber_addr";
 		$this->telno = "subscriber_telno";
 		$this->type = "subscriber_type";

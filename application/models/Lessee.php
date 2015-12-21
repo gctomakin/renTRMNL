@@ -5,7 +5,7 @@ class Lessee extends CI_Model{
   public function create($data)
   {
 
-    $this->db->insert('rentrmnl_lessee',$data);
+    $this->db->insert('lessees',$data);
 
     return TRUE;
 
@@ -14,7 +14,7 @@ class Lessee extends CI_Model{
   public function login($username,$password)
   {
 
-    $this->db->select()->from('rentrmnl_lessee')->where('username', $username);
+    $this->db->select()->from('lessees')->where('username', $username);
     $query=$this->db->get();
 
     return $query->first_row('array');
