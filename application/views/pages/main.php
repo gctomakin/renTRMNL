@@ -175,7 +175,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading">Lessee Sign Up</h2>
+                <h2 class="section-heading">Sign Up</h2>
                 <hr class="light">
                 <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('error').'</div>'; }?>
                 <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success"><strong>Successfully</strong> Signed Up!</div>';} ?>
