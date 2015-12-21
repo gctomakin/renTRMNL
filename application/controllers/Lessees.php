@@ -43,8 +43,9 @@ class Lessees extends CI_Controller {
 
   public function signinPage()
   {
-  	$data['title'] = 'SIGN IN';
-    $data['content'] = $this->load->view('pages/signin', '', TRUE);
+  	$content['action'] = site_url('signin');
+    $data['content'] = $this->load->view('pages/signin', $content, TRUE);
+    $data['title'] = 'SIGN IN';
     $this->load->view('common/plain', $data);
   }
 
