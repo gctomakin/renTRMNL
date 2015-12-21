@@ -6,10 +6,22 @@
             <?php if($this->session->flashdata('error')) { echo '<p class="alert alert-danger text-center"><strong>Login Failed!</strong> Invalid username/password :(</p>'; }?>
             <div class="account-wall">
                 <!--<img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt=""> -->
-                <?php 
+                <?php
                     $attributes = array('class' => 'form-signin', 'id' => 'form-signin');
                     echo form_open($action, $attributes);
                 ?>
+                <div class="form-group text-center">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary btn-signin-type active">
+                            Lessee
+                            <input type="radio" name="usertype" value="lessee" checked />
+                        </label>
+                        <label class="btn btn-primary btn-signin-type">
+                            Lessor
+                            <input type="radio" name="usertype" value="lessor" />
+                        </label>
+                    </div>
+                </div>
                 <input type="text" name="username" class="form-control" placeholder="Email" required autofocus>
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
