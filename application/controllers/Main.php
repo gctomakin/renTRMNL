@@ -49,7 +49,7 @@ class Main extends CI_Controller {
       redirect('main#signup','refresh');
 
     else:
-      $post = $this->input->post();
+      $post = $this->input->post(NULL, TRUE);
 
       $data = array(
         'username'=> $post['username'],
