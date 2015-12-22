@@ -59,11 +59,16 @@ class CI_Controller {
 	private static $instance;
 
 	/**
+	 * Authenticate 1: lessee, 2: lessor
+	 * @var Int
+	 */
+	private static $auth;
+	/**
 	 * Class constructor
 	 *
 	 * @return	void
 	 */
-	public function __construct()
+	public function __construct($auth = "")
 	{
 		self::$instance =& $this;
 
@@ -78,6 +83,7 @@ class CI_Controller {
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
+		$this->auth = $auth;
 	}
 
 	// --------------------------------------------------------------------
@@ -93,4 +99,45 @@ class CI_Controller {
 		return self::$instance;
 	}
 
+	/**
+   * Checks Controller's method if user has authority, 
+   * otherwise user will be redirect to the respected page
+   * @param  String $method Name of the method
+   * @return method or redirect
+   */
+  public function _remap($method) {
+  	
+  	if (!empty($this->auth)) { // If empty no need to check authority
+  		$isLogin = false;
+  		$role = "lessees";
+  		switch ($this->auth) {
+  			case 1: // Check Lessee logged in session
+  				$isLogin = $this->session->has_userdata('logged_in');
+  				break; 
+  			case 2: // Check Lessor logged in session
+  				$isLogin = $this->session->has_userdata('lessor_logged_in');
+  				$role = "lessors";
+  				break; 
+  		}
+
+	  	if ( // Check for login session except for :
+	  		$method == "signinPage" ||
+	  		$method == "signin"
+	  	) {
+	  		if ($isLogin) { // Check if login session already exist
+	  			redirect($role);
+	  			exit();
+	  		}
+	  	} else {
+	  		if (!$isLogin && $this->input->is_ajax_request()) {
+	  			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
+	  			exit();
+	  		} else if (!$isLogin) { // Redirect to signin page if not signed in
+	  			redirect($role . "/signin-page");
+	  			exit();
+	  		}
+	  	}
+	  }
+  	$this->$method();
+  }
 }
