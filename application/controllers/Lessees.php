@@ -16,10 +16,10 @@ class Lessees extends CI_Controller {
 
   public function signIn()
   {
-    $username = $this->input->post('username',TRUE);
-    $password = $this->input->post('password',TRUE);
     $usertype = $this->input->post('usertype',TRUE);
-    $user = $this->Lessee->authenticate($username, $password);
+    $this->Lessee->setUsername($this->input->post('username',TRUE));
+    $this->Lessee->setPassword($this->input->post('password',TRUE));
+    $user = $this->Lessee->authenticate();
 
     if(!empty($user)):
 
