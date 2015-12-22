@@ -16,16 +16,24 @@
                 <?php
                     $attributes = array('class' => 'form-signin', 'id' => 'form-signin');
                     echo form_open($action, $attributes);
+                    $userTypeBtn = array(
+                        'lessee' => empty($isLessor) ? 'active' : '',
+                        'lessor' => empty($isLessor) ? '' : 'active'
+                    );
+                    $userTypeInput = array(
+                        'lessee' => empty($isLessor) ? 'checked' : '',
+                        'lessor' => empty($isLessor) ? '' : 'checked'
+                    );
                 ?>
                 <div class="form-group text-center">
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary btn-signin-type active">
+                        <label class="btn btn-primary btn-signin-type <?php echo $userTypeBtn['lessee']; ?>">
                             Lessee
-                            <input type="radio" name="usertype" value="lessee" checked />
+                            <input type="radio" name="usertype" value="lessee" <?php echo $userTypeInput['lessee']; ?> />
                         </label>
-                        <label class="btn btn-primary btn-signin-type">
+                        <label class="btn btn-primary btn-signin-type <?php echo $userTypeBtn['lessor']; ?>">
                             Lessor
-                            <input type="radio" name="usertype" value="lessor" />
+                            <input type="radio" name="usertype" value="lessor" <?php echo $userTypeInput['lessor']; ?> />
                         </label>
                     </div>
                 </div>
