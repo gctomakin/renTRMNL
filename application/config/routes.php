@@ -59,3 +59,6 @@ $route['signup'] = 'main/signUp';
 $route['signin'] = 'lessees/signIn';
 $route['signin-page'] = 'lessees/signinPage';
 $route['logout'] = 'main/logout';
+
+/** Subscriber/Lessors */
+$route['lessors/signin-page'] = 'lessors/signinPage';
