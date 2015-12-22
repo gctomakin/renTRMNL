@@ -59,7 +59,11 @@ class CI_Controller {
 	private static $instance;
 
 	/**
-	 * Authenticate 1: lessee, 2: lessor
+	 * Authenticate 
+	 * 1: lessee
+	 * 2: lessor
+	 * 3: lessee or lessor
+	 * 4: admin
 	 * @var Int
 	 */
 	private static $auth;
@@ -118,6 +122,13 @@ class CI_Controller {
   				$isLogin = $this->session->has_userdata('lessor_logged_in');
   				$role = "lessors";
   				break; 
+  			case 3: // Check Lessor or Lessee logged in session
+  				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in');
+  				break;
+  			case 4: // Check admin logged in session
+  				$isLogin = $this->session->has_userdata('admin_logged_in');
+  				$role = "admin";
+  				break;			
   		}
 
 	  	if ( // Check for login session except for :
