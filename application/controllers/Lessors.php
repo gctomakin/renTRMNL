@@ -9,7 +9,9 @@ class Lessors extends CI_Controller {
   }
 
   public function index() {
-  	echo "TODO";
+  	$data['title'] = "Lessor Dashboard";
+  	$data['content'] = "<h1>Testing</h1>";
+  	$this->load->view('common/lessor', $data);
   }
 
   public function signin() {
