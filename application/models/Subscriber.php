@@ -40,6 +40,46 @@ class Subscriber extends CI_Model{
 		return $this->db->insert_id();
 	}
 
+	public function update($data) {
+		$this->db->update($this->table, $data, array(
+				$this->id => $data[$this->id]
+			)
+		);
+    return $this->db->affected_rows();
+	}
+
+	public function updateStatus($id, $status) {
+		$this->db->where($this->id, $id);
+		$this->db->update($this->table, array($this->status => $status));
+		return $this->db->affected_rows();
+	}
+
+	public function delete($id) {
+		$this->db->delete($this->table, array($this->id => $id));
+		return $this->db->affected_rows();
+	}
+
+	public function all($select = "*", $status = "") {
+		$this->db->select($select);
+		if (empty($status)) {
+			$this->db->where("{$this->status} = $status");
+		}
+		$query = $this->db->get($this->table);
+		return $query->result();
+	}
+
+	public function findId($id) {
+		$query = $this->db->get_where($this->table, array($this->id => $id));
+		return $query->row_array();
+	}
+
+	public function findUsername($username) {
+		$query = $this->db->get_where($this->table, array($this->username => $username));
+		return $query->row_array();
+	}
+
+	
+
 	/** GETTERS */
 	public function getId() { return $this->id; }
 	public function getFname() { return $this->fname; }
