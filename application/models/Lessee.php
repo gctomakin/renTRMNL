@@ -79,11 +79,11 @@ class Lessee extends CI_Model{
     $this->password = $password;
   }
 
-  public function authenticate($username, $password)
+  public function authenticate()
   {
-    $user = $this->findByUsername($username);
+    $user = $this->findByUsername($this->getUsername());
 
-    if(!empty( $user ) && $this->encrypt->decode($user['password']) == $password):
+    if(!empty( $user ) && $this->encrypt->decode($user['password']) == $this->getPassword()):
 
       return $user;
 
@@ -151,7 +151,7 @@ class Lessee extends CI_Model{
 
   public function findByEmail()
   {
-    $query = $this->db->get_where('lessees', array('lessee_email' => $this->getEmail());
+    $query = $this->db->get_where('lessees', array('lessee_email' => $this->getEmail()));
 
     return $query->first_row('array');
   }
