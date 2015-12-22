@@ -8,7 +8,7 @@ class Main extends CI_Controller {
       parent::__construct();
   }
 
-	public function index()
+  public function index()
   {
     /*
     | $data['title'] = 'New Title';
@@ -27,7 +27,7 @@ class Main extends CI_Controller {
     | );
     */
     $this->load->view('common/main', $data);
-	}
+  }
 
   public function signUp()
   {
@@ -51,21 +51,23 @@ class Main extends CI_Controller {
     else:
       $post = $this->input->post(NULL, TRUE);
 
-      $data = array(
-        'username'=> $post['username'],
-        'password'=> $this->encrypt->encode($post['password'])
-      );
-
       if ($post['user_type'] != 'lessor') {
-        $data['lessee_fname'] = $post['fname'];
-        $data['lessee_lname'] = $post['lname'];
-        $data['lessee_email'] = $post['email'];
-        $data['lessee_phoneno'] = $post['phoneno'];
 
         $this->load->model('Lessee');
-        $this->Lessee->create($data);
+
+        $this->Lessee->setFname($post['fname']);
+        $this->Lessee->setLname($post['lname']);
+        $this->Lessee->setEmail($post['email']);
+        $this->Lessee->setPhoneno($post['phoneno']);
+        $this->Lessee->setUsername($post['username']);
+        $this->Lessee->setPassword($this->encrypt->encode($post['password']));
+        $this->Lessee->insert();
       } else {
         $this->load->model('Subscriber');
+        $data = array(
+          'username'=> $post['username'],
+          'password'=> $this->encrypt->encode($post['password'])
+        );
         $data[$this->Subscriber->getFname()] = $post['fname'];
         $data[$this->Subscriber->getLname()] = $post['lname'];
         $data[$this->Subscriber->getEmail()] = $post['email'];
