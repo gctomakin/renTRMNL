@@ -8,7 +8,7 @@ class Main extends CI_Controller {
       parent::__construct();
   }
 
-	public function index()
+  public function index()
   {
     /*
     | $data['title'] = 'New Title';
@@ -27,7 +27,7 @@ class Main extends CI_Controller {
     | );
     */
     $this->load->view('common/main', $data);
-	}
+  }
 
   public function signUp()
   {
