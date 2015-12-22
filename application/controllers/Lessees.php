@@ -11,7 +11,9 @@ class Lessees extends CI_Controller {
 
   public function index()
   {
-    echo 'TODO';
+    $data['title'] = 'DASHBOARD';
+    $data['content'] = $this->load->view('pages/lessee/dashboard', '', TRUE);
+    $this->load->view('common/lessee', $data);
   }
 
   public function signIn()
