@@ -115,39 +115,43 @@ class Lessee extends CI_Model{
     return TRUE;
   }
 
-  public function update($id, $data)
+  public function update()
   {
-    $this->db->where('lessee_id', $id);
+    $data['lessee_fname'] = $this->getFname();
+    $data['lessee_lname'] = $this->getLname();
+    $data['lessee_email'] = $this->getEmail();
+    $data['lessee_phoneno'] = $this->getPhoneno();
+    $this->db->where('lessee_id', $this->getId());
     $this->db->update('lessees', $data);
 
     return TRUE;
   }
 
-  public function delete($id)
+  public function delete()
   {
-    $this->db->where('lessee_id', $id);
+    $this->db->where('lessee_id', $this->getId());
     $this->db->delete('lessees');
 
     return TRUE;
   }
 
-  public function findByUsername($username)
+  public function findByUsername()
   {
-    $query = $this->db->get_where('lessees', array('username' => $username));
+    $query = $this->db->get_where('lessees', array('username' => $this->getUsername()));
 
     return $query->first_row('array');
   }
 
-  public function findById($id)
+  public function findById()
   {
-    $query = $this->db->get_where('lessees', array('lessee_id' => $id));
+    $query = $this->db->get_where('lessees', array('lessee_id' => $this->getId()));
 
     return $query->first_row('array');
   }
 
-  public function findByEmail($email)
+  public function findByEmail()
   {
-    $query = $this->db->get_where('lessees', array('lessee_email' => $email));
+    $query = $this->db->get_where('lessees', array('lessee_email' => $this->getEmail());
 
     return $query->first_row('array');
   }
