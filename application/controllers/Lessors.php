@@ -77,6 +77,7 @@ class Lessors extends CI_Controller {
   	} else {
   		if (!$isLogin && $this->input->is_ajax_request()) {
   			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
+  			exit();
   		} else if (!$isLogin) { // Redirect to signin page if not signed in
   			redirect('lessors/signin-page');
   			exit();
