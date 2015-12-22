@@ -141,21 +141,21 @@ class Lessee extends CI_Model{
   {
     $query = $this->db->get_where($this->table, array('username' => $this->getUsername()));
 
-    return $query->first_row('array');
+    return $query->row_array();
   }
 
   public function findById()
   {
     $query = $this->db->get_where($this->table, array('lessee_id' => $this->getId()));
 
-    return $query->first_row('array');
+    return $query->row_array();
   }
 
   public function findByEmail()
   {
     $query = $this->db->get_where($this->table, array('lessee_email' => $this->getEmail()));
 
-    return $query->first_row('array');
+    return $query->row_array();
   }
 
 }
