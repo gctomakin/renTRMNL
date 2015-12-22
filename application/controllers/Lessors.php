@@ -57,4 +57,31 @@ class Lessors extends CI_Controller {
     $data['title'] = 'LESSOR SIGN IN';
     $this->load->view('common/plain', $data);
   }
+
+  /**
+   * Checks Lessors method if user has authority, 
+   * otherwise user will be redirect to the respected page
+   * @param  String $method Name of the method
+   * @return method or redirect
+   */
+  public function _remap($method) {
+  	$isLogin = $this->session->has_userdata('lessor_logged_in');
+  	if ( // Check for login session except for :
+  		$method == "signinPage" ||
+  		$method == "signin"
+  	) {
+  		if ($isLogin) { // Check if login session already exist
+  			redirect('lessors/');
+  			exit();
+  		}
+  	} else {
+  		if (!$isLogin && $this->input->is_ajax_request()) {
+  			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
+  		} else if (!$isLogin) { // Redirect to signin page if not signed in
+  			redirect('lessors/signin-page');
+  			exit();
+  		}
+  	}
+  	$this->$method();
+  }
 }
