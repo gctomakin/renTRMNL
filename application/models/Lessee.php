@@ -9,6 +9,7 @@ class Lessee extends CI_Model{
   private $phoneno;
   private $username;
   private $password;
+  private $table = 'lessees';
 
   private function getId()
   {
@@ -35,7 +36,8 @@ class Lessee extends CI_Model{
     return $this->lname;
   }
 
-  public function setLname($lname){
+  public function setLname($lname)
+  {
     $this->lname = $lname;
   }
 
@@ -110,7 +112,7 @@ class Lessee extends CI_Model{
     $data['username'] = $this->getUsername();
     $data['password'] = $this->getPassword();
     $this->db->set($data);
-    $this->db->insert('lessees');
+    $this->db->insert($this->table);
 
     return TRUE;
   }
@@ -122,7 +124,7 @@ class Lessee extends CI_Model{
     $data['lessee_email'] = $this->getEmail();
     $data['lessee_phoneno'] = $this->getPhoneno();
     $this->db->where('lessee_id', $this->getId());
-    $this->db->update('lessees', $data);
+    $this->db->update($this->table, $data);
 
     return TRUE;
   }
@@ -130,28 +132,28 @@ class Lessee extends CI_Model{
   public function delete()
   {
     $this->db->where('lessee_id', $this->getId());
-    $this->db->delete('lessees');
+    $this->db->delete($this->table);
 
     return TRUE;
   }
 
   public function findByUsername()
   {
-    $query = $this->db->get_where('lessees', array('username' => $this->getUsername()));
+    $query = $this->db->get_where($this->table, array('username' => $this->getUsername()));
 
     return $query->first_row('array');
   }
 
   public function findById()
   {
-    $query = $this->db->get_where('lessees', array('lessee_id' => $this->getId()));
+    $query = $this->db->get_where($this->table, array('lessee_id' => $this->getId()));
 
     return $query->first_row('array');
   }
 
   public function findByEmail()
   {
-    $query = $this->db->get_where('lessees', array('lessee_email' => $this->getEmail()));
+    $query = $this->db->get_where($this->table, array('lessee_email' => $this->getEmail()));
 
     return $query->first_row('array');
   }
