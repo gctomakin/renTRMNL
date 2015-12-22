@@ -15,6 +15,7 @@ $data['script'] = array(
 
 $data['style'] = array(
 	'animate.min', //Plugin CSS
+	'creative'
 );
 
 $data['bodyId'] = "page-top";

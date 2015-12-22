@@ -9,15 +9,16 @@
 	<title>renTRMNL - <?php echo empty($title) ? 'a Software-as-a-Service for Rental Shops' : $title; ?></title>
 
 	<!-- DEFAULT STYLES -->
+  <?php if (empty($hasNewBootrstap)) { ?>
 	<!-- Bootstrap Core CSS -->
   <link rel="stylesheet" href="<?php echo site_url("bower_components/bootstrap/dist/css/bootstrap.min.css"); ?>" type="text/css">
+  <?php } ?>
   <!-- Custom Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="<?php echo site_url("assets/font-awesome/css/font-awesome.min.css"); ?>" type="text/css">
   
   <!-- Custom Theme CSS -->
-  <link rel="stylesheet" href="<?php echo site_url("assets/css/creative.css"); ?>" type="text/css">
   <link rel="stylesheet" href="<?php echo site_url("assets/css/style.css"); ?>" type="text/css">
   
 	<!-- ADDITIONAL STYLES -->
