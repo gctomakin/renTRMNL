@@ -59,7 +59,7 @@ class CI_Controller {
 	private static $instance;
 
 	/**
-	 * Authenticate 
+	 * Authenticate
 	 * 1: lessee
 	 * 2: lessor
 	 * 3: lessee or lessor
@@ -104,31 +104,31 @@ class CI_Controller {
 	}
 
 	/**
-   * Checks Controller's method if user has authority, 
+   * Checks Controller's method if user has authority,
    * otherwise user will be redirect to the respected page
    * @param  String $method Name of the method
    * @return method or redirect
    */
   public function _remap($method) {
-  	
+
   	if (!empty($this->auth)) { // If empty no need to check authority
   		$isLogin = false;
   		$role = "lessees";
   		switch ($this->auth) {
   			case 1: // Check Lessee logged in session
   				$isLogin = $this->session->has_userdata('logged_in');
-  				break; 
+  				break;
   			case 2: // Check Lessor logged in session
   				$isLogin = $this->session->has_userdata('lessor_logged_in');
   				$role = "lessors";
-  				break; 
+  				break;
   			case 3: // Check Lessor or Lessee logged in session
   				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in');
   				break;
   			case 4: // Check admin logged in session
   				$isLogin = $this->session->has_userdata('admin_logged_in');
   				$role = "admin";
-  				break;			
+  				break;
   		}
 
 	  	if ( // Check for login session except for :

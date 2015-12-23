@@ -5,7 +5,7 @@ class Lessees extends CI_Controller {
 
   public function __construct()
   {
-      parent::__construct();
+      parent::__construct(1);
       $this->load->model('Lessee');
       $this->Lessee->setId($this->session->has_userdata('lessee_id'));
   }
@@ -17,7 +17,7 @@ class Lessees extends CI_Controller {
     $this->load->view('common/lessee', $data);
   }
 
-  public function signIn()
+  public function signin()
   {
     $usertype = $this->input->post('usertype',TRUE);
     $this->Lessee->setUsername($this->input->post('username',TRUE));
@@ -56,7 +56,7 @@ class Lessees extends CI_Controller {
 
   public function signinPage()
   {
-    $content['action'] = site_url('signin');
+    $content['action'] = site_url('lessees/signin');
     $data['content'] = $this->load->view('pages/signin', $content, TRUE);
     $data['title'] = 'SIGN IN';
     $this->load->view('common/plain', $data);

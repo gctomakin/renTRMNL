@@ -53,6 +53,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    var signinLesseeUrl = "<?php echo site_url('signin'); ?>";
+    var signinLesseeUrl = "<?php echo site_url('lessees/signin'); ?>";
     var signinLessorUrl = "<?php echo site_url('lessors/signin'); ?>";
 </script>

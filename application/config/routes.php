@@ -61,8 +61,7 @@ $route['logout'] = 'main/logout';
 /** Subscriber/Lessors */
 $route['lessors/signin-page'] = 'lessors/signinPage';
 
-/** Lessee */
-$route['signin'] = 'lessees/signIn';
+/** Lessees */
 $route['lessees/signin-page'] = 'lessees/signinPage';
 $route['lessee/dashboard'] = 'lessees';
 $route['lessee/profile'] = 'lessees/profilePage';

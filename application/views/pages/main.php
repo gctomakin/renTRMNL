@@ -269,7 +269,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('signin', $attributes); ?>
+                        <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('lessees/signin', $attributes); ?>
                             <div class="form-group text-center">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-primary btn-signin-type active">
@@ -299,6 +299,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    var signinLesseeUrl = "<?php echo site_url('signin'); ?>";
+    var signinLesseeUrl = "<?php echo site_url('lessees/signin'); ?>";
     var signinLessorUrl = "<?php echo site_url('lessors/signin'); ?>";
 </script>
