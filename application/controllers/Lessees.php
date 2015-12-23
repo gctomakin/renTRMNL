@@ -7,6 +7,7 @@ class Lessees extends CI_Controller {
   {
       parent::__construct();
       $this->load->model('Lessee');
+      $this->Lessee->setId($this->session->has_userdata('lessee_id'));
   }
 
   public function index()
@@ -59,6 +60,75 @@ class Lessees extends CI_Controller {
     $data['content'] = $this->load->view('pages/signin', $content, TRUE);
     $data['title'] = 'SIGN IN';
     $this->load->view('common/plain', $data);
+  }
+
+  public function profilePage()
+  {
+    //$content['action'] = site_url('signin');
+    $content['lessee'] = $this->Lessee->findById();
+    $data['content'] = $this->load->view('pages/lessee/profile', $content, TRUE);
+    $data['title'] = 'MY PROFILE';
+    $this->load->view('common/lessee', $data);
+  }
+
+  public function updateInfo()
+  {
+    $this->form_validation->set_rules('fname', 'Firstname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('lname', 'Lastname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean');
+    $this->form_validation->set_rules('phoneno', 'Phone No', 'trim|required|xss_clean');
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('ui_val_error', validation_errors());
+      redirect('lessee/profile','refresh');
+
+    else:
+
+      $post = $this->input->post(NULL, TRUE);
+      $this->Lessee->setFname($post['fname']);
+      $this->Lessee->setLname($post['lname']);
+      $this->Lessee->setEmail($post['email']);
+      $this->Lessee->setPhoneno($post['phoneno']);
+      $result = $this->Lessee->updateInfo();
+      if($result):
+        $this->session->set_flashdata('ui_success', TRUE);
+        redirect('lessee/profile','refresh');
+      else:
+        $this->session->set_flashdata('ui_error', TRUE);
+        redirect('lessee/profile','refresh');
+      endif;
+
+    endif;
+
+  }
+
+  public function updateAccount()
+  {
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('ua_val_error', validation_errors());
+      redirect('lessee/profile','refresh');
+
+    else:
+
+      $post = $this->input->post(NULL, TRUE);
+      $this->Lessee->setUsername($post['username']);
+      $this->Lessee->setPassword($this->encrypt->encode($post['password']));
+      $result = $this->Lessee->updateAccount();
+
+      if($result):
+        $this->session->set_flashdata('ua_success', TRUE);
+        redirect('lessee/profile','refresh');
+      else:
+        $this->session->set_flashdata('ua_error', TRUE);
+        redirect('lessee/profile','refresh');
+      endif;
+
+    endif;
   }
 
 }
