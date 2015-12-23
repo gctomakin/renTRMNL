@@ -117,12 +117,22 @@ class Lessee extends CI_Model{
     return TRUE;
   }
 
-  public function update()
+  public function updateInfo()
   {
     $data['lessee_fname'] = $this->getFname();
     $data['lessee_lname'] = $this->getLname();
     $data['lessee_email'] = $this->getEmail();
     $data['lessee_phoneno'] = $this->getPhoneno();
+    $this->db->where('lessee_id', $this->getId());
+    $this->db->update($this->table, $data);
+
+    return TRUE;
+  }
+
+  public function updateAccount()
+  {
+    $data['username'] = $this->getUsername();
+    $data['password'] = $this->getPassword();
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->table, $data);
 
