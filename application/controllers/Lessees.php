@@ -7,7 +7,7 @@ class Lessees extends CI_Controller {
   {
       parent::__construct(1);
       $this->load->model('Lessee');
-      $this->Lessee->setId($this->session->has_userdata('lessee_id'));
+      $this->Lessee->setId($this->session->userdata('lessee_id'));
   }
 
   public function index()
