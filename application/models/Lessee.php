@@ -91,7 +91,7 @@ class Lessee extends CI_Model{
 
     else:
 
-      return FALSE;
+      return false;
 
     endif;
   }
@@ -114,7 +114,7 @@ class Lessee extends CI_Model{
     $this->db->set($data);
     $this->db->insert($this->table);
 
-    return TRUE;
+    return true;
   }
 
   public function updateInfo()
@@ -126,7 +126,7 @@ class Lessee extends CI_Model{
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->table, $data);
 
-    return TRUE;
+    return true;
   }
 
   public function updateAccount()
@@ -136,7 +136,7 @@ class Lessee extends CI_Model{
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->table, $data);
 
-    return TRUE;
+    return true;
   }
 
   public function delete()
@@ -144,7 +144,7 @@ class Lessee extends CI_Model{
     $this->db->where('lessee_id', $this->getId());
     $this->db->delete($this->table);
 
-    return TRUE;
+    return true;
   }
 
   public function findByUsername()
@@ -166,6 +166,17 @@ class Lessee extends CI_Model{
     $query = $this->db->get_where($this->table, array('lessee_email' => $this->getEmail()));
 
     return $query->row_array();
+  }
+
+  public function checkPassword()
+  {
+    $user = $this->findById();
+    $query = $this->db->get_where($this->table, array('password' => $user['password']));
+    if($this->getPassword() == $this->encrypt->decode($query->row_array()['password'])):
+      return true;
+    else:
+      return false;
+    endif;
   }
 
 }
