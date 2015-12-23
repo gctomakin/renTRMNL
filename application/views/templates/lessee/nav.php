@@ -204,7 +204,11 @@
         <!-- /.dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                <!-- <span class="pull-left">
+                  <img id="img-top" class="media-object" width="25" height="25" src="http://marketingwebrx.com/uploads/bear2.png" alt="">
+                </span> -->
+                 <i class="fa fa-user fa-fw"></i>
+                 <span><strong><?php echo $this->session->userdata('username'); ?></strong></span> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="<?php echo site_url('lessee/profile'); ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
