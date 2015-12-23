@@ -56,9 +56,15 @@ $route['translate_uri_dashes'] = FALSE;
 /* Main Routes */
 $route['admin'] = 'main/admin';
 $route['signup'] = 'main/signUp';
-$route['signin'] = 'lessees/signIn';
-$route['signin-page'] = 'lessees/signinPage';
 $route['logout'] = 'main/logout';
 
 /** Subscriber/Lessors */
 $route['lessors/signin-page'] = 'lessors/signinPage';
+
+/** Lessee */
+$route['signin'] = 'lessees/signIn';
+$route['lessees/signin-page'] = 'lessees/signinPage';
+$route['lessee/dashboard'] = 'lessees';
+$route['lessee/profile'] = 'lessees/profilePage';
+$route['lessee/update-info'] = 'lessees/updateInfo';
+$route['lessee/update-account'] = 'lessees/updateAccount';
