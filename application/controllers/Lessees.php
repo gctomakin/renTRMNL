@@ -138,4 +138,24 @@ class Lessees extends CI_Controller {
     endif;
   }
 
+  public function do_upload()
+  {
+          $config['upload_path']          = './uploads/';
+          $config['allowed_types']        = 'gif|jpg|png';
+          $config['max_size']             = 100;
+          $config['max_width']            = 1024;
+          $config['max_height']           = 768;
+
+          $this->load->library('upload', $config);
+
+          if ( ! $this->upload->do_upload('userfile')):
+            $this->session->set_flashdata('upload_error', $this->upload->display_errors());
+            redirect('lessee/profile','refresh');
+          else:
+            $file = $this->upload->data();
+            $this->session->set_flashdata('upload_success', TRUE);
+            redirect('lessee/profile','refresh');
+          endif;
+  }
+
 }
