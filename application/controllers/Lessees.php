@@ -42,14 +42,14 @@ class Lessees extends CI_Controller {
       else:
 
         $this->session->set_flashdata('warning', TRUE);
-        redirect('signin-page','refresh');
+        redirect('lessees/signin-page','refresh');
 
       endif;
 
     else:
 
       $this->session->set_flashdata('error', TRUE);
-      redirect('signin-page','refresh');
+      redirect('lessees/signin-page','refresh');
 
     endif;
   }
@@ -106,7 +106,8 @@ class Lessees extends CI_Controller {
   {
     $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
     $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
-    $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
+    $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[new_password]|xss_clean');
 
     if($this->form_validation->run() == FALSE):
 
@@ -117,8 +118,14 @@ class Lessees extends CI_Controller {
 
       $post = $this->input->post(NULL, TRUE);
       $this->Lessee->setUsername($post['username']);
-      $this->Lessee->setPassword($this->encrypt->encode($post['password']));
-      $result = $this->Lessee->updateAccount();
+      $this->Lessee->setPassword($post['password']);
+      if($this->Lessee->checkPassword()):
+        $this->Lessee->setPassword($this->encrypt->encode($post['new_password']));
+        $result = $this->Lessee->updateAccount();
+      else:
+        $this->session->set_flashdata('warning', TRUE);
+        redirect('lessee/profile','refresh');
+      endif;
 
       if($result):
         $this->session->set_flashdata('ua_success', TRUE);
