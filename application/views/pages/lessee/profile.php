@@ -1,8 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12 col-md-offset-1 col-md-10 col-md-offset-1">
       <h2 class="page-header">Personal Information</h2>
       <?php
+      $attributes = array('class' => 'well');
       if($this->session->flashdata('ui_error')) {
           echo '<p class="alert alert-danger text-center"><strong>Error!</strong> Failed to update</p>';
        }
@@ -13,7 +14,7 @@
           echo '<div class="alert alert-danger">'.$this->session->flashdata('ui_val_error').'</div>';
       }
       ?>
-      <?php echo form_open('lessee/update-info'); ?>
+      <?php echo form_open('lessee/update-info', $attributes); ?>
         <div class="form-group">
           <label for="fname">First Name:</label>
           <input type="text" name="fname" class="form-control input-sm" id="fname" value="<?php echo $lessee["lessee_fname"]?>">
@@ -45,7 +46,7 @@
       if($this->session->flashdata('warning')) { echo '<p class="alert alert-warning"><strong>Error!</strong> Invalid Password</p>';
       }
       ?>
-      <?php echo form_open('lessee/update-account'); ?>
+      <?php echo form_open('lessee/update-account',$attributes); ?>
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" name="username" class="form-control input-sm" id="username" value="<?php echo $lessee["username"]?>">
