@@ -11,75 +11,33 @@ class Lessee extends CI_Model{
   private $password;
   private $table = 'lessees';
 
-  private function getId()
-  {
-    return $this->id;
-  }
+  private function getId(){ return $this->id; }
 
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
+  public function setId($id){ $this->id = $id; }
 
-  private function getFname()
-  {
-    return $this->fname;
-  }
+  private function getFname(){ return $this->fname; }
 
-  public function setFname($fname)
-  {
-    $this->fname = $fname;
-  }
+  public function setFname($fname){ $this->fname = $fname; }
 
-  private function getLname()
-  {
-    return $this->lname;
-  }
+  private function getLname(){ return $this->lname; }
 
-  public function setLname($lname)
-  {
-    $this->lname = $lname;
-  }
+  public function setLname($lname){ $this->lname = $lname; }
 
-  private function getEmail()
-  {
-    return $this->email;
-  }
+  private function getEmail(){ return $this->email; }
 
-  public function setEmail($email)
-  {
-    $this->email = $email;
-  }
+  public function setEmail($email){ $this->email = $email; }
 
-  private function getPhoneno()
-  {
-    return $this->phoneno;
-  }
+  private function getPhoneno(){ return $this->phoneno; }
 
-  public function setPhoneno($phoneno)
-  {
-    $this->phoneno = $phoneno;
-  }
+  public function setPhoneno($phoneno){ $this->phoneno = $phoneno; }
 
-  private function getUsername()
-  {
-    return $this->username;
-  }
+  private function getUsername(){ return $this->username; }
 
-  public function setUsername($username)
-  {
-    $this->username = $username;
-  }
+  public function setUsername($username){ $this->username = $username; }
 
-  private function getPassword()
-  {
-    return $this->password;
-  }
+  private function getPassword(){ return $this->password; }
 
-  public function setPassword($password)
-  {
-    $this->password = $password;
-  }
+  public function setPassword($password){ $this->password = $password; }
 
   public function authenticate()
   {
