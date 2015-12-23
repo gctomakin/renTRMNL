@@ -40,7 +40,10 @@
       if($this->session->flashdata('ua_success')) {
           echo '<p class="alert alert-success text-center"><strong>Success!</strong> Account Information Updated</p>';
       }
-      if($this->session->flashdata('ua_val_error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('ua_val_error').'</div>'; }
+      if($this->session->flashdata('ua_val_error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('ua_val_error').'</div>';
+      }
+      if($this->session->flashdata('warning')) { echo '<p class="alert alert-warning"><strong>Error!</strong> Invalid Password</p>';
+      }
       ?>
       <?php echo form_open('lessee/update-account'); ?>
       <div class="form-group">
@@ -49,7 +52,11 @@
       </div>
       <div class="form-group">
         <label for="pwd">Password:</label>
-        <input type="password" name="password" class="form-control input-sm" id="pwd" value="<?php echo $this->encrypt->decode($lessee["password"]);?>">
+        <input type="password" name="password" class="form-control input-sm" id="pwd">
+      </div>
+      <div class="form-group">
+        <label for="pwdn">New Password:</label>
+        <input type="password" name="new_password" class="form-control input-sm" id="pwdn">
       </div>
       <div class="form-group">
         <label for="pwd2">Confirm Password:</label>
