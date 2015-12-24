@@ -157,6 +157,7 @@ class Lessees extends CI_Controller {
        $file = $this->upload->data();
        $this->Lessee->setImage($file['file_name']);
        $this->Lessee->uploadImage();
+       delete_files(site_url('uploads/'.$this->session->userdata('image')));
        $this->session->set_userdata('image', $file['file_name']);
        $this->session->set_flashdata('upload_success', TRUE);
        redirect('lessee/profile','refresh');
