@@ -34,10 +34,11 @@ class Lessees extends CI_Controller {
                           'lessee_lname' => $user['lessee_lname'],
                           'lessee_email' => $user['lessee_email'],
                           'lessee_phoneno' => $user['lessee_phoneno'],
+                          'image' => $user['image'],
                           'logged_in' => TRUE);
 
         $this->session->set_userdata($userdata);
-        redirect('/lessees/');
+        redirect('lessees');
 
       else:
 
@@ -138,25 +139,28 @@ class Lessees extends CI_Controller {
     endif;
   }
 
-  public function do_upload()
+  public function upload()
   {
-          $config['upload_path']          = './uploads/';
-          $config['allowed_types']        = 'gif|jpg|png';
-          $config['max_size']             = 100;
-          $config['max_width']            = 1024;
-          $config['max_height']           = 768;
-          $config['encrypt_name']         = true;
+     $config['upload_path']          = './uploads/';
+     $config['allowed_types']        = 'gif|jpg|png';
+     $config['max_size']             = 100;
+     $config['max_width']            = 1024;
+     $config['max_height']           = 768;
+     $config['encrypt_name']         = true;
 
-          $this->load->library('upload', $config);
+     $this->load->library('upload', $config);
 
-          if ( ! $this->upload->do_upload('userfile')):
-            $this->session->set_flashdata('upload_error', $this->upload->display_errors());
-            redirect('lessee/profile','refresh');
-          else:
-            $file = $this->upload->data();
-            $this->session->set_flashdata('upload_success', TRUE);
-            redirect('lessee/profile','refresh');
-          endif;
+     if ( ! $this->upload->do_upload('userfile')):
+       $this->session->set_flashdata('upload_error', $this->upload->display_errors());
+       redirect('lessee/profile','refresh');
+     else:
+       $file = $this->upload->data();
+       $this->Lessee->setImage($file['file_name']);
+       $this->Lessee->uploadImage();
+       $this->session->set_userdata('image', $file['file_name']);
+       $this->session->set_flashdata('upload_success', TRUE);
+       redirect('lessee/profile','refresh');
+     endif;
   }
 
 }
