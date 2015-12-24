@@ -9,6 +9,7 @@ class Lessee extends CI_Model{
   private $phoneno;
   private $username;
   private $password;
+  private $image;
   private $table = 'lessees';
 
   private function getId(){ return $this->id; }
@@ -38,6 +39,10 @@ class Lessee extends CI_Model{
   private function getPassword(){ return $this->password; }
 
   public function setPassword($password){ $this->password = $password; }
+
+  private function getImage(){ return $this->image; }
+
+  public function setImage($image){ $this->image = $image; }
 
   public function authenticate()
   {
@@ -135,6 +140,15 @@ class Lessee extends CI_Model{
     else:
       return false;
     endif;
+  }
+
+  public function uploadImage()
+  {
+    $data['image'] = $this->getImage();
+    $this->db->where('lessee_id', $this->getId());
+    $this->db->update($this->table, $data);
+
+    return true;
   }
 
 }
