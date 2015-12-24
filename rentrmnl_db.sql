@@ -114,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `lessees` (
   `lessee_phoneno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` text COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NULL,
   PRIMARY KEY (`lessee_id`),
   UNIQUE KEY `lessees_lessee_email_unique` (`lessee_email`),
   UNIQUE KEY `lessees_username_unique` (`username`)
