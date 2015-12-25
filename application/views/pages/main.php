@@ -288,6 +288,17 @@
                             <p class="terms-privacy text-center"><small>You agree to the renTRMNL <a href="<?php echo site_url("terms"); ?>" target="_blank">Terms of Service</a> and <a href="<?php echo site_url("privacy"); ?>" target="_blank">Privacy Policy</a>.</small></p>
 <!--                             <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
  -->                        <?php echo form_close(); ?>
+                            <div id="social-media-login">
+                                 <div class="divider-container text-center">
+                                     <div class="signin-divider"></div>
+                                     <div class="divider-text">Or Sign in with</div>
+                                </div>
+                                <div class="text-center">
+                                  <a href="<?php echo $authUrl; ?>">
+                                      <div class="google-button social-button x-small"><i class="fa fa-google"></i> Google</div>
+                                 </a>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
