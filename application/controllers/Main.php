@@ -18,7 +18,7 @@ class Main extends CI_Controller {
     /* Store values in variables from project created in Google Developer Console */
     $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';
     $client_secret = 'jFJJi-BKnEwKUcA6jaCglXq4';
-    $redirect_uri = 'http://localhost:8888/rentrmnl/';
+    $redirect_uri = 'http://localhost/rentrmnl/';
     $simple_api_key = 'AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q';
 
     /* Create Client Request to access Google API */
