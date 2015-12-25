@@ -91,3 +91,61 @@
   font-size: 11px;
   padding-top:5px;
 }
+
+.divider-container{
+  margin: -20px 0 20px 0;
+  font-size: 18px;
+  font-weight: 100;
+  color: #707070;
+  position: relative;
+  width: 100%;
+}
+
+.signin-divider {
+  border-bottom: 1px solid #dbdbdb;
+  width: 100%;
+  top: 14px;
+  position: absolute;
+  left: 0;
+}
+
+.divider-container div {
+  display: inline-block;
+  text-align: center;
+  color: #CD3F30;
+}
+
+.divider-text {
+  position: inherit;
+  z-index: 1;
+  background: #FFFFFF;
+  padding: 0 4px;
+}
+
+.google-button {
+  text-align: center;
+  color: #CD3F30;
+  border-color: #CD3F30;
+}
+
+.google-button:hover {
+ color: #fff;
+ background-color: #CD3F30;
+}
+
+.social-button {
+  font-weight: 400;
+  position: relative;
+  padding: 10px 0;
+  width: 48%;
+  display: inline-block;
+  border: 1px solid;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  -moz-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  cursor: pointer;
+}
