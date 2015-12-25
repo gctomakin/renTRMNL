@@ -10,11 +10,64 @@ class Main extends CI_Controller {
 
   public function index()
   {
+    /* Include two files from google-php-client library in controller */
+    require_once APPPATH . "libraries/google-api-php-client/src/Google/autoload.php";
+    include_once APPPATH . "libraries/google-api-php-client/src/Google/Client.php";
+    include_once APPPATH . "libraries/google-api-php-client/src/Google/Service/Oauth2.php";
+
+    /* Store values in variables from project created in Google Developer Console */
+    $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';
+    $client_secret = 'jFJJi-BKnEwKUcA6jaCglXq4';
+    $redirect_uri = 'http://localhost:8888/rentrmnl/';
+    $simple_api_key = 'AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q';
+
+    /* Create Client Request to access Google API */
+    $client = new Google_Client();
+    $client->setApplicationName("renTRMNL");
+    $client->setClientId($client_id);
+    $client->setClientSecret($client_secret);
+    $client->setRedirectUri($redirect_uri);
+    $client->setDeveloperKey($simple_api_key);
+    $client->addScope("https://www.googleapis.com/auth/userinfo.email");
+
+    /* Send Client Request */
+    $objOAuthService = new Google_Service_Oauth2($client);
+
+    /* Add Access Token to Session */
+    if (isset($_GET['code'])):
+    $client->authenticate($_GET['code']);
+    /* Get User Data from Google  */
+    $user = $objOAuthService->userinfo->get();
+
+    $userdata = array('lessee_id' => $user['id'],
+                      'username' => $user['email'],
+                      'lessee_fname' => $user['familyName'],
+                      'lessee_lname' => $user['givenNname'],
+                      'lessee_email' => $user['email'],
+                      'lessee_phoneno' => " ",
+                      'image' => $user['picture'],
+                      'access_token' => $client->getAccessToken(),
+                      'logged_in' => TRUE);
+
+    $this->session->set_userdata($userdata);
+
+    redirect('lessees');
+    endif;
+
+    /* Set Access Token to make Request */
+    if (isset($_SESSION['access_token']) && $_SESSION['access_token']):
+    $client->setAccessToken($_SESSION['access_token']);
+    endif;
+
+    $authUrl = $client->createAuthUrl();
+    $auth['authUrl'] = $authUrl;
+
+
     /*
     | $data['title'] = 'New Title';
     */
 
-    $data['content'] = $this->load->view('pages/main', '', TRUE);
+    $data['content'] = $this->load->view('pages/main', $auth, TRUE);
 
     /* SAMPLE of Additional Styles and Scripts
     | $data['style'] = array(
