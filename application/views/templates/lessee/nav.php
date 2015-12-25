@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">renTRMNL</a>
+        <a class="navbar-brand" href="<?php echo site_url('lessees');?>">renTRMNL</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -205,7 +205,7 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="pull-left">
-                  <img id="img-top" class="media-object" width="25" height="25" src="<?php echo ($this->session->userdata('image') == '') ? site_url('assets/img/default.gif') : site_url("uploads/".$this->session->userdata('image')); ?>" alt="">
+                  <img id="img-top" class="media-object" width="25" height="25" src="<?php echo ($this->session->userdata('image') == '') ? site_url('assets/img/default.gif') : ($this->session->has_userdata('access_token')) ? $this->session->userdata('image') : site_url("uploads/".$this->session->userdata('image')); ?>" alt="">
                 </span>
                 &nbsp;
                  <!-- <i class="fa fa-user fa-fw"></i> -->
