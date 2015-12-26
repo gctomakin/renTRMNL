@@ -233,4 +233,18 @@ class Lessees extends CI_Controller {
      endif;
   }
 
+  public function myShopsPage()
+  {
+    $data['title'] = 'My Shops';
+    $data['content'] = $this->load->view('pages/lessee/myshops', '', TRUE);
+    $this->load->view('common/lessee', $data);
+  }
+
+  public function myInterestsPage()
+  {
+    $data['title'] = 'My Interests';
+    $data['content'] = $this->load->view('pages/lessee/myinterests', '', TRUE);
+    $this->load->view('common/lessee', $data);
+  }
+
 }
