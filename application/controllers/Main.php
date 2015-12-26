@@ -7,14 +7,13 @@ class Main extends CI_Controller {
   {
       parent::__construct();
       $this->load->model('Lessee');
+      $this->load->helper('googleloader');
   }
 
   public function index()
   {
     /* Include two files from google-php-client library in controller */
-    require_once APPPATH . "libraries/google-api-php-client/src/Google/autoload.php";
-    include_once APPPATH . "libraries/google-api-php-client/src/Google/Client.php";
-    include_once APPPATH . "libraries/google-api-php-client/src/Google/Service/Oauth2.php";
+    GoogleClientLoader();
 
     /* Store values in variables from project created in Google Developer Console */
     $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';

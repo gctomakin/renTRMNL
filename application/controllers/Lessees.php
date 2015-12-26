@@ -7,6 +7,7 @@ class Lessees extends CI_Controller {
   {
       parent::__construct(1);
       $this->load->model('Lessee');
+      $this->load->helper('googleloader');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
   }
 
@@ -57,10 +58,9 @@ class Lessees extends CI_Controller {
 
   public function signinPage()
   {
-    /* Include two files from google-php-client library in controller */
-    require_once APPPATH . "libraries/google-api-php-client/src/Google/autoload.php";
-    include_once APPPATH . "libraries/google-api-php-client/src/Google/Client.php";
-    include_once APPPATH . "libraries/google-api-php-client/src/Google/Service/Oauth2.php";
+    /* Load Google Service and Client */
+    GoogleClientLoader();
+
 
     /* Store values in variables from project created in Google Developer Console */
     $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';
