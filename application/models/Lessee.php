@@ -59,6 +59,32 @@ class Lessee extends CI_Model{
     endif;
   }
 
+  public function googleLogin($user)
+  {
+    $this->setUsername($user['id']);
+    $result = $this->findByUsername($this->getUsername());
+
+    if(!empty($result)):
+
+      return $result;
+
+    else:
+
+      $data['lessee_fname'] = $user['givenName'];
+      $data['lessee_lname'] = $user['familyName'];
+      $data['lessee_email'] = $user['email'];
+      $data['lessee_phoneno'] = "";
+      $data['username'] = $user['id'];
+      $data['password'] = "";
+      $this->db->set($data);
+      $this->db->insert($this->table);
+      $lastId = $this->db->insert_id();
+
+      return $lastId;
+
+    endif;
+  }
+
   public function all()
   {
     $query = $this->db->get('lessees');
@@ -150,5 +176,36 @@ class Lessee extends CI_Model{
 
     return true;
   }
+
+  public function getAllInterests()
+  {
+     echo 'TODO';
+  }
+
+  public function getAllShops()
+  {
+     echo 'TODO';
+  }
+
+  public function getAllRents()
+  {
+     echo 'TODO';
+  }
+
+  public function getAllReserves()
+  {
+     echo 'TODO';
+  }
+
+  public function getAllReturns()
+  {
+     echo 'TODO';
+  }
+
+  public function getAllNotifications()
+  {
+     echo 'TODO';
+  }
+
 
 }

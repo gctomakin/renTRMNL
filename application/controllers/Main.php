@@ -6,6 +6,7 @@ class Main extends CI_Controller {
   public function __construct()
   {
       parent::__construct();
+      $this->load->model('Lessee');
   }
 
   public function index()
@@ -29,34 +30,51 @@ class Main extends CI_Controller {
     $client->setRedirectUri($redirect_uri);
     $client->setDeveloperKey($simple_api_key);
     $client->addScope("https://www.googleapis.com/auth/userinfo.email");
+    $client->setApprovalPrompt('auto');
 
     /* Send Client Request */
     $objOAuthService = new Google_Service_Oauth2($client);
-
     /* Add Access Token to Session */
     if (isset($_GET['code'])):
-    $client->authenticate($_GET['code']);
-    /* Get User Data from Google  */
-    $user = $objOAuthService->userinfo->get();
+      $client->authenticate($_GET['code']);
+      /* Get User Data from Google  */
+      $user = $objOAuthService->userinfo->get();
+      $result = $this->Lessee->googleLogin($user);
 
-    $userdata = array('lessee_id' => $user['id'],
-                      'username' => $user['email'],
-                      'lessee_fname' => $user['familyName'],
-                      'lessee_lname' => $user['givenNname'],
-                      'lessee_email' => $user['email'],
-                      'lessee_phoneno' => " ",
-                      'image' => $user['picture'],
-                      'access_token' => $client->getAccessToken(),
-                      'logged_in' => TRUE);
+      if(is_array($result)):
+        $userdata = array('lessee_id' => $result['lessee_id'],
+                          'username' => $result['username'],
+                          'lessee_fname' => $result['lessee_fname'],
+                          'lessee_lname' => $result['lessee_lname'],
+                          'lessee_email' => $result['lessee_email'],
+                          'lessee_phoneno' => $result['lessee_phoneno'],
+                          'image' => $user['picture'],
+                          'access_token' => $client->getAccessToken(),
+                          'logged_in' => TRUE);
+      else:
+        $userdata = array('lessee_id' => $result,
+                          'username' => $user['id'],
+                          'lessee_fname' => $user['givenName'],
+                          'lessee_lname' => $user['familyName'],
+                          'lessee_email' => $user['email'],
+                          'lessee_phoneno' => "",
+                          'image' => $user['picture'],
+                          'access_token' => $client->getAccessToken(),
+                          'logged_in' => TRUE);
 
-    $this->session->set_userdata($userdata);
-
-    redirect('lessees');
+      endif;
+      $this->session->set_userdata($userdata);
+      redirect('lessees');
     endif;
 
     /* Set Access Token to make Request */
-    if (isset($_SESSION['access_token']) && $_SESSION['access_token']):
-    $client->setAccessToken($_SESSION['access_token']);
+    if ($this->session->has_userdata('access_token')):
+      $client->setAccessToken($this->session->userdata('access_token'));
+    endif;
+
+    if ($client->getAccessToken()):
+      $this->session->set_userdata('access_token', $client->getAccessToken());
+      redirect('lessees');
     endif;
 
     $authUrl = $client->createAuthUrl();
