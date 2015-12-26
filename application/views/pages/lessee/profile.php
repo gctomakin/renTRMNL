@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col-md-offset-3 col-md-6 col-md-offset-3 text-center">
          <div class="form-group">
-           <img class="center-block img-thumbnail" alt="Lessee Thumbnail" src="<?php echo ($this->session->has_userdata('access_token')) ? $this->session->userdata('image') : (is_null($lessee["image"])) ? site_url('assets/img/default.gif') : site_url("uploads/".$this->session->userdata('image')); ?>">
+           <img class="center-block img-thumbnail" alt="Lessee Thumbnail" src="<?php echo ($this->session->has_userdata('access_token') ? $this->session->userdata('image') : ( is_null($lessee['image']) ? site_url('assets/img/default.gif') : site_url("uploads/".$this->session->userdata('image')))); ?>">
          </div>
           <div class="form-group">
             <?php echo form_open_multipart('lessees/upload', $attributes2);?>

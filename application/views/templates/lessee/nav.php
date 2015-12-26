@@ -205,7 +205,7 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="pull-left">
-                  <img id="img-top" class="media-object" width="25" height="25" src="<?php echo ($this->session->has_userdata('access_token')) ? $this->session->userdata('image') : ( is_null($this->session->userdata('image'))) ? site_url('assets/img/default.gif') : site_url("uploads/".$this->session->userdata('image')); ?>" alt="">
+                  <img id="img-top" class="media-object" width="25" height="25" src="<?php echo ($this->session->has_userdata('access_token') ? $this->session->userdata('image') : ( is_null($this->session->userdata('image')) ? site_url('assets/img/default.gif') : site_url("uploads/".$this->session->userdata('image')))); ?>" alt="">
                 </span>
                 &nbsp;
                  <!-- <i class="fa fa-user fa-fw"></i> -->
