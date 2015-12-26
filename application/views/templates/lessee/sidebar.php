@@ -13,13 +13,13 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="<?php echo site_url("lessees");?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="tables.html"><i class="fa fa-table fa-fw"></i> My Interests</a>
+                    <a href="<?php echo site_url("lessee/myinterests");?>"><i class="fa fa-table fa-fw"></i> My Interests</a>
                 </li>
                 <li>
-                    <a href="forms.html"><i class="fa fa-edit fa-fw"></i> My Shops</a>
+                    <a href="<?php echo site_url("lessee/myshops");?>"><i class="fa fa-edit fa-fw"></i> My Shops</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-wrench fa-fw"></i> Rental Transactions<span class="fa arrow"></span></a>
