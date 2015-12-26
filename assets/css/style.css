@@ -149,3 +149,7 @@
   -o-transition: all 0.25s;
   cursor: pointer;
 }
+
+.portfolio-item {
+    margin-bottom: 25px;
+}
