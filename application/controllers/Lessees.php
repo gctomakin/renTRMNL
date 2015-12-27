@@ -7,8 +7,8 @@ class Lessees extends CI_Controller {
   {
       parent::__construct(1);
       $this->load->model('Lessee');
-      $this->load->helper('googleloader');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
+      LibsLoader();
   }
 
   public function index()
@@ -58,10 +58,6 @@ class Lessees extends CI_Controller {
 
   public function signinPage()
   {
-    /* Load Google Service and Client */
-    GoogleClientLoader();
-
-
     /* Store values in variables from project created in Google Developer Console */
     $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';
     $client_secret = 'jFJJi-BKnEwKUcA6jaCglXq4';
@@ -259,8 +255,6 @@ class Lessees extends CI_Controller {
 
   public function sendMessage()
   {
-    require_once APPPATH . "libraries/pusher-http-php/lib/Pusher.php";
-
     $app_id = '163140';
     $app_key = 'b3c7fc474d668cd4563e';
     $app_secret = '221d49143b9fcdd747ef';

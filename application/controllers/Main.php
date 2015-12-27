@@ -7,14 +7,11 @@ class Main extends CI_Controller {
   {
       parent::__construct();
       $this->load->model('Lessee');
-      $this->load->helper('googleloader');
+      LibsLoader();
   }
 
   public function index()
   {
-    /* Include two files from google-php-client library in controller */
-    GoogleClientLoader();
-
     /* Store values in variables from project created in Google Developer Console */
     $client_id = '420762774972-sng0pvjsvaht2f4aq86qk65j9317qrs7.apps.googleusercontent.com';
     $client_secret = 'jFJJi-BKnEwKUcA6jaCglXq4';
