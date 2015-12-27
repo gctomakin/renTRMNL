@@ -235,15 +235,17 @@ class Lessees extends CI_Controller {
 
   public function myShopsPage()
   {
-    $data['title'] = 'My Shops';
-    $data['content'] = $this->load->view('pages/lessee/myshops', '', TRUE);
+    $data['title'] = 'MY SHOPS';
+    $content['myshops'] = $this->Lessee->myShops();
+    $data['content'] = $this->load->view('pages/lessee/myshops', $content, TRUE);
     $this->load->view('common/lessee', $data);
   }
 
   public function myInterestsPage()
   {
-    $data['title'] = 'My Interests';
-    $data['content'] = $this->load->view('pages/lessee/myinterests', '', TRUE);
+    $data['title'] = 'MY INTERESTS';
+    $content['myshops'] = $this->Lessee->myInterests();
+    $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
     $this->load->view('common/lessee', $data);
   }
 
