@@ -4,7 +4,7 @@
        <a href="#" class="btn btn-primary btn-sm btn-block" role="button" data-toggle="modal" data-target="#compose-message-modal">COMPOSE</a>
       </div>
      <div class="col-sm-9 col-md-10">
-        <table id="table-message" class="table table-inbox table-hover">
+        <table class="table table-inbox table-hover">
           <tr>
               <th>
                   <input type="checkbox" class="mail-checkbox">
@@ -15,7 +15,7 @@
               <th><i class="fa fa-paperclip"></i></th>
               <th class="text-right">Date/Time</th>
           </tr>
-          <tbody>
+          <tbody id="table-message">
 
           </tbody>
           <script type="text/template" id="msg-template">

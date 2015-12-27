@@ -13,5 +13,5 @@ channel.bind('onMessage', function(data) {
   console.log(data);
   var template = _.template($("#msg-template").html());
   var tmpl = template({subject: data.subject, message: data.message, date: data.date});
-  $("#table-message tbody").append(tmpl);
+  $("#table-message").append(tmpl);
 });
