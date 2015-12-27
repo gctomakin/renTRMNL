@@ -22,7 +22,7 @@
                     <a href="<?php echo site_url("lessee/myshops");?>"><i class="fa fa-edit fa-fw"></i> My Shops</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Rental Transactions<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Items Rent<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="panels-wells.html">Panels and Wells</a>
