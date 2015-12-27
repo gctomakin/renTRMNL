@@ -249,4 +249,23 @@ class Lessees extends CI_Controller {
     $this->load->view('common/lessee', $data);
   }
 
+  public function pusher_test()
+  {
+    require_once APPPATH . "libraries/pusher-http-php/lib/Pusher.php";
+
+    $app_id = '163140';
+    $app_key = 'b3c7fc474d668cd4563e';
+    $app_secret = '221d49143b9fcdd747ef';
+
+    $pusher = new Pusher(
+      $app_key,
+      $app_secret,
+      $app_id,
+      array('encrypted' => true)
+    );
+
+    $data['message'] = 'hello world';
+    $pusher->trigger('test_channel', 'my_event', $data);
+  }
+
 }
