@@ -249,7 +249,15 @@ class Lessees extends CI_Controller {
     $this->load->view('common/lessee', $data);
   }
 
-  public function pusher_test()
+  public function inboxPage()
+  {
+    $data['title'] = 'INBOX';
+    $content['myshops'] = $this->Lessee->myInterests();
+    $data['content'] = $this->load->view('pages/lessee/inbox', $content, TRUE);
+    $this->load->view('common/lessee', $data);
+  }
+
+  public function sendMessage()
   {
     require_once APPPATH . "libraries/pusher-http-php/lib/Pusher.php";
 
@@ -264,8 +272,15 @@ class Lessees extends CI_Controller {
       array('encrypted' => true)
     );
 
-    $data['message'] = 'hello world';
-    $pusher->trigger('test_channel', 'my_event', $data);
+    if($_POST){
+      $data['subject'] = $this->input->post('subject');
+      $data['message'] = $this->input->post('message');
+      $data['receiver'] = $this->input->post('receiver');
+      $data['date'] = date("Y/m/d");
+      $pusher->trigger('msg_channel', 'onMessage', $data);
+    }
+
+    redirect('lessee/inbox','refresh');
   }
 
 }

@@ -67,5 +67,7 @@ $route['lessee/dashboard'] = 'lessees';
 $route['lessee/profile'] = 'lessees/profilePage';
 $route['lessee/myshops'] = 'lessees/myShopsPage';
 $route['lessee/myinterests'] = 'lessees/myInterestsPage';
+$route['lessee/inbox'] = 'lessees/inboxPage';
+$route['lessee/send'] = 'lessees/sendMessage';
 $route['lessee/update-info'] = 'lessees/updateInfo';
 $route['lessee/update-account'] = 'lessees/updateAccount';
