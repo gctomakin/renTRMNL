@@ -9,6 +9,9 @@ class Lessors extends CI_Controller {
   }
 
   public function index() {
+  	redirect('lessor/dashboard');
+  }
+  public function dashboard() {
   	$data['title'] = "Lessor Dashboard";
   	$data['content'] = "<h1>Testing</h1>";
   	$this->load->view('common/lessor', $data);
@@ -58,6 +61,35 @@ class Lessors extends CI_Controller {
     $data['content'] = $this->load->view('pages/signin', $content, TRUE);
     $data['title'] = 'LESSOR SIGN IN';
     $this->load->view('common/plain', $data);
+  }
+
+  public function shopCreate() {
+    $data['title'] = "Creating New Shop";
+    $content['action'] = "/rentalshops/create";
+    $data['content'] = $this->load->view('pages/shops/form', $content, true);
+    $data['script'] = array(
+      'pnotify.core',
+      'pnotify.buttons',
+      'pages/shops/form'
+    );
+    $data['style'] = array('pnotify');
+    $this->load->view('common/lessor', $data);
+  }
+
+  public function shopList() {
+    $data['title'] = "My Shops";
+    $data['content'] = $this->load->view('pages/shops/list', '', true);
+    $this->load->view('common/lessor', $data);
+  }
+
+  public function itemCreate() {
+  	echo "testing";
+  	exit();
+  }
+
+  public function itemList() {
+  	echo "testing";
+  	exit();
   }
 
 }
