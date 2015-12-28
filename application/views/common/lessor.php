@@ -9,18 +9,24 @@ $wrapper = array(
 ); 
 $data['content'] .= $this->load->view('templates/lessor/wrapper', $wrapper, true);
 
-$data['script'] 	= empty($script) ? array() : $script;
-$data['script'][] = 'metisMenu.min';
-$data['script'][] = 'sb-admin-2';
+$mainScript 	= empty($script) ? array() : $script;
+$pageScript = array(
+	'metisMenu.min',
+	'sb-admin-2',
+	'common'
+);
 
-$data['style'] 		= empty($style) ? array() : $style;
-$data['style'][] 	= 'new-bootstrap.min';
-$data['style'][] 	= 'metisMenu.min';
-$data['style'][] 	= 'sb-admin-2';
+$mainStyle = empty($style) ? array() : $style;
+$pageStyle = array(
+	'new-bootstrap.min',
+	'metisMenu.min',
+	'sb-admin-2'
+);
+
+// Merging
+$data['script'] = array_merge($pageScript, $mainScript);
+$data['style'] = array_merge($pageStyle, $mainStyle);
 
 $data['hasNewBootrstap'] = true;
-
-
-
 
 $this->load->view('base', $data);
