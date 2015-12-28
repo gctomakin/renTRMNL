@@ -15,6 +15,7 @@ class Lessees extends CI_Controller {
   {
     $data['title'] = 'DASHBOARD';
     $data['content'] = $this->load->view('pages/lessee/dashboard', '', TRUE);
+    $this->output->cache(2);
     $this->load->view('common/lessee', $data);
   }
 
@@ -125,6 +126,7 @@ class Lessees extends CI_Controller {
     $content['action'] = site_url('lessees/signin');
     $data['content'] = $this->load->view('pages/signin', $content, TRUE);
     $data['title'] = 'SIGN IN';
+    $this->output->cache(2);
     $this->load->view('common/plain', $data);
   }
 
@@ -134,6 +136,7 @@ class Lessees extends CI_Controller {
     $content['lessee'] = $this->Lessee->findById();
     $data['content'] = $this->load->view('pages/lessee/profile', $content, TRUE);
     $data['title'] = 'MY PROFILE';
+    $this->output->cache(2);
     $this->load->view('common/lessee', $data);
   }
 
@@ -234,6 +237,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'MY SHOPS';
     $content['myshops'] = $this->Lessee->myShops();
     $data['content'] = $this->load->view('pages/lessee/myshops', $content, TRUE);
+    $this->output->cache(2);
     $this->load->view('common/lessee', $data);
   }
 
@@ -242,6 +246,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'MY INTERESTS';
     $content['myshops'] = $this->Lessee->myInterests();
     $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
+    $this->output->cache(2);
     $this->load->view('common/lessee', $data);
   }
 
@@ -250,6 +255,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'INBOX';
     $content['myshops'] = $this->Lessee->myInterests();
     $data['content'] = $this->load->view('pages/lessee/inbox', $content, TRUE);
+    $this->output->cache(2);
     $this->load->view('common/lessee', $data);
   }
 
