@@ -69,7 +69,7 @@ class Lessee extends CI_Model{
     $result = $this->findByUsername($this->getUsername());
 
     if(!empty($result)):
-
+      $this->db->cache_delete('default','index');
       return $result;
 
     else:
@@ -83,6 +83,7 @@ class Lessee extends CI_Model{
       $this->db->set($data);
       $this->db->insert($this->lessees_table);
       $lastId = $this->db->insert_id();
+      $this->db->cache_delete('default','index');
 
       return $lastId;
 
@@ -106,6 +107,7 @@ class Lessee extends CI_Model{
     $data['password'] = $this->getPassword();
     $this->db->set($data);
     $this->db->insert($this->lessees_table);
+    $this->db->cache_delete('lessee','profile');
 
     return true;
   }
@@ -179,6 +181,7 @@ class Lessee extends CI_Model{
     $data['image'] = $this->getImage();
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->lessees_table, $data);
+    $this->db->cache_delete('lessee','profile');
 
     return true;
   }
