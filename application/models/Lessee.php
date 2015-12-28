@@ -118,6 +118,7 @@ class Lessee extends CI_Model{
     $data['lessee_phoneno'] = $this->getPhoneno();
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->lessees_table, $data);
+    $this->db->cache_delete('lessee','profile');
 
     return true;
   }
@@ -128,6 +129,7 @@ class Lessee extends CI_Model{
     $data['password'] = $this->getPassword();
     $this->db->where('lessee_id', $this->getId());
     $this->db->update($this->lessees_table, $data);
+    $this->db->cache_delete('lessee','profile');
 
     return true;
   }
