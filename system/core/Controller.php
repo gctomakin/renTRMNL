@@ -151,4 +151,11 @@ class CI_Controller {
 	  }
   	$this->$method();
   }
+
+  public function isAjax() {
+		if (!$this->input->is_ajax_request()) { // Only Ajax Request
+		  show_error('No direct script access allowed', 403);
+		}
+	}
+
 }
