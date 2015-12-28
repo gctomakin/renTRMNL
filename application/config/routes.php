@@ -59,7 +59,13 @@ $route['signup'] = 'main/signUp';
 $route['logout'] = 'main/logout';
 
 /** Subscriber/Lessors */
-$route['lessors/signin-page'] = 'lessors/signinPage';
+$route['lessor/signin-page'] = 'lessors/signinPage';
+$route['lessor/items/create'] = 'lessors/itemCreate';
+$route['lessor/items'] = 'lessors/itemList';
+$route['lessor/shops/create'] = 'lessors/shopCreate';
+$route['lessor/shops/list'] = 'lessors/shopList';
+$route['lessor'] = 'lessors';
+$route['lessor/dashboard'] = 'lessors/dashboard';
 
 /** Lessees */
 $route['lessees/signin-page'] = 'lessees/signinPage';
