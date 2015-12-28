@@ -1,7 +1,6 @@
 <div class="container-fluid">
   <div class="row no-gutter">
-  	<?php $this->load->view('templates/alertMessage'); ?>
-		<form id="shop-form" action="<?php echo site_url($action); ?>" method="POST" class="form-horizontal">
+  	<form id="shop-form" action="<?php echo site_url($action); ?>" method="POST" class="form-horizontal">
 			<div class="form-group">
 		  	<label for="name" class="control-label col-lg-3">Name</label>
 		  	<div class="col-lg-5">
