@@ -93,7 +93,6 @@ class Main extends CI_Controller {
     |   'folder/script2'
     | );
     */
-    $this->output->cache(2);
     $this->load->view('common/main', $data);
   }
 
