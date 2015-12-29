@@ -14,8 +14,8 @@ $(document).ready(function() {
 		$.post(action, form.serialize(), function(data) {
 			if (data['result']) {
 				successMessage(data['message']);
-				$('#form-reset-btn').click();
 				form.find('#name').focus();
+				if (typeof data['reset'] != 'undefined') { $('#form-reset-btn').click(); }
 			} else {
 				errorMessage(data['message']);
 			}
