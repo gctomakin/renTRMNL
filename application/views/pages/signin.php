@@ -42,6 +42,7 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 <p class="terms-privacy text-center"><small>You agree to the renTRMNL <a href="<?php echo site_url("terms"); ?>" target="_blank">Terms of Service</a> and <a href="<?php echo site_url("privacy"); ?>" target="_blank">Privacy Policy</a>.</small></p>
                 <?php echo form_close(); ?>
+                <?php if (isset($authUrl)) { ?>
                 <div id="social-media-login">
                    <div class="divider-container text-center">
                       <div class="signin-divider"></div>
@@ -53,6 +54,7 @@
                       </a>
                    </div>
                  </div>
+                <?php } ?>
             </div>
             <a href="<?php echo site_url("/"); ?>" class="text-center new-account"><i class="fa fa-home"></i> Go back to home page </a>
         </div>
