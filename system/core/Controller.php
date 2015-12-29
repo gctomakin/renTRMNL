@@ -120,7 +120,7 @@ class CI_Controller {
   				break;
   			case 2: // Check Lessor logged in session
   				$isLogin = $this->session->has_userdata('lessor_logged_in');
-  				$role = "lessors";
+  				$role = "lessor";
   				break;
   			case 3: // Check Lessor or Lessee logged in session
   				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in');
@@ -140,6 +140,8 @@ class CI_Controller {
 	  			exit();
 	  		}
 	  	} else {
+	  		// echo $method;
+	  		// exit();
 	  		if (!$isLogin && $this->input->is_ajax_request()) {
 	  			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
 	  			exit();
