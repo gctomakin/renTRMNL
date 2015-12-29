@@ -14,6 +14,9 @@ class RentalShop extends CI_Model{
 	private $longitude;
 	private $subscriberId;
 
+	private $limit = 2;
+	private $offset = 0;
+
 	public function __construct() {
 		$this->table = "rental_shops";
 		$this->id = "shop_id";
@@ -26,6 +29,7 @@ class RentalShop extends CI_Model{
 
 	public function create($data) {
 		$this->db->insert($this->table, $data);
+		$this->db->cache_delete('lessor','shops');
 		return $this->db->insert_id();
 	}
 
@@ -34,12 +38,14 @@ class RentalShop extends CI_Model{
 				$this->id => $data[$this->id]
 			)
 		);
+		$this->db->cache_delete('lessor','shops');
     return $this->db->affected_rows();
 	}
 
 
 	public function delete($id) {
 		$this->db->delete($this->table, array($this->id => $id));
+		$this->db->cache_delete('lessor','shops');
 		return $this->db->affected_rows();
 	}
 
@@ -49,8 +55,19 @@ class RentalShop extends CI_Model{
 		return $query->result();
 	}
 
-	public function findId($id) {
-		$query = $this->db->get_where($this->table, array($this->id => $id));
+	public function findBySubscriberId($lessorId) {
+		$where = array($this->subscriberId => $lessorId); 
+		$data['count'] = $this->db->from($this->table)->where($where)->count_all_results();
+		$data['data'] = $this->db->from($this->table)->where($where)->limit($this->limit, $this->offset)->get()->result();
+		return $data;
+	}
+
+	public function findById($id, $subscriberId = "") {
+		$whereArray = array($this->id => $id);
+		if ($subscriberId) {
+			$whereArray[$this->subscriberId] = $subscriberId;
+		}
+		$query = $this->db->get_where($this->table, $whereArray);
 		return $query->row_array();
 	}
 
@@ -60,4 +77,12 @@ class RentalShop extends CI_Model{
 	public function getLatitude() { return $this->latitude; }
 	public function getLongitude() { return $this->longitude; }
 	public function getSubscriberId() { return $this->subscriberId; }
+
+
+	public function getLimit() { return $this->limit; }
+	public function getOffset() { return $this->offset; }
+
+	public function setOffset($offset) { 
+		$this->offset = $offset;
+	}
 }
