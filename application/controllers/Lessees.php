@@ -42,7 +42,7 @@ class Lessees extends CI_Controller {
                           'logged_in' => TRUE);
 
         $this->session->set_userdata($userdata);
-        redirect('lessees');
+        redirect('lessee/dashboard');
 
       else:
 
@@ -109,7 +109,7 @@ class Lessees extends CI_Controller {
 
       endif;
       $this->session->set_userdata($userdata);
-      redirect('lessees');
+      redirect('lessee/dashboard');
     endif;
 
     /* Set Access Token to make Request */
@@ -119,7 +119,7 @@ class Lessees extends CI_Controller {
 
     if ($client->getAccessToken()):
       $this->session->set_userdata('access_token', $client->getAccessToken());
-      redirect('lessees');
+      redirect('lessee/dashboard');
     endif;
 
     $authUrl = $client->createAuthUrl();
