@@ -109,7 +109,7 @@ class CI_Controller {
    * @param  String $method Name of the method
    * @return method or redirect
    */
-  public function _remap($method) {
+  public function _remap($method, $params = array()) {
 
   	if (!empty($this->auth)) { // If empty no need to check authority
   		$isLogin = false;
@@ -149,7 +149,7 @@ class CI_Controller {
 	  		}
 	  	}
 	  }
-  	$this->$method();
+  	$this->$method($params);
   }
 
   public function isAjax() {
