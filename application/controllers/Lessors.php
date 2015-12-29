@@ -65,7 +65,7 @@ class Lessors extends CI_Controller {
 
   public function shopCreate() {
     $data['title'] = "Creating New Shop";
-    $content['action'] = "/rentalshops/create";
+    $content['action'] = "create";
     $data['content'] = $this->load->view('pages/shops/form', $content, true);
     $data['script'] = array(
       'pnotify.core',
@@ -76,9 +76,54 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
-  public function shopList() {
+  public function shopEdit($id) {
+    $this->load->model('RentalShop');
+    $data['title'] = "Edit Shop";
+    $content['action'] = "update";
+    $lessorId = $this->session->userdata('lessor_id');
+    $rentalShop = $this->RentalShop->findById($id, $lessorId);
+    if ($rentalShop) {
+      $content['shop'] = $rentalShop;
+      $data['content'] = $this->load->view('pages/shops/form', $content, true);
+      $data['script'] = array(
+        'pnotify.core',
+        'pnotify.buttons',
+        'pages/shops/form'
+      );
+      $data['style'] = array('pnotify');
+      $this->load->view('common/lessor', $data); 
+    } else {
+      redirect('lessor/shops/list');
+    }
+  }
+
+  public function shopList($page = 1) {
+    $this->load->model('RentalShop');
+    $this->load->library('pagination');
+
     $data['title'] = "My Shops";
-    $data['content'] = $this->load->view('pages/shops/list', '', true);
+    $lessorId = $this->session->userdata('lessor_id');
+    $offset = ($page - 1) * $this->RentalShop->getLimit();
+    $this->RentalShop->setOffset($offset);
+    $shops = $this->RentalShop->findBySubscriberId($lessorId);
+    
+    // Configuring Pagination
+    $config['base_url'] = site_url('lessor/shops/list/');
+    $config['total_rows'] = $shops['count'];
+    $config['per_page'] = 2;
+    $this->pagination->initialize($config);
+    
+    $content['pagination'] = $this->pagination->create_links();
+    $content['shops'] = $shops['data'];
+
+    $data['content'] = $this->load->view('pages/shops/list', $content, true);
+    $data['style'] = array('pnotify');
+    $data['script'] = array(
+      'pnotify.core',
+      'pnotify.buttons',
+      'pages/shops/list'
+    );
+
     $this->load->view('common/lessor', $data);
   }
 
