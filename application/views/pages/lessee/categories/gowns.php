@@ -1,8 +1,12 @@
 <div class="container-fluid">
   <div class="row no-gutter">
-    <a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a>
+    <div class="col-md-12">
+      <a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a>
+    </div>
     <?php if(empty($items)): ?>
-      <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no items added yet. </div>
+      <div class="col-md-12">
+        <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no items added yet. </div>
+      </div>
     <?php else: ?>
       <hr>
       <?php foreach($items as $item):?>

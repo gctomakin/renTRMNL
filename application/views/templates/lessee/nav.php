@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?php echo site_url('lessees');?>">renTRMNL</a>
+        <a class="navbar-brand" href="<?php echo site_url('lessees');?>">renTRMNL - Page rendered in <strong>{elapsed_time}</strong> seconds.</a>
     </div>
     <!-- /.navbar-header -->
 

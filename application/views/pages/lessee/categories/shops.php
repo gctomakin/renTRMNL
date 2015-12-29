@@ -5,7 +5,9 @@
     </div>
   </div>
   <?php if(empty($shops)): ?>
-    <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no shops added yet. </div>
+    <div class="col-md-12">
+        <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no shops added yet. </div>
+    </div>
   <?php else: ?>
     <hr>
     <?php foreach($shops as $shop):?>

@@ -1,55 +1,19 @@
 <div class="container-fluid">
         <div class="row no-gutter">
             <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
+                <a href="<?php echo site_url('lessee/shops'); ?>" class="portfolio-box">
                   <img src="http://localhost/rentrmnl/assets/img/portfolio/1.jpg" class="img-responsive" alt="">
                   <h3>
-                    <a href="#">Category Name</a>
+                    <a href="<?php echo site_url('lessee/shops'); ?>">Shops</a>
                   </h3>
                 </a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
             </div>
             <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
+                <a href="<?php echo site_url('lessee/gowns'); ?>" class="portfolio-box">
                   <img src="http://localhost/rentrmnl/assets/img/portfolio/2.jpg" class="img-responsive" alt="">
                   <h3>
-                    <a href="#">Category Name</a>
-                  </h3>
-                </a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
-                  <img src="http://localhost/rentrmnl/assets/img/portfolio/3.jpg" class="img-responsive" alt="">
-                  <h3>
-                    <a href="#">Category Name</a>
-                  </h3>
-                </a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
-                  <img src="http://localhost/rentrmnl/assets/img/portfolio/4.jpg" class="img-responsive" alt="">
-                  <h3>
-                    <a href="#">Category Name</a>
-                  </h3>
-                </a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
-                  <img src="http://localhost/rentrmnl/assets/img/portfolio/5.jpg" class="img-responsive" alt="">
-                  <h3>
-                    <a href="#">Category Name</a>
-                  </h3>
-                </a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="#" class="portfolio-box">
-                  <img src="http://localhost/rentrmnl/assets/img/portfolio/6.jpg" class="img-responsive" alt="">
-                  <h3>
-                    <a href="#">Category Name</a>
+                    <a href="<?php echo site_url('lessee/gowns'); ?>">Gowns</a>
                   </h3>
                 </a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
