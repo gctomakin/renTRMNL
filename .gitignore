@@ -2,9 +2,11 @@
 
 application/cache/*
 application/cache/db/*
+application/cache/webpage/*
 !application/cache/index.html
 !application/cache/.htaccess
 !application/cache/db
+!application/cache/webpage
 uploads/*
 application/logs/*
 !application/logs/index.html
