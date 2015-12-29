@@ -7,6 +7,8 @@ class Lessees extends CI_Controller {
   {
       parent::__construct(1);
       $this->load->model('Lessee');
+      $this->load->model('RentalShop');
+      $this->load->model('Item');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       LibsLoader();
   }
@@ -15,7 +17,7 @@ class Lessees extends CI_Controller {
   {
     $data['title'] = 'DASHBOARD';
     $data['content'] = $this->load->view('pages/lessee/dashboard', '', TRUE);
-    $this->output->cache(2);
+    //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
 
@@ -126,7 +128,7 @@ class Lessees extends CI_Controller {
     $content['action'] = site_url('lessees/signin');
     $data['content'] = $this->load->view('pages/signin', $content, TRUE);
     $data['title'] = 'SIGN IN';
-    $this->output->cache(2);
+    //$this->output->cache(1);
     $this->load->view('common/plain', $data);
   }
 
@@ -136,7 +138,7 @@ class Lessees extends CI_Controller {
     $content['lessee'] = $this->Lessee->findById();
     $data['content'] = $this->load->view('pages/lessee/profile', $content, TRUE);
     $data['title'] = 'MY PROFILE';
-    $this->output->cache(2);
+    //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
 
@@ -237,7 +239,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'MY SHOPS';
     $content['myshops'] = $this->Lessee->myShops();
     $data['content'] = $this->load->view('pages/lessee/myshops', $content, TRUE);
-    $this->output->cache(2);
+    //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
 
@@ -246,7 +248,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'MY INTERESTS';
     $content['myshops'] = $this->Lessee->myInterests();
     $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
-    $this->output->cache(2);
+    //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
 
@@ -255,7 +257,25 @@ class Lessees extends CI_Controller {
     $data['title'] = 'INBOX';
     $content['myshops'] = $this->Lessee->myInterests();
     $data['content'] = $this->load->view('pages/lessee/inbox', $content, TRUE);
-    $this->output->cache(2);
+    //$this->output->cache(1);
+    $this->load->view('common/lessee', $data);
+  }
+
+  public function shopsPage()
+  {
+    $data['title'] = 'SHOPS';
+    $content['shops'] = $this->RentalShop->all($select = "*", $status = "");
+    $data['content'] = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
+    //$this->output->cache(1);
+    $this->load->view('common/lessee', $data);
+  }
+
+  public function gownsPage()
+  {
+    $data['title'] = 'GOWNS';
+    $content['items'] = $this->Item->all($select = "*", $status = "");
+    $data['content'] = $this->load->view('pages/lessee/categories/gowns', $content, TRUE);
+    //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
 
