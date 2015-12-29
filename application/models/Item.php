@@ -59,10 +59,10 @@ class Item extends CI_Model{
 	}
 
 	public function all($select = "*", $status = "") {
-		$this->db->select($select);
-		if (empty($status)) {
-			$this->db->where("{$this->status} = $status");
-		}
+		// $this->db->select($select);
+		// if (empty($status)) {
+		// 	$this->db->where("{$this->status} = $status");
+		// }
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
