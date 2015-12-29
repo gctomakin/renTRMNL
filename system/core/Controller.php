@@ -151,7 +151,8 @@ class CI_Controller {
 	  		}
 	  	}
 	  }
-  	$this->$method($params);
+  	// $this->$method($params);
+	  call_user_func_array(array($this,$method), $params);
   }
 
   public function isAjax() {
