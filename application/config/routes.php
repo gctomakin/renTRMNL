@@ -54,9 +54,13 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /* Main Routes */
-$route['admin'] = 'main/admin';
 $route['signup'] = 'main/signUp';
 $route['logout'] = 'main/logout';
+
+/* Admin Routes */
+$route['admin/dashboard'] = 'admins';
+$route['admin/signin-page'] = 'admins/signinPage';
+$route['admin/signin'] = 'admins/signin';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';
