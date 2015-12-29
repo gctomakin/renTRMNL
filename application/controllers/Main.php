@@ -151,7 +151,7 @@ class Main extends CI_Controller {
   public function admin()
   {
     $data['content'] = $this->load->view('pages/admin', '', TRUE);
-    $this->output->cache(2);
+    $this->output->cache(1);
     $this->load->view('common/main', $data);
   }
 
