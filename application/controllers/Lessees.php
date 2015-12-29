@@ -264,7 +264,7 @@ class Lessees extends CI_Controller {
   public function shopsPage()
   {
     $data['title'] = 'SHOPS';
-    $content['shops'] = $this->RentalShop->all($select = "*", $status = "");
+    $content['shops'] = $this->RentalShop->all($select = "*");
     $data['content'] = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
     //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
@@ -273,7 +273,7 @@ class Lessees extends CI_Controller {
   public function gownsPage()
   {
     $data['title'] = 'GOWNS';
-    $content['items'] = $this->Item->all($select = "*", $status = "");
+    $content['items'] = $this->Item->all($select = "*");
     $data['content'] = $this->load->view('pages/lessee/categories/gowns', $content, TRUE);
     //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
