@@ -43,11 +43,8 @@ class RentalShop extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	public function all($select = "*", $status = "") {
-		//$this->db->select($select);
-		// if (empty($status)) {
-		// 	$this->db->where("{$this->status} = $status");
-		// }
+	public function all($select = "*") {
+		$this->db->select($select);
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
