@@ -30,6 +30,7 @@ class RentalShop extends CI_Model{
 	public function create($data) {
 		$this->db->insert($this->table, $data);
 		$this->db->cache_delete('lessor','shops');
+		$this->db->cache_delete('lessee','shops');
 		return $this->db->insert_id();
 	}
 
@@ -56,7 +57,7 @@ class RentalShop extends CI_Model{
 	}
 
 	public function findBySubscriberId($lessorId) {
-		$where = array($this->subscriberId => $lessorId); 
+		$where = array($this->subscriberId => $lessorId);
 		$data['count'] = $this->db->from($this->table)->where($where)->count_all_results();
 		$data['data'] = $this->db->from($this->table)->where($where)->limit($this->limit, $this->offset)->get()->result();
 		return $data;
@@ -82,7 +83,7 @@ class RentalShop extends CI_Model{
 	public function getLimit() { return $this->limit; }
 	public function getOffset() { return $this->offset; }
 
-	public function setOffset($offset) { 
+	public function setOffset($offset) {
 		$this->offset = $offset;
 	}
 }
