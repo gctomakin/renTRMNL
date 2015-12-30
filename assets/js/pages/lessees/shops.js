@@ -1,10 +1,7 @@
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -34.397, lng: 150.644},
-        zoom: 18,
-        mapTypeId: google.maps.MapTypeId.SATELLITE,
-        heading: 90,
-        tilt: 45
+        zoom: 15
       });
       var geocoder = new google.maps.Geocoder();
       $('.map-modal-trigger').click(function(e){
