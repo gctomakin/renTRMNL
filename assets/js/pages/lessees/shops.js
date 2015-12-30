@@ -11,7 +11,7 @@
         e.preventDefault();
         var address = $(this).data('address');
         geocodeAddress(geocoder, map, address);
-        $('.modal-title').html('').text(address);
+        $('.fa-map-marker').html('').text(address);
         $('#map-modal').modal('show');
 
       });

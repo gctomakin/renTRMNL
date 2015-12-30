@@ -21,9 +21,8 @@
               <h3><?php echo $shop->shop_name; ?></h3>
               <h4><?php echo $shop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
-              <a class="btn btn-info" href="#">More Info <span class="glyphicon glyphicon-chevron-right"></span></a>
-              <a class="btn btn-primary" href="#">My Shop <span class="glyphicon glyphicon-chevron-right"></span></a>
-              <a class="btn btn-success map-modal-trigger" href="#" data-address="<?php echo $shop->shop_branch; ?>">View Location <span class="glyphicon glyphicon-chevron-right"></span></a>
+              <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $shop->shop_branch; ?>">More Info <span class="fa fa-info"></span></a>
+              <a class="btn btn-primary" href="#">My Shop <span class="fa fa-plus-circle"></span></a>
           </div>
       </div>
       <hr>
@@ -65,7 +64,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title">Modal title</h4>
+                 <h4 class="modal-title"><i class="fa fa-map-marker">Modal title</i></h4>
 
             </div>
             <div class="modal-body">
