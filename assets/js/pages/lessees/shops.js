@@ -3,6 +3,17 @@
         center: {lat: -34.397, lng: 150.644},
         zoom: 15
       });
+      var imageBounds = {
+          north: 40.773941,
+          south: 40.712216,
+          east: -74.12544,
+          west: -74.22655
+        };
+
+      historicalOverlay = new google.maps.GroundOverlay(
+          'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+          imageBounds);
+      historicalOverlay.setMap(map);
       var geocoder = new google.maps.Geocoder();
       $('.map-modal-trigger').click(function(e){
         e.preventDefault();
@@ -37,13 +48,12 @@
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         var pos = new google.maps.LatLng(lat,lng);
-        resultsMap.setCenter(pos);
-
         var marker = new google.maps.Marker({
           map: resultsMap,
           position: pos,
           title: address
         });
+        resultsMap.setCenter(pos);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
