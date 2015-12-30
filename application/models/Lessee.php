@@ -12,7 +12,6 @@ class Lessee extends CI_Model{
   private $image;
   private $lessees_table = 'lessees';
   private $myinterests_table = 'my_interests';
-  private $myshops_table = 'my_shops';
   private $limit = 20;
   private $offset = 0;
 
@@ -193,34 +192,5 @@ class Lessee extends CI_Model{
 
      return $result;
   }
-
-  public function myShops()
-  {
-     $query = $this->db->get_where($this->myshops_table, array('lessee_id' => $this->getId()), $this->limit, $this->offset);
-     $result = $query->result();
-
-     return $result;
-  }
-
-  public function getAllRents()
-  {
-     echo 'TODO';
-  }
-
-  public function getAllReserves()
-  {
-     echo 'TODO';
-  }
-
-  public function getAllReturns()
-  {
-     echo 'TODO';
-  }
-
-  public function getAllNotifications()
-  {
-     echo 'TODO';
-  }
-
 
 }
