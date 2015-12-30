@@ -23,6 +23,7 @@
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <a class="btn btn-info" href="#">More Info <span class="glyphicon glyphicon-chevron-right"></span></a>
               <a class="btn btn-primary" href="#">My Shop <span class="glyphicon glyphicon-chevron-right"></span></a>
+              <a class="btn btn-success map-modal-trigger" href="#" data-address="<?php echo $shop->shop_branch; ?>">View Location <span class="glyphicon glyphicon-chevron-right"></span></a>
           </div>
       </div>
       <hr>
@@ -58,3 +59,31 @@
   <?php endif; ?>
   </div>
 </div>
+
+<div class="modal fade" id="map-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                 <h4 class="modal-title">Modal title</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div id="map" class="text-center" style="width:550px; height:480px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q&signed_in=true&callback=initMap"
+           async defer></script>
