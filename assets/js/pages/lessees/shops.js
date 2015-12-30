@@ -79,14 +79,16 @@
     e.preventDefault();
     var shop_id = $(this).data('shop-id');
     var shop_name = $(this).data('shop-name');
-    var lessee_id = $('#sessionId').val();
     var action = $(this).data('action');
     var message = $('#message');
+    var el = $(this);
 
-    $.post(action,{shop_id:shop_id, shop_name:shop_name, lessee_id:lessee_id})
+    $.post(action,{shop_id:shop_id, shop_name:shop_name})
      .done(function(data){
 
       if(data){
+        el.attr("disabled", true);
+        $(".fa-plus-circle").text(" Added");
         message.fadeIn(2000,function(){
           $("html, body").animate({ scrollTop: $('body').offset().top }, 100);
           message.delay(2000).fadeOut();
