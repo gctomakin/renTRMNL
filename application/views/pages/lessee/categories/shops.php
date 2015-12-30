@@ -10,6 +10,7 @@
     </div>
   <?php else: ?>
     <hr>
+    <div id="message" class="alert alert-success text-center" hidden><strong>Successfully</strong> Added to your My Shop list.</div>
     <?php foreach($shops as $shop):?>
     <div class="row no-gutter">
           <div class="col-md-7">
@@ -22,7 +23,7 @@
               <h4><?php echo $shop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $shop->shop_branch; ?>">More Info <span class="fa fa-info"></span></a>
-              <a class="btn btn-primary" href="#">My Shop <span class="fa fa-plus-circle"></span></a>
+              <a class="btn btn-primary my-shop-trigger" data-action="<?php echo $action; ?>" data-shop-id="<?php echo $shop->shop_id; ?>" data-shop-name="<?php echo $shop->shop_name; ?>" href="#">My Shop <span class="fa fa-plus-circle"></span></a>
           </div>
       </div>
       <hr>
