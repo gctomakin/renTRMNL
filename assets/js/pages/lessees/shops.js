@@ -48,12 +48,17 @@
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         var pos = new google.maps.LatLng(lat,lng);
+        var infowindow = new google.maps.InfoWindow();
         var marker = new google.maps.Marker({
           map: resultsMap,
           position: pos,
           title: address
         });
         resultsMap.setCenter(pos);
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(address);
+            infowindow.open(resultsMap, this);
+        });
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
