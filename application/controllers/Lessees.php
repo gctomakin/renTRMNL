@@ -9,6 +9,7 @@ class Lessees extends CI_Controller {
       $this->load->model('Lessee');
       $this->load->model('RentalShop');
       $this->load->model('Item');
+      $this->load->model('MyShops');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       LibsLoader();
   }
@@ -265,6 +266,7 @@ class Lessees extends CI_Controller {
   {
     $data['title'] = 'SHOPS';
     $content['shops'] = $this->RentalShop->all($select = "*");
+    $content['action'] = site_url('lessee/add-myshop');
     $data['content'] = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
     $data['script'] = array('pages/lessees/shops');
     //$this->output->cache(1);
@@ -302,6 +304,15 @@ class Lessees extends CI_Controller {
     }
 
     redirect('lessee/inbox','refresh');
+  }
+
+  public function addMyShop()
+  {
+    $post = $this->input->post(NULL, TRUE);
+    $this->MyShops->setMyShopName($post['shop_name']);
+    $this->MyShops->setLesseeId($post['lessee_id']);
+    $this->MyShops->setShopId($post['shop_id']);
+    echo $this->MyShops->insert();
   }
 
 }
