@@ -68,11 +68,11 @@ class Lessors extends CI_Controller {
     $content['action'] = "create";
     $data['content'] = $this->load->view('pages/shops/form', $content, true);
     $data['script'] = array(
-      'pnotify.core',
-      'pnotify.buttons',
-      'pages/shops/form'
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'pages/create-form'
     );
-    $data['style'] = array('pnotify');
+    $data['style'] = array('libs/pnotify');
     $this->load->view('common/lessor', $data);
   }
 
@@ -86,11 +86,11 @@ class Lessors extends CI_Controller {
       $content['shop'] = $rentalShop;
       $data['content'] = $this->load->view('pages/shops/form', $content, true);
       $data['script'] = array(
-        'pnotify.core',
-        'pnotify.buttons',
-        'pages/shops/form'
+        'libs/pnotify.core',
+        'libs/pnotify.buttons',
+        'pages/create-form'
       );
-      $data['style'] = array('pnotify');
+      $data['style'] = array('libs/pnotify');
       $this->load->view('common/lessor', $data); 
     } else {
       redirect('lessor/shops/list');
@@ -104,23 +104,24 @@ class Lessors extends CI_Controller {
     $data['title'] = "My Shops";
     $lessorId = $this->session->userdata('lessor_id');
     $offset = ($page - 1) * $this->RentalShop->getLimit();
-    $this->RentalShop->setOffset($offset);
+    $this->RentalShop->setOffset($offset); // Setting Rentalshop offset rows
+
     $shops = $this->RentalShop->findBySubscriberId($lessorId);
     
     // Configuring Pagination
     $config['base_url'] = site_url('lessor/shops/list/');
     $config['total_rows'] = $shops['count'];
-    $config['per_page'] = 2;
+    $config['per_page'] = $this->RentalShop->getLimit();
     $this->pagination->initialize($config);
     
     $content['pagination'] = $this->pagination->create_links();
     $content['shops'] = $shops['data'];
 
     $data['content'] = $this->load->view('pages/shops/list', $content, true);
-    $data['style'] = array('pnotify');
+    $data['style'] = array('libs/pnotify');
     $data['script'] = array(
-      'pnotify.core',
-      'pnotify.buttons',
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
       'pages/shops/list'
     );
 
@@ -128,8 +129,21 @@ class Lessors extends CI_Controller {
   }
 
   public function itemCreate() {
-  	echo "testing";
-  	exit();
+  	$data['title'] = "Creating New Item";
+    $content['action'] = "create";
+    $data['content'] = $this->load->view('pages/items/form', $content, true);
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/select2.min',
+      'pages/create-form',
+      'pages/items/form'
+    );
+    $data['style'] = array(
+      'libs/pnotify',
+      'libs/select2.min'
+    );
+    $this->load->view('common/lessor', $data);
   }
 
   public function itemList() {
