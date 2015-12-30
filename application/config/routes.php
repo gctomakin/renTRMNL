@@ -85,3 +85,4 @@ $route['lessee/gowns'] = 'lessees/gownsPage';
 $route['lessee/send'] = 'lessees/sendMessage';
 $route['lessee/update-info'] = 'lessees/updateInfo';
 $route['lessee/update-account'] = 'lessees/updateAccount';
+$route['lessee/add-myshop'] = 'lessees/addMyShop';
