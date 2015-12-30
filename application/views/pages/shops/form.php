@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row no-gutter">
-  	<form id="shop-form" action="<?php echo site_url('/rentalshops/' . $action); ?>" method="POST" class="form-horizontal">
+  	<form id="create-form" action="<?php echo site_url('/rentalshops/' . $action); ?>" method="POST" class="form-horizontal">
 			<?php if (!empty($shop)) { ?>
   		<input type="hidden" name="id" value="<?php echo $shop['shop_id']; ?>">
   		<?php } ?>
