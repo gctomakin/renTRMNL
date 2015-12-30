@@ -239,7 +239,7 @@ class Lessees extends CI_Controller {
   public function myShopsPage()
   {
     $data['title'] = 'MY SHOPS';
-    $content['myshops'] = $this->Lessee->myShops();
+    $content['myshops'] = $this->MyShops->all();
     $data['content'] = $this->load->view('pages/lessee/myshops', $content, TRUE);
     //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
