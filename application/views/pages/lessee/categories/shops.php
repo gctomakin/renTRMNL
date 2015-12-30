@@ -77,7 +77,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -85,5 +84,3 @@
     <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q&signed_in=true&callback=initMap"
-           async defer></script>
