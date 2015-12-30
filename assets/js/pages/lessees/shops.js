@@ -1,14 +1,17 @@
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
         center: {lat: -34.397, lng: 150.644},
-        mapTypeId:google.maps.MapTypeId.ROADMAP
+        zoom: 18,
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        heading: 90,
+        tilt: 45
       });
       var geocoder = new google.maps.Geocoder();
       $('.map-modal-trigger').click(function(e){
         e.preventDefault();
         var address = $(this).data('address');
         geocodeAddress(geocoder, map, address);
+        $('.modal-title').html('').text(address);
         $('#map-modal').modal('show');
 
       });
@@ -49,3 +52,11 @@
       }
     });
   }
+
+  function loadScript() {
+    var script = document.createElement("script");
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q&signed_in=true&callback=initMap";
+    document.body.appendChild(script);
+  }
+
+  window.onload = loadScript;
