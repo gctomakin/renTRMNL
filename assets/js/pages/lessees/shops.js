@@ -8,7 +8,7 @@
         e.preventDefault();
         var address = $(this).data('address');
         geocodeAddress(geocoder, map, address);
-        $('.fa-map-marker').html('').text(address);
+        $('.fa-map-marker').html('').text(" "+address);
         $('#map-modal').modal('show');
 
       });
@@ -56,4 +56,32 @@
     document.body.appendChild(script);
   }
 
+
+
   window.onload = loadScript;
+
+  $('.my-shop-trigger').click(function(e){
+    e.preventDefault();
+    var shop_id = $(this).data('shop-id');
+    var shop_name = $(this).data('shop-name');
+    var lessee_id = $('#sessionId').val();
+    var action = $(this).data('action');
+    var message = $('#message');
+
+    $.post(action,{shop_id:shop_id, shop_name:shop_name, lessee_id:lessee_id})
+     .done(function(data){
+
+      if(data){
+        message.fadeIn(2000,function(){
+          $("html, body").animate({ scrollTop: $('body').offset().top }, 100);
+          message.delay(2000).fadeOut();
+        });
+      }else{
+        alert('somethings wong..');
+      }
+
+     })
+     .fail(function(xhr, textStatus, errorThrown){
+        throw new Error(xhr.responseText);
+     });
+  });
