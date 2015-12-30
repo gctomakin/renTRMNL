@@ -78,4 +78,21 @@ class RentalShops extends CI_Controller {
 		return $data;
 	}
 
+	public function allByLessor() {
+		$this->isAjax();
+		$key = $this->input->get('q');
+		$lessorId = $this->session->userdata('lessor_id');
+
+		$shops = $this->RentalShop->findBySubscriberId($lessorId, $key);
+		$data = array('items' => array_map(array($this, 'mapShops'), $shops['data']));
+		echo json_encode($data);
+	}
+	
+	private function mapShops($data) {
+		return array(
+			'id' => $data->shop_id,
+			'text' => $data->shop_name
+		);
+	}
+
 }
