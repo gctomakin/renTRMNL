@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#shop-form').submit(function(e) {
+	$('#create-form').submit(function(e) {
 		e.preventDefault();
 		var form = $(this);
 		
@@ -14,7 +14,7 @@ $(document).ready(function() {
 		$.post(action, form.serialize(), function(data) {
 			if (data['result']) {
 				successMessage(data['message']);
-				form.find('#name').focus();
+				form.find('input:first').focus();
 				if (typeof data['reset'] != 'undefined') { $('#form-reset-btn').click(); }
 			} else {
 				errorMessage(data['message']);
@@ -23,5 +23,5 @@ $(document).ready(function() {
     	form.data('requestRunning', false);
     });
 	});
-	$('#shop-form #name').focus();
+	$('#create-form #name').focus();
 }); 

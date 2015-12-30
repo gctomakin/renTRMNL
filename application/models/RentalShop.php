@@ -14,7 +14,7 @@ class RentalShop extends CI_Model{
 	private $longitude;
 	private $subscriberId;
 
-	private $limit = 2;
+	private $limit = 10;
 	private $offset = 0;
 
 	public function __construct() {
