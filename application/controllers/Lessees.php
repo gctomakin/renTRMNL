@@ -266,6 +266,7 @@ class Lessees extends CI_Controller {
     $data['title'] = 'SHOPS';
     $content['shops'] = $this->RentalShop->all($select = "*");
     $data['content'] = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
+    $data['script'] = array('pages/lessees/shops');
     //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
   }
