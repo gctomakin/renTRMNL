@@ -29,8 +29,7 @@ class RentalShop extends CI_Model{
 
 	public function create($data) {
 		$this->db->insert($this->table, $data);
-		$this->db->cache_delete('lessor','shops');
-		$this->db->cache_delete('lessee','shops');
+		$this->deleteCache();
 		return $this->db->insert_id();
 	}
 
@@ -39,14 +38,14 @@ class RentalShop extends CI_Model{
 				$this->id => $data[$this->id]
 			)
 		);
-		$this->db->cache_delete('lessor','shops');
-    return $this->db->affected_rows();
+		$this->deleteCache();
+		return $this->db->affected_rows();
 	}
 
 
 	public function delete($id) {
 		$this->db->delete($this->table, array($this->id => $id));
-		$this->db->cache_delete('lessor','shops');
+		$this->deleteCache();
 		return $this->db->affected_rows();
 	}
 
@@ -56,10 +55,10 @@ class RentalShop extends CI_Model{
 		return $query->result();
 	}
 
-	public function findBySubscriberId($lessorId) {
+	public function findBySubscriberId($lessorId, $key = "") {
 		$where = array($this->subscriberId => $lessorId);
-		$data['count'] = $this->db->from($this->table)->where($where)->count_all_results();
-		$data['data'] = $this->db->from($this->table)->where($where)->limit($this->limit, $this->offset)->get()->result();
+		$data['count'] = $this->db->from($this->table)->where($where)->like($this->name, $key)->count_all_results();
+		$data['data'] = $this->db->from($this->table)->where($where)->like($this->name, $key)->limit($this->limit, $this->offset)->get()->result();
 		return $data;
 	}
 
@@ -85,5 +84,10 @@ class RentalShop extends CI_Model{
 
 	public function setOffset($offset) {
 		$this->offset = $offset;
+	}
+
+	private function deleteCache() {
+		$this->db->cache_delete('lessor','shops');
+		$this->db->cache_delete('lessee','shops');	
 	}
 }
