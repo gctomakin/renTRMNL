@@ -82,7 +82,7 @@
     var action = $(this).data('action');
     var message = $('#message');
     var el = $(this);
-
+    if(el.is('[disabled=disabled]')){return false;}
     $.post(action,{shop_id:shop_id, shop_name:shop_name})
      .done(function(data){
 
