@@ -40,4 +40,23 @@ class MyShops extends CI_Model{
     return true;
   }
 
+  public function all()
+  {
+    $query = $this->db->get_where($this->my_shops_table, array('lessee_id' => $this->getLesseeId()), $this->limit, $this->offset);
+    $result = $query->result();
+
+    return $result;
+  }
+
+  public function getMyShopsId()
+  {
+    $query = $this->db->get_where($this->my_shops_table, array('lessee_id' => $this->getLesseeId()), $this->limit, $this->offset);
+    $result = array();
+    foreach($query->result_array() as $row):
+        $result[] = $row['shop_id'];
+    endforeach;
+    $this->db->cache_delete('lessee','shops');
+    return array_values($result);
+  }
+
 }

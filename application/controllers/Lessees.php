@@ -11,6 +11,7 @@ class Lessees extends CI_Controller {
       $this->load->model('Item');
       $this->load->model('MyShops');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
+      $this->MyShops->setLesseeId($this->session->userdata('lessee_id'));
       LibsLoader();
   }
 
@@ -238,7 +239,7 @@ class Lessees extends CI_Controller {
   public function myShopsPage()
   {
     $data['title'] = 'MY SHOPS';
-    $content['myshops'] = $this->Lessee->myShops();
+    $content['myshops'] = $this->MyShops->all();
     $data['content'] = $this->load->view('pages/lessee/myshops', $content, TRUE);
     //$this->output->cache(1);
     $this->load->view('common/lessee', $data);
@@ -266,6 +267,7 @@ class Lessees extends CI_Controller {
   {
     $data['title'] = 'SHOPS';
     $content['shops'] = $this->RentalShop->all($select = "*");
+    $content['myshops'] = $this->MyShops->getMyShopsId();
     $content['action'] = site_url('lessee/add-myshop');
     $data['content'] = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
     $data['script'] = array('pages/lessees/shops');
@@ -310,7 +312,6 @@ class Lessees extends CI_Controller {
   {
     $post = $this->input->post(NULL, TRUE);
     $this->MyShops->setMyShopName($post['shop_name']);
-    $this->MyShops->setLesseeId($post['lessee_id']);
     $this->MyShops->setShopId($post['shop_id']);
     echo $this->MyShops->insert();
   }
