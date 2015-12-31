@@ -168,7 +168,7 @@ class Lessee extends CI_Model{
   {
     $user = $this->findById();
     $query = $this->db->get_where($this->lessees_table, array('password' => $user['password']));
-    if($this->getPassword() == $this->encrypt->decode($query->row_array()['password'])):
+    if($this->getPassword() == $this->encrypt->decode($query->row()->password)):
       return true;
     else:
       return false;
