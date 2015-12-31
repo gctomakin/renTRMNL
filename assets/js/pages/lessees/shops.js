@@ -63,9 +63,12 @@
                   title: address
               });
               resultsMap.setCenter(pos);
-              google.maps.event.addListener(marker, 'click', function() {
+              google.maps.event.addListener(marker, 'mouseover', function() {
                   infowindow.setContent(address);
                   infowindow.open(resultsMap, this);
+              });
+              google.maps.event.addListener(marker, 'mouseout', function() {
+                  infowindow.close();
               });
           } else {
               alert('Geocode was not successful for the following reason: ' + status);
