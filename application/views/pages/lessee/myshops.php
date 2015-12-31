@@ -22,7 +22,7 @@
               <h4><?php echo $myshop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $myshop->shop_branch; ?>">More Info <span class="fa fa-info"></span></a>
-              <!-- <a class="btn btn-primary my-shop-trigger" data-action="<?php echo $action; ?>" data-shop-id="<?php echo $myshop->shop_id; ?>" data-shop-name="<?php echo $myshop->shop_name; ?>" href="#" <?php echo (in_array($myshop->shop_id,$myshops)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($myshop->shop_id,$myshops)) ? 'Added ' : 'My Shop '; ?></span></a> -->
+              <a class="btn btn-danger delete-trigger" href="#" role="button"><span class="fa fa-trash"> Delete</span></a>
           </div>
       </div>
       <hr>
@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="map-modal">
+<div class="modal modal-fullscreen fade" id="map-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -70,7 +70,7 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div id="map" class="text-center" style="width:550px; height:480px;"></div>
+                        <div id="map" class="text-center" style="width:100%; height:480px;"></div>
                     </div>
                 </div>
             </div>

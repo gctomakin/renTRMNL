@@ -60,7 +60,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="map-modal">
+<div class="modal modal-fullscreen fade" id="map-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -71,7 +71,7 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div id="map" class="text-center" style="width:550px; height:480px;"></div>
+                        <div id="map" class="text-center" style="width:100%; height:480px;"></div>
                     </div>
                 </div>
             </div>
@@ -84,3 +84,4 @@
     <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
