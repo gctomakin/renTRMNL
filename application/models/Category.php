@@ -51,6 +51,7 @@ class Category extends CI_Model {
 
 	public function getId() { return $this->id; }
 	public function getType() { return $this->type; }
+	public function getTable() { return $this->table; }
 
 	private function deleteCache() {
 		$this->db->cache_delete('categories','all');
