@@ -83,6 +83,7 @@ $route['lessee/myshops'] = 'lessees/myShopsPage';
 $route['lessee/myinterests'] = 'lessees/myInterestsPage';
 $route['lessee/inbox'] = 'lessees/inboxPage';
 $route['lessee/shops'] = 'lessees/shopsPage';
+$route['lessee/getshops'] = 'lessees/shopsJson';
 $route['lessee/gowns'] = 'lessees/gownsPage';
 $route['lessee/send'] = 'lessees/sendMessage';
 $route['lessee/update-info'] = 'lessees/updateInfo';
