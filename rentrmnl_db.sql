@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2015 at 03:20 PM
+-- Generation Time: Jan 01, 2016 at 07:01 AM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.27
 
@@ -30,7 +30,20 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `category_type`) VALUES
+(5, 'Category 1'),
+(6, 'Category 2'),
+(8, 'Mobile'),
+(9, 'Gadget'),
+(10, 'Appliances'),
+(11, 'Others'),
+(12, 'Computer Device');
 
 -- --------------------------------------------------------
 
@@ -41,19 +54,28 @@ CREATE TABLE IF NOT EXISTS `categories` (
 CREATE TABLE IF NOT EXISTS `items` (
   `item_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `item_rate` decimal(10,2) NOT NULL,
-  `item_pic` blob NOT NULL,
+  `item_pic` blob,
   `item_stats` char(10) COLLATE utf8_unicode_ci NOT NULL,
-  `item_qty` int(11) NOT NULL,
+  `item_qty` decimal(10,2) NOT NULL,
   `item_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `item_cash_bond` int(11) NOT NULL,
-  `item_rental_mode` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `item_penalty` int(11) NOT NULL,
+  `item_cash_bond` decimal(10,2) NOT NULL,
+  `item_rental_mode` int(5) NOT NULL,
+  `item_penalty` decimal(10,2) NOT NULL,
   `shop_id` int(10) unsigned NOT NULL,
   `subscriber_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`item_id`),
   KEY `items_shop_id_foreign` (`shop_id`),
   KEY `items_subscriber_id_foreign` (`subscriber_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`item_id`, `item_rate`, `item_pic`, `item_stats`, `item_qty`, `item_desc`, `item_cash_bond`, `item_rental_mode`, `item_penalty`, `shop_id`, `subscriber_id`) VALUES
+(4, '100.00', NULL, 'active', '5.00', 'Cilpon S23', '500.00', 1, '0.00', 1, 1),
+(11, '200.00', NULL, 'active', '100.00', 'Mouse', '50.00', 2, '500.00', 1, 1),
+(12, '50.00', NULL, 'active', '100.00', 'Casing', '30.00', 3, '250.00', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -68,7 +90,17 @@ CREATE TABLE IF NOT EXISTS `items_categories` (
   PRIMARY KEY (`id`),
   KEY `items_categories_item_id_foreign` (`item_id`),
   KEY `items_categories_category_id_foreign` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `items_categories`
+--
+
+INSERT INTO `items_categories` (`id`, `item_id`, `category_id`) VALUES
+(2, 4, 8),
+(13, 11, 12),
+(16, 12, 8),
+(17, 12, 5);
 
 -- --------------------------------------------------------
 
@@ -85,7 +117,16 @@ CREATE TABLE IF NOT EXISTS `item_details` (
   `item_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_details_item_id_foreign` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `item_details`
+--
+
+INSERT INTO `item_details` (`id`, `type`, `size`, `brand`, `color`, `item_id`) VALUES
+(2, 'Testing', 'Lol', 'adhj', 'Black', 4),
+(3, 'Type kita', 'Large', 'Acer', 'Black', 4),
+(4, 'None', 'Small', 'Acer', 'Green', 4);
 
 -- --------------------------------------------------------
 
@@ -114,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `lessees` (
   `lessee_phoneno` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` text COLLATE utf8_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8_unicode_ci NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`lessee_id`),
   UNIQUE KEY `lessees_lessee_email_unique` (`lessee_email`),
   UNIQUE KEY `lessees_username_unique` (`username`)
@@ -215,10 +256,19 @@ CREATE TABLE IF NOT EXISTS `rental_shops` (
   `shop_branch` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,2) NOT NULL,
   `longitude` decimal(10,2) NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `subscriber_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`shop_id`),
   KEY `rental_shops_subscriber_id_foreign` (`subscriber_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `rental_shops`
+--
+
+INSERT INTO `rental_shops` (`shop_id`, `shop_name`, `shop_branch`, `latitude`, `longitude`, `address`, `subscriber_id`) VALUES
+(1, 'The New Shop', 'Tisa branch', '15.50', '32.00', '', 1),
+(2, 'The New Shop', 'Punta branch', '100.00', '50.00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -258,7 +308,14 @@ CREATE TABLE IF NOT EXISTS `subscribers` (
   PRIMARY KEY (`subscriber_id`),
   UNIQUE KEY `subscribers_subscriber_email_unique` (`subscriber_email`),
   UNIQUE KEY `subscribers_username_unique` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `subscribers`
+--
+
+INSERT INTO `subscribers` (`subscriber_id`, `subscriber_fname`, `subscriber_midint`, `subscriber_lname`, `subscriber_telno`, `subscriber_email`, `subscriber_paypal_account`, `subscriber_status`, `subscriber_type`, `username`, `password`) VALUES
+(1, 'The lessor', NULL, 'Lessors', '132132138756213', 'lessor@lessor.com', NULL, 'pending', '', 'lessor', '92Y75rQnlMR96t7M+9cgnsJEDXFNWlYw1UR+kyvHGuZlBZHa4rGSV3TeWRlScKyajyN/CHL48OOfFnLnozcBIw==');
 
 -- --------------------------------------------------------
 
@@ -292,6 +349,7 @@ CREATE TABLE IF NOT EXISTS `subscription_plans` (
   `plan_desc` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `plan_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `plan_rate` double(12,2) NOT NULL,
+  `plan_status` char(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`plan_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -320,8 +378,8 @@ CREATE TABLE IF NOT EXISTS `super_admins` (
 -- Constraints for table `items`
 --
 ALTER TABLE `items`
-  ADD CONSTRAINT `items_subscriber_id_foreign` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`subscriber_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `items_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `rental_shops` (`shop_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `items_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `rental_shops` (`shop_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `items_subscriber_id_foreign` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`subscriber_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `items_categories`
@@ -353,8 +411,8 @@ ALTER TABLE `my_interests`
 -- Constraints for table `my_shops`
 --
 ALTER TABLE `my_shops`
-  ADD CONSTRAINT `my_shops_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `rental_shops` (`shop_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `my_shops_lessee_id_foreign` FOREIGN KEY (`lessee_id`) REFERENCES `lessees` (`lessee_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `my_shops_lessee_id_foreign` FOREIGN KEY (`lessee_id`) REFERENCES `lessees` (`lessee_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `my_shops_shop_id_foreign` FOREIGN KEY (`shop_id`) REFERENCES `rental_shops` (`shop_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `rental_payments`
@@ -384,8 +442,8 @@ ALTER TABLE `rental_shops`
 -- Constraints for table `reservation_details`
 --
 ALTER TABLE `reservation_details`
-  ADD CONSTRAINT `reservation_details_reserve_id_foreign` FOREIGN KEY (`reserve_id`) REFERENCES `rental_reservations` (`reserve_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `reservation_details_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `reservation_details_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservation_details_reserve_id_foreign` FOREIGN KEY (`reserve_id`) REFERENCES `rental_reservations` (`reserve_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `subscriptions`
