@@ -44,10 +44,26 @@ class ItemCategory extends CI_Model {
 		$this->deleteCache();
 		return $this->db->affected_rows();
 	}
+	
 	public function all($select = "*") {
 		$this->db->select($select);
 		$query = $this->db->from($this->table)->get();
 		return $query->result();
+	}
+
+	public function findCategoryByItem($id) {
+		$this->load->model('Category');
+		$iCategoryAlias = 'ic';
+		$categoryAlias = 'c';
+		$joinCondition = "$iCategoryAlias." . $this->categoryId .
+										 "= $categoryAlias. " . $this->Category->getId();
+		$data = $this->db
+			->select("$categoryAlias.*")
+			->from($this->table . " as $iCategoryAlias")
+			->join($this->Category->getTable() . " as $categoryAlias", $joinCondition, 'left')
+			->where(array("$iCategoryAlias." . $this->itemId => $id))
+			->get()->result();
+		return $data;
 	}
 
 	public function getId() { return $this->id; }
