@@ -257,16 +257,23 @@ class Lessees extends CI_Controller
 
   public function shopsPage()
   {
-      $data['title']      = 'SHOPS';
-      $content['shops']   = $this->RentalShop->all($select = "*");
-      $content['myshops'] = $this->MyShops->getMyShopsId();
-      $content['action']  = site_url('lessee/add-myshop');
-      $data['content']    = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
-      $data['script']     = array(
+      $data['title']            = 'SHOPS';
+      $content['shops']         = $this->RentalShop->all($select = "*");
+      $content['myshops']       = $this->MyShops->getMyShopsId();
+      $content['action']        = site_url('lessee/add-myshop');
+      $content['getShopsJson']  = site_url('lessee/getshops');
+      $data['content']          = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
+      $data['script']           = array(
           'pages/lessees/shops'
       );
       //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
+  }
+
+  public function shopsJson()
+  {
+    $result = $this->RentalShop->all($select = "*");
+    echo json_encode($result);
   }
 
   public function gownsPage()
