@@ -32,7 +32,7 @@
         console.log('success');
         var addresses = [];
         $.each(data, function(i, obj){
-          addresses.push(obj.shop_branch);
+          addresses.push(obj.address);
         });
         geocodeAddress(geocoder, map, addresses);
 
