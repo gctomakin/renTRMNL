@@ -1,35 +1,68 @@
 
   function initMap() {
-      var map = new google.maps.Map(document.getElementById('map'), {
-          center: {
-              lat: -34.397,
-              lng: 150.644
-          },
-          zoom: 15
-      });
-      var imageBounds = {
-          north: 40.773941,
-          south: 40.712216,
-          east: -74.12544,
-          west: -74.22655
-      };
 
-      historicalOverlay = new google.maps.GroundOverlay(
-          'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
-          imageBounds);
-      historicalOverlay.setMap(map);
-      var geocoder = new google.maps.Geocoder();
-      $('.map-modal-trigger').click(function(e) {
-          e.preventDefault();
-          var address = $(this).data('address');
-          geocodeAddress(geocoder, map, address);
-          $('.fa-map-marker').html('').text(" " + address);
-          $('#map-modal').modal('show');
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+            lat: 0,
+            lng: 0
+        },
+        zoom: 2,
+        scrollwheel: false,
+        navigationControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        draggable: false,
+    });
 
-      });
+    var imageBounds = {
+        north: 40.773941,
+        south: 40.712216,
+        east: -74.12544,
+        west: -74.22655
+    };
+
+    historicalOverlay = new google.maps.GroundOverlay(
+        'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+        imageBounds);
+    historicalOverlay.setMap(map);
+    var geocoder = new google.maps.Geocoder();
+
+    $.getJSON(getShopsJson)
+     .done(function(data){
+        console.log('success');
+        var addresses = [];
+        $.each(data, function(i, obj){
+          addresses.push(obj.shop_branch);
+        });
+        geocodeAddress(geocoder, map, addresses);
+
+     })
+     .fail(function(xhr, textStatus, errorThrown) {
+         throw new Error(xhr.responseText);
+     })
+     .always(function() {
+        console.log( "complete" );
+     });
+
+
+    $('.map-modal-trigger').click(function(e) {
+        e.preventDefault();
+        var address = $(this).data('address');
+        goToAddress(geocoder, map, address);
+        $("html, body").animate({
+            scrollTop: $('body').offset().top
+        }, 100);
+        $('#map-modal').modal('show');
+
+    });
 
       $('#map-modal').on('show.bs.modal', function() {
           resizeMap();
+      });
+
+      $('#map-modal').on('hide.bs.modal', function() {
+         map.panTo({lat: 0, lng: 0});
+         map.setZoom(2);
       });
 
       function resizeMap() {
@@ -49,31 +82,63 @@
   }
 
   function geocodeAddress(geocoder, resultsMap, address) {
-      geocoder.geocode({
-          'address': address
-      }, function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-              var lat = results[0].geometry.location.lat();
-              var lng = results[0].geometry.location.lng();
-              var pos = new google.maps.LatLng(lat, lng);
-              var infowindow = new google.maps.InfoWindow();
+    for (i = 0; i < address.length; i++) {
+      var addr = address[i];
+      geocoder.geocode({'address': address[i]},addMarkers(addr));
+    }
+
+  function addMarkers(myTitle) {
+      return function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
               var marker = new google.maps.Marker({
                   map: resultsMap,
-                  position: pos,
-                  title: address
+                  position: results[0].geometry.location,
+                  title: myTitle
               });
-              resultsMap.setCenter(pos);
-              google.maps.event.addListener(marker, 'mouseover', function() {
-                  infowindow.setContent(address);
-                  infowindow.open(resultsMap, this);
+              var infoWindow = new google.maps.InfoWindow();
+              google.maps.event.addListener(marker, "mouseover", function (e) {
+                  this.map.panTo(this.position);
+                  infoWindow.setContent(this.title);
+                  infoWindow.open(this.map, this);
               });
-              google.maps.event.addListener(marker, 'mouseout', function() {
-                  infowindow.close();
+              google.maps.event.addListener(marker, "mouseout", function (e) {
+                  infoWindow.close();
               });
           } else {
               alert('Geocode was not successful for the following reason: ' + status);
           }
-      });
+      };
+  }
+  }
+
+  function goToAddress(geocoder, resultsMap, address)
+  {
+    geocoder.geocode({
+        'address': address
+    }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            var lat = results[0].geometry.location.lat();
+            var lng = results[0].geometry.location.lng();
+            var pos = new google.maps.LatLng(lat, lng);
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: resultsMap,
+                position: pos,
+                title: address
+            });
+            resultsMap.panTo(pos);
+            resultsMap.setZoom(20);
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                infowindow.setContent(this.title);
+                infowindow.open(this.map, this);
+            });
+            google.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
   }
 
   function loadScript() {
