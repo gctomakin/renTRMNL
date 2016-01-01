@@ -1,13 +1,17 @@
 <div class="container-fluid">
   <div class="row no-gutter">
   	<form id="create-form" action="<?php echo site_url('/items/' . $action); ?>" method="POST" class="form-horizontal">
-			<?php if (!empty($item)) { ?>
+  		<?php if (!empty($item)) { ?>
   		<input type="hidden" name="id" value="<?php echo $item['item_id']; ?>">
   		<?php } ?>
   		<div class="form-group">
 		  	<label for="shop" class="control-label col-lg-3">Shop</label>
 		  	<div class="col-lg-5">
-		  		<select id="shop" required class="form-control" name="shop"></select>
+		  		<select id="shop" required class="form-control" name="shop">
+		  			<?php if (!empty($item['shop_id'])) { ?>
+		  			<option value="<?php echo $item['shop_id']; ?>"><?php echo $item['shop_name'] . ' - ' . $item['shop_branch']; ?></option>
+		  			<?php }?>
+		  		</select>
 		  	</div>
 			</div>
 			<div class="form-group">
@@ -25,43 +29,54 @@
 			<div class="form-group">
 				<label for="rate" class="control-label col-lg-3">Rate</label>
 				<div class="col-lg-5">
-					<input type="number" step="any" min="0" required name="rate" id="rate" value="<?php echo set_value('rate', empty($item['rate']) ? '' : $item['rate']); ?>" placeholder="Rate of the Item" class="form-control">
+					<input type="number" step="any" min="0" required name="rate" id="rate" value="<?php echo set_value('rate', empty($item['item_rate']) ? '' : $item['item_rate']); ?>" placeholder="Rate of the Item" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="qty" class="control-label col-lg-3">Quantity</label>
 				<div class="col-lg-5">
-					<input type="number" step="any" min="0" required name="qty" id="qty" value="<?php echo set_value('qty', empty($item['qty']) ? '' : $item['qty']); ?>" placeholder="Current Quantity of the Item" class="form-control">
+					<input type="number" step="any" min="0" required name="qty" id="qty" value="<?php echo set_value('qty', empty($item['item_qty']) ? '' : $item['item_qty']); ?>" placeholder="Current Quantity of the Item" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="cashbond" class="control-label col-lg-3">Cash Bond</label>
 				<div class="col-lg-5">
-					<input type="number" step="any" min="0" required name="cashbond" id="cashbond" value="<?php echo set_value('cashbond', empty($item['cashbond']) ? '' : $item['cashbond']); ?>" placeholder="Amount to bond on renting" class="form-control">
+					<input type="number" step="any" min="0" required name="cashbond" id="cashbond" value="<?php echo set_value('cashbond', empty($item['item_cash_bond']) ? '' : $item['item_cash_bond']); ?>" placeholder="Amount to bond on renting" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="penalty" class="control-label col-lg-3">Penalty</label>
 				<div class="col-lg-5">
-					<input type="text" name="penalty" id="penalty" value="<?php echo set_value('penalty', empty($item['penalty']) ? '' : $item['penalty']); ?>" placeholder="Impose a penalty" class="form-control">
+					<input type="number" step="any" name="penalty" id="penalty" value="<?php echo set_value('penalty', empty($item['item_penalty']) ? '' : $item['item_penalty']); ?>" placeholder="Impose a penalty amount" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="rentalmode" class="control-label col-lg-3">Rental Mode</label>
 				<div class="col-lg-5">
-					<select required name="rentalmode" id="rentalmode" placeholder="aaaa" class="form-control">
-						<option value="1">Hourly</option>
-						<option value="2">Daily</option>
-						<option value="3">Weekly</option>
-						<option value="4">Monthly</option>
-						<option value="5">Yearly</option>
+					<select required name="rentalmode" id="rentalmode" class="form-control">
+						<?php
+							for ($i = 1; $i <= count($rental_modes); $i++) {
+								$isSelected = isset($item['item_rental_mode']) && $item['item_rental_mode'] == $i ? 'selected' : ''; 
+						 		echo "<option value='$i' $isSelected>" . $rental_modes[($i)] . "</option>";
+						 	} 
+						?>
 					<select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="category" class="control-label col-lg-3">Category</label>
 				<div class="col-lg-5">
-					<select name="category[]" id="category" class="form-control" multiple></select>
+					<select name="category[]" id="category" class="form-control" multiple>
+						<?php
+							if (isset($categories)) { 
+								foreach($categories as $category) {
+						?>
+						<option value="<?php echo $category->category_id ?>" selected><?php echo $category->category_type; ?></option>
+						<?php 
+								}
+							} 
+						?>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">

@@ -65,7 +65,9 @@ $route['admin/signin'] = 'admins/signin';
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';
 $route['lessor/items/create'] = 'lessors/itemCreate';
-$route['lessor/items'] = 'lessors/itemList';
+$route['lessor/items/edit/(:num)'] = 'lessors/itemEdit/$1';
+$route['lessor/items/list'] = 'lessors/itemList';
+$route['lessor/items/list/(:num)'] = 'lessors/itemList/$1';
 $route['lessor/shops/create'] = 'lessors/shopCreate';
 $route['lessor/shops/edit/(:num)'] = "lessors/shopEdit/$1";
 $route['lessor/shops/list'] = 'lessors/shopList';

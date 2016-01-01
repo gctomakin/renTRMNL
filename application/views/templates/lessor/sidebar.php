@@ -16,7 +16,7 @@
                     <a href="<?php echo site_url('lessor/dashboard'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="#shops"><i class="fa fa-table fa-fw"></i> Shops<span class="fa arrow"></span></a>
+                    <a href="#shops"><i class="fa fa-building fa-fw"></i> Shops<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('lessor/shops/create'); ?>">Create</a></li>
                         <li><a href="<?php echo site_url('lessor/shops/list'); ?>">List</a></li>
@@ -26,7 +26,7 @@
                     <a href="#item-nav"><i class="fa fa-cubes fa-fw"></i> Items<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('lessor/items/create'); ?>">Create</a></li>
-                        <li><a href="<?php echo site_url('lessor/items'); ?>">List</a></li>
+                        <li><a href="<?php echo site_url('lessor/items/list'); ?>">List</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>

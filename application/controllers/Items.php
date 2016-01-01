@@ -14,24 +14,7 @@ class Items extends CI_Controller {
 			$data = $res['post'];
 			$itemId = $this->Item->create($data);
 			if ($itemId > 0) {
-				$categories = $this->input->post('category');
-				if (count($categories) > 0) { // Check if there are any categories
-					$this->load->model('ItemCategory');
-					$this->load->model('Category');
-					$this->ItemCategory->deleteAllItem($itemId); // For binding ItemCategories
-					foreach ($categories as $category) {
-						if (!$this->Category->isExist($category)) { // Check if category exists
-							$category = $this->Category->create( // Otherwise Create
-								array($this->Category->getType => $category)
-							);
-						}
-						$this->ItemCategory->create(array(
-								$this->ItemCategory->getItemId() => $itemId,
-								$this->ItemCategory->getCategoryId() => $category,
-							)
-						);
-					}	
-				}
+				$this->_categoryProcess($itemId);
 				$res['message'] = "New Item Created";
 				$res['reset'] = TRUE;
 			} else {
@@ -43,11 +26,115 @@ class Items extends CI_Controller {
 	}
 
 	public function update() {
-
+		$res = $this->_validate();
+		if ($res['result']) {
+			$data = $res['post'];
+			$itemId = $this->input->post('id');
+			if (!$this->Item->isExist($itemId, $this->session->userdata('lessor_id'))) {
+				$res['result'] = FALSE;
+				$res['message'] = "Item doesn't exist or lessor doesn't have privilege.";
+			} else {
+				$data[$this->Item->getId()] = $itemId;
+				$this->Item->update($data);
+				$this->_categoryProcess($itemId);
+				$res['message'] = "Item Updated";
+			}
+		}
+		echo json_encode($res);
 	}
 
 	public function delete() {
+		$this->isAJax();
+		$post = $this->input->post();
+		$res['result'] = false;
+		if (isset($post['id']) && is_numeric($post['id'])) {
+			if ($this->Item->delete($post['id'])) {
+				$res['result'] = true;
+				$res['message'] = 'Delete Item # ' . $post['id'];
+			} else {
+				$res['message'] = 'Internal Server Error';
+			}
+		} else {
+			$res['message'] = 'Invalid parameter';
+		}
+		echo json_encode($res);
+	}
 
+	public function detail() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = false;
+		if (isset($post['id']) && is_numeric($post['id'])) {
+			$this->load->model('ItemDetail');
+			$content['detail'] = $this->ItemDetail->findByItem($post['id']);
+			$content['itemId'] = $post['id'];
+			$res['view'] = $this->load->view('pages/items/detail', $content, true);
+			$res['result'] = true;
+		} else {
+			$res['message'] = "Invalid parameter";
+		}
+		echo json_encode($res);
+	}
+
+	public function detailSave() {
+		$this->isAjax();
+		$res['result'] = false;
+		$this->form_validation->set_rules('type', 'Type', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('size', 'Size', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('brand', 'Brand', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('color', 'Color', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('itemId', 'Item ID', 'trim|required|numeric|xss_clean');
+		if ($this->form_validation->run() == FALSE) {
+			$data['message'] = validation_erros();
+		} else {
+			$this->load->model('ItemDetail');
+			$post = $this->input->post();
+			$data = array(
+				$this->ItemDetail->getType() => $post['type'],
+				$this->ItemDetail->getSize() => $post['size'],
+				$this->ItemDetail->getBrand() => $post['brand'],
+				$this->ItemDetail->getColor() => $post['color'],
+				$this->ItemDetail->getItemId() => $post['itemId']
+			);
+			if (empty($post['id'])) {
+				if ($this->ItemDetail->create($data)) {
+					$res['message'] = 'Added New Item Detail';
+					$res['result'] = true;
+				}
+			} else {
+				$data[$this->ItemDetail->getId()] = $post['id'];
+				if ($this->ItemDetail->update($data)) {
+					$res['message'] = 'Updated Item Detail';
+					$res['result'] = true;
+				}
+			}
+			if (!$res['result']) {
+				$res['message'] = 'Internal Server Error';
+			} else {
+				$content['detail'] = $this->ItemDetail->findByItem($post['itemId']);
+				$content['itemId'] = $post['itemId'];
+				$res['view'] = $this->load->view('pages/items/detail', $content, true);	
+			}
+		}
+		echo json_encode($res);
+	}
+
+	public function detailRemove() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = false;
+		if (isset($post['id']) && is_numeric($post['id'])) {
+			$this->load->model('ItemDetail');
+			if ($this->ItemDetail->delete($post['id'])) {
+				$res['result'] = true;
+				$res['message'] = "Deleted Item Detail # {$post['id']}";
+			} else {
+				$res['message'] = "Internal Server Error";
+			}
+		} else {
+			$res['message'] = "Invalid parameters";
+		}
+		echo json_encode($res);
 	}
 
 	private function _validate() {
@@ -57,7 +144,7 @@ class Items extends CI_Controller {
 		$this->form_validation->set_rules('rate', 'Rate', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('qty', 'Quantity', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('cashbond', 'Cash Bond', 'trim|required|numeric|xss_clean');
-		$this->form_validation->set_rules('penalty', 'Penalty', 'trim|xss_clean');
+		$this->form_validation->set_rules('penalty', 'Penalty', 'trim|numeric|xss_clean');
 		$this->form_validation->set_rules('rentalmode', 'Rental Mode', 'trim|required|numeric|xss_clean');
 		
 		$data['result'] = false;
@@ -82,6 +169,27 @@ class Items extends CI_Controller {
 			$data['result'] = true;
 		}
 		return $data;
+	}
+
+	private function _categoryProcess($itemId) {
+		$categories = $this->input->post('category');
+			if (count($categories) > 0) { // Check if there are any categories
+				$this->load->model('ItemCategory');
+				$this->load->model('Category');
+				$this->ItemCategory->deleteAllItem($itemId); // For binding ItemCategories
+				foreach ($categories as $category) {
+					if (!$this->Category->isExist($category)) { // Check if category exists
+						$category = $this->Category->create( // Otherwise Create
+							array($this->Category->getType() => $category)
+						);
+					}
+					$this->ItemCategory->create(array(
+							$this->ItemCategory->getItemId() => $itemId,
+							$this->ItemCategory->getCategoryId() => $category,
+						)
+					);
+				}	
+			}
 	}
 
 }

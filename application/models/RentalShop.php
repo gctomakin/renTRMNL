@@ -71,6 +71,8 @@ class RentalShop extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function getTable() { return $this->table; }
+
 	public function getId() { return $this->id; }
 	public function getName() { return $this->name; }
 	public function getBranch() { return $this->branch; }
@@ -87,6 +89,7 @@ class RentalShop extends CI_Model{
 	}
 
 	private function deleteCache() {
+		$this->db->cache_delete('rentalshops','allByLessor');
 		$this->db->cache_delete('lessor','shops');
 		$this->db->cache_delete('lessee','shops');	
 	}

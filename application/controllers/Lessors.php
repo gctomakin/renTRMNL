@@ -103,14 +103,13 @@ class Lessors extends CI_Controller {
 
     $data['title'] = "My Shops";
     $lessorId = $this->session->userdata('lessor_id');
-    $offset = ($page - 1) * $this->RentalShop->getLimit();
-    $this->RentalShop->setOffset($offset); // Setting Rentalshop offset rows
+    $this->RentalShop->setOffset($page); // Setting Rentalshop offset rows
 
     $shops = $this->RentalShop->findBySubscriberId($lessorId);
     
     // Configuring Pagination
     $config['base_url'] = site_url('lessor/shops/list/');
-    $config['total_rows'] = $shops['count'];
+    $config['total_rows'] = $shops['count'] - 1;
     $config['per_page'] = $this->RentalShop->getLimit();
     $this->pagination->initialize($config);
     
@@ -129,8 +128,10 @@ class Lessors extends CI_Controller {
   }
 
   public function itemCreate() {
+    $this->load->library('rentalmodes');
   	$data['title'] = "Creating New Item";
     $content['action'] = "create";
+    $content['rental_modes'] = $this->rentalmodes->getModes();
     $data['content'] = $this->load->view('pages/items/form', $content, true);
     $data['script'] = array(
       'libs/pnotify.core',
@@ -146,9 +147,70 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
-  public function itemList() {
-  	echo "testing";
-  	exit();
+  public function itemEdit($id) {
+    if (empty($id) || !is_numeric($id)) {
+      redirect('lessor/items/list');
+      exit();
+    }
+    $this->load->model('Item');
+    $this->load->model('ItemCategory');
+    $this->load->library('rentalmodes');
+    $data['title'] = "Edit Item";
+    $content['action'] = "update";
+    $content['item'] = $this->Item->findByIdComplete($id);
+    $content['categories'] = $this->ItemCategory->findCategoryByItem($id);
+    $content['rental_modes'] = $this->rentalmodes->getModes();
+    $data['content'] = $this->load->view('pages/items/form', $content, true);
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/select2.min',
+      'pages/create-form',
+      'pages/items/form'
+    );
+    $data['style'] = array(
+      'libs/pnotify',
+      'libs/select2.min'
+    );
+    $this->load->view('common/lessor', $data);
+  }
+
+  public function itemList($page = 1) {
+    $this->load->model('Item');
+    $this->load->library('pagination');
+  	$this->load->library('rentalmodes');
+
+    $data['title'] = "List All Items";
+    $lessorId = $this->session->userdata('lessor_id');
+    
+    $this->Item->setOffset($page); // Setting Rentalshop offset rows
+    $items = $this->Item->findBySubscriberId($lessorId);
+    $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
+    // Configuring Pagination
+    $config['base_url'] = site_url('lessor/items/list/');
+    $config['total_rows'] = $items['count']-1;
+    $config['per_page'] = $this->Item->getLimit();
+    $this->pagination->initialize($config);
+    
+    $content['pagination'] = $this->pagination->create_links();
+    $content['rental_modes'] = $this->rentalmodes->getModes();
+    
+    $data['content'] = $this->load->view('pages/items/list', $content, true);
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'pages/items/list'
+    );
+    $data['style'] = array('libs/pnotify');
+    $this->load->view('common/lessor', $data);
+  }
+
+  private function _mapItems($data) {
+    $this->load->model('ItemCategory');
+    return array(
+      'info' => $data,
+      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
+    );
   }
 
 }

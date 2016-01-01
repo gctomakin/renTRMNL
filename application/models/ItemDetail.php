@@ -1,19 +1,26 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category extends CI_Model {
+class ItemDetail extends CI_Model {
 
 	private $table;
 
-	// Columns
 	private $id;
 	private $type;
+	private $size;
+	private $brand;
+	private $color;
+	private $itemId;
 
 	public function __construct() {
-		$this->table = "categories";
-		$this->id = "category_id";
-		$this->type = "category_type";
 		parent::__construct();
+		$this->table = "item_details";
+		$this->id = "id";
+		$this->type = "type";
+		$this->size = "size";
+		$this->brand = "brand";
+		$this->color = "color";
+		$this->itemId = "item_id";
 	}
 
 	public function create($data) {
@@ -38,23 +45,22 @@ class Category extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
-	public function all($select = "*", $like = "") {
-		$this->db->select($select);
-		$query = $this->db->from($this->table)->like($this->type, $like)->get();
+	public function findByItem($id) {
+		$query = $this->db->get_where($this->table, array($this->itemId => $id));
 		return $query->result();
 	}
 
-	public function isExist($id) {
-		$query = $this->db->get_where($this->table, array($this->id => $id));
-		return $query->num_rows() > 0;
-	}
-
+	
+	public function getTable() { return $this->table; }
 	public function getId() { return $this->id; }
 	public function getType() { return $this->type; }
-	public function getTable() { return $this->table; }
+	public function getSize() { return $this->size; }
+	public function getBrand() { return $this->brand; }
+	public function getColor() { return $this->color; }
+	public function getItemId() { return $this->itemId; }
 
 	private function deleteCache() {
-		$this->db->cache_delete('categories','all');
+		$this->db->cache_delete('items','detail');
+		$this->db->cache_delete('items','detailSave');
 	}
-
 }
