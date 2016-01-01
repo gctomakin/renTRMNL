@@ -189,8 +189,8 @@
   background: #ffffff;
 }
 .modal-backdrop.modal-backdrop-fullscreen.in {
-  opacity: .97;
-  filter: alpha(opacity=97);
+  opacity: .60;
+  filter: alpha(opacity=60);
 }
 
 /* .modal-fullscreen size: we use Bootstrap media query breakpoints */
