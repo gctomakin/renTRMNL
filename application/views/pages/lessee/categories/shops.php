@@ -4,6 +4,11 @@
       <a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a>
     </div>
   </div>
+  <div class="row no-gutter">
+      <div class="col-md-12">
+          <div id="map" class="text-center" style="width:100%; height:480px;"></div>
+      </div>
+  </div>
   <?php if(empty($shops)): ?>
     <div class="col-md-12">
         <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no shops added yet. </div>
@@ -65,13 +70,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title"><i class="fa fa-map-marker">Modal title</i></h4>
+                 <h4 class="modal-title">Modal title</i></h4>
 
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div id="map" class="text-center" style="width:100%; height:480px;"></div>
+                      Content here
                     </div>
                 </div>
             </div>
@@ -84,4 +89,7 @@
     <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    <script>
+      var getShopsJson = "<?php echo $getShopsJson; ?>";
+    </script>
 
