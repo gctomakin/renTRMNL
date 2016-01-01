@@ -42,7 +42,10 @@ class MyShops extends CI_Model{
 
   public function all()
   {
-    $query = $this->db->get_where($this->my_shops_table, array('lessee_id' => $this->getLesseeId()), $this->limit, $this->offset);
+    $this->db->select('rental_shops.shop_id, rental_shops.shop_name, rental_shops.shop_branch, rental_shops.subscriber_id');
+    $this->db->from('rental_shops');
+    $this->db->join($this->my_shops_table, 'my_shops.shop_id = rental_shops.shop_id');
+    $query = $this->db->get();
     $result = $query->result();
 
     return $result;
