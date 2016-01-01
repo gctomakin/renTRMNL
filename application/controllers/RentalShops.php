@@ -91,7 +91,7 @@ class RentalShops extends CI_Controller {
 	private function mapShops($data) {
 		return array(
 			'id' => $data->shop_id,
-			'text' => $data->shop_name
+			'text' => $data->shop_name . ' - ' . $data->shop_branch
 		);
 	}
 
