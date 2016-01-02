@@ -304,7 +304,8 @@ class Lessees extends CI_Controller
           $pusher->trigger('msg_channel', 'onMessage', $data);
       }
 
-      redirect('lessee/inbox', 'refresh');
+      echo TRUE;
+      //redirect('lessee/inbox', 'refresh');
   }
 
   public function addMyShop()

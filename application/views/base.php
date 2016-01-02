@@ -33,7 +33,11 @@
 	?>
 </head>
 <body <?php echo empty($bodyId) ? '' : "id='$bodyId'" ; ?> >
-<input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('lessee_id'); ?>"/>
+<?php if($this->session->has_userdata('lessee_id')):?>
+<input type="hidden" id="sessionId" value="<?php echo $this->session->has_userdata('lessee_id'); ?>"/>
+<?php elseif($this->session->has_userdata('lessor_id')):?>
+<input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('lessor_id'); ?>"/>
+<?php endif; ?>
 	<?php echo empty($content) ? '' : $content; ?>
 
 
