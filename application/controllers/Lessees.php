@@ -229,6 +229,7 @@ class Lessees extends CI_Controller
   {
       $data['title']      = 'MY SHOPS';
       $content['myshops'] = $this->MyShops->all();
+      $content['getShopsJson']  = site_url('lessee/getshops');
       $data['content']    = $this->load->view('pages/lessee/myshops', $content, TRUE);
       $data['script']     = array(
           'pages/lessees/shops'

@@ -186,11 +186,13 @@
           });
   });
 
-  // $('.delete-trigger').click(function(e){
-  //   e.preventDefault();
-  //   var action = this.href;
+  $('.delete-trigger').click(function(e){
+    e.preventDefault();
+    var action = this.href;
+    var shop_id = $(this).data('id');
+    var shop_name = $(this).data('shop-name');
 
-  //   alert(action);
+    $('#confirm-modal-content').empty().html('Do you want to remove'+' <strong>'+shop_name+'</strong> ?');
+    $('#confirm-modal').modal('show');
 
-
-  // });
+  });
