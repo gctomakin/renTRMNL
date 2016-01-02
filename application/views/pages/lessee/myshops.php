@@ -4,12 +4,20 @@
       <a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a>
     </div>
   </div>
-  <?php if(empty($myshops)): ?>
-    <div class="col-md-12">
-        <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no my shops added yet. </div>
-    </div>
-  <?php else: ?>
     <hr>
+    <?php if(empty($myshops)): ?>
+      <div class="col-md-12">
+          <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no my shops added yet. </div>
+      </div>
+    <?php else: ?>
+    <?php
+    if($this->session->flashdata('success')) {
+        echo '<p class="alert alert-success text-center"><strong>Success!</strong> My Shop Removed</p>';
+     }
+    if($this->session->flashdata('error')) {
+        echo '<p class="alert alert-danger text-center"><strong>Failed!</strong> Unable to removed :(</p>';
+    }
+    ?>
     <?php foreach($myshops as $myshop): ?>
     <div class="row no-gutter">
           <div class="col-md-7">
@@ -22,7 +30,7 @@
               <h4><?php echo $myshop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $myshop->shop_branch; ?>">More Info <span class="fa fa-info"></span></a>
-              <a class="btn btn-danger delete-trigger" href="#" role="button"><span class="fa fa-trash"> Delete</span></a>
+              <a class="btn btn-danger delete-trigger" href="<?php echo site_url("lessee/myshops/delete/".$myshop->myshop_id); ?>" role="button"><span class="fa fa-trash"> Delete</span></a>
           </div>
       </div>
       <hr>
@@ -83,3 +91,27 @@
     <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
+  <div class="modal modal fade" id="confirm-modal">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                   <h4 class="modal-title">Modal title</i></h4>
+
+              </div>
+              <div class="modal-body">
+                  <div class="container">
+                      <div class="row">
+                        Content here
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+      </div>
