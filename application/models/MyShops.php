@@ -42,7 +42,7 @@ class MyShops extends CI_Model{
 
   public function all()
   {
-    $this->db->select('rental_shops.shop_id, rental_shops.shop_name, rental_shops.shop_branch, rental_shops.subscriber_id, rental_shops.address');
+    $this->db->select('rental_shops.shop_id, rental_shops.shop_name, rental_shops.shop_branch, rental_shops.subscriber_id, rental_shops.address, my_shops.myshop_id');
     $this->db->from('rental_shops');
     $this->db->join($this->my_shops_table, 'my_shops.shop_id = rental_shops.shop_id');
     $query = $this->db->get();
@@ -60,6 +60,15 @@ class MyShops extends CI_Model{
     endforeach;
     $this->db->cache_delete('lessee','shops');
     return array_values($result);
+  }
+
+  public function delete()
+  {
+    $this->db->where('myshop_id', $this->getId());
+    $this->db->delete($this->my_shops_table);
+    $this->db->cache_delete('lessee','myshops');
+
+    return TRUE;
   }
 
 }
