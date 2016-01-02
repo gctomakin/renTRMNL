@@ -3,15 +3,24 @@
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: 0,
-            lng: 0
+            lat: 14.2990183,
+            lng: 120.9589699
         },
-        zoom: 2,
+        zoom: 5,
         scrollwheel: false,
         navigationControl: false,
         mapTypeControl: false,
         scaleControl: false,
-        draggable: false,
+
+    });
+
+    var map2 = new google.maps.Map(document.getElementById('map2'), {
+        center: {
+            lat: 14.2990183,
+            lng: 120.9589699
+        },
+        zoom: 5,
+        scrollwheel: false,
     });
 
     var imageBounds = {
@@ -48,11 +57,18 @@
     $('.map-modal-trigger').click(function(e) {
         e.preventDefault();
         var address = $(this).data('address');
+        goToAddress(geocoder, map2, address);
+        $('#map-modal').modal('show');
+
+    });
+
+    $('.locate-trigger').click(function(e) {
+        e.preventDefault();
+        var address = $(this).data('address');
         goToAddress(geocoder, map, address);
         $("html, body").animate({
             scrollTop: $('body').offset().top
         }, 100);
-        $('#map-modal').modal('show');
 
     });
 
@@ -61,22 +77,22 @@
       });
 
       $('#map-modal').on('hide.bs.modal', function() {
-         map.panTo({lat: 0, lng: 0});
-         map.setZoom(2);
+         map2.panTo({lat: 0, lng: 0});
+         map2.setZoom(2);
       });
 
       function resizeMap() {
-          if (typeof map == "undefined") return;
+          if (typeof map2 == "undefined") return;
           setTimeout(function() {
               resizingMap();
           }, 400);
       }
 
       function resizingMap() {
-          if (typeof map == "undefined") return;
-          var center = map.getCenter();
-          google.maps.event.trigger(map, "resize");
-          map.setCenter(center);
+          if (typeof map2 == "undefined") return;
+          var center = map2.getCenter();
+          google.maps.event.trigger(map2, "resize");
+          map2.setCenter(center);
       }
 
   }
@@ -84,6 +100,7 @@
   function geocodeAddress(geocoder, resultsMap, address) {
     for (i = 0; i < address.length; i++) {
       var addr = address[i];
+      console.log(addr);
       geocoder.geocode({'address': address[i]},addMarkers(addr));
     }
 
@@ -127,7 +144,7 @@
                 title: address
             });
             resultsMap.panTo(pos);
-            resultsMap.setZoom(20);
+            resultsMap.setZoom(16);
             google.maps.event.addListener(marker, 'mouseover', function() {
                 infowindow.setContent(this.title);
                 infowindow.open(this.map, this);

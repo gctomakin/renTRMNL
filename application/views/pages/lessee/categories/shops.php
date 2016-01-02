@@ -27,7 +27,8 @@
               <h3><?php echo $shop->shop_name; ?></h3>
               <h4><?php echo $shop->address; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
-              <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $shop->address; ?>">More Info <span class="fa fa-info"></span></a>
+              <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $shop->address; ?>"><span class="fa fa-info"> More Info</span></a>
+              <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $shop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
               <a class="btn btn-primary my-shop-trigger" data-shop-id="<?php echo $shop->shop_id; ?>" data-shop-name="<?php echo $shop->shop_name; ?>" href="<?php echo $action; ?>" <?php echo (in_array($shop->shop_id,$myshops)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($shop->shop_id,$myshops)) ? 'Added ' : 'My Shop '; ?></span></a>
           </div>
       </div>
@@ -75,6 +76,11 @@
             </div>
             <div class="modal-body">
                 <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="map2" class="text-center" style="width:100%; height:480px;"></div>
+                        </div>
+                    </div>
                     <div class="row">
                       Content here
                     </div>
