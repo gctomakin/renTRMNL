@@ -314,4 +314,18 @@ class Lessees extends CI_Controller
       echo $this->MyShops->insert();
   }
 
+  public function removeMyShop($id)
+  {
+    $this->MyShops->setId($id);
+    $result = $this->MyShops->delete();
+
+    if ($result):
+        $this->session->set_flashdata('success', TRUE);
+        redirect('lessee/myshops', 'refresh');
+    else:
+        $this->session->set_flashdata('error', TRUE);
+        redirect('lessee/myshops', 'refresh');
+    endif;
+  }
+
 }
