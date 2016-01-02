@@ -10,10 +10,10 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
             </div>
             <div class="col-lg-4 col-sm-6 portfolio-item">
-                <a href="<?php echo site_url('lessee/gowns'); ?>" class="portfolio-box">
+                <a href="<?php echo site_url('lessee/items'); ?>" class="portfolio-box">
                   <img src="http://localhost/rentrmnl/assets/img/portfolio/2.jpg" class="img-responsive" alt="">
                   <h3>
-                    <a href="<?php echo site_url('lessee/gowns'); ?>">Gowns</a>
+                    <a href="<?php echo site_url('lessee/items'); ?>">Items</a>
                   </h3>
                 </a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>

@@ -10,9 +10,9 @@ class Lessees extends CI_Controller
       $this->load->model('Lessee');
       $this->load->model('RentalShop');
       $this->load->model('Item');
-      $this->load->model('MyShops');
+      $this->load->model('MyShop');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
-      $this->MyShops->setLesseeId($this->session->userdata('lessee_id'));
+      $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
       LibsLoader();
   }
 
@@ -228,7 +228,7 @@ class Lessees extends CI_Controller
   public function myShopsPage()
   {
       $data['title']      = 'MY SHOPS';
-      $content['myshops'] = $this->MyShops->all();
+      $content['myshops'] = $this->MyShop->all();
       $content['getShopsJson']  = site_url('lessee/getshops');
       $data['content']    = $this->load->view('pages/lessee/myshops', $content, TRUE);
       $data['script']     = array(
@@ -260,7 +260,7 @@ class Lessees extends CI_Controller
   {
       $data['title']            = 'SHOPS';
       $content['shops']         = $this->RentalShop->all($select = "*");
-      $content['myshops']       = $this->MyShops->getMyShopsId();
+      $content['myshops']       = $this->MyShop->getMyShopsId();
       $content['action']        = site_url('lessee/add-myshop');
       $content['getShopsJson']  = site_url('lessee/getshops');
       $data['content']          = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
@@ -277,11 +277,11 @@ class Lessees extends CI_Controller
     echo json_encode($result);
   }
 
-  public function gownsPage()
+  public function itemsPage()
   {
-      $data['title']    = 'GOWNS';
+      $data['title']    = 'ITEMS';
       $content['items'] = $this->Item->all($select = "*");
-      $data['content']  = $this->load->view('pages/lessee/categories/gowns', $content, TRUE);
+      $data['content']  = $this->load->view('pages/lessee/categories/items', $content, TRUE);
       //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
@@ -310,15 +310,15 @@ class Lessees extends CI_Controller
   public function addMyShop()
   {
       $post = $this->input->post(NULL, TRUE);
-      $this->MyShops->setMyShopName($post['shop_name']);
-      $this->MyShops->setShopId($post['shop_id']);
-      echo $this->MyShops->insert();
+      $this->MyShop->setMyShopName($post['shop_name']);
+      $this->MyShop->setShopId($post['shop_id']);
+      echo $this->MyShop->insert();
   }
 
   public function removeMyShop($id)
   {
-    $this->MyShops->setId($id);
-    $result = $this->MyShops->delete();
+    $this->MyShop->setId($id);
+    $result = $this->MyShop->delete();
 
     if ($result):
         $this->session->set_flashdata('success', TRUE);
