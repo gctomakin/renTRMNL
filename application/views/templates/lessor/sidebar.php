@@ -98,6 +98,30 @@
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
+                    &nbsp;
+                    <!-- notification -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group" id="notify-list">
+
+                            </div>
+                            <!-- /.list-group -->
+                            <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <script type="text/template" id="notify-template">
+                     <a href="#" class="list-group-item">
+                         <i class="fa fa-comment fa-fw"></i> <%= subject %>
+                         <span class="pull-right text-muted small"><em><%= date %></em>
+                         </span>
+                     </a>
+                    </script>
+                    <!-- notification end -->
                 </li>
             </ul>
         </div>
