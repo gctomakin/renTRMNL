@@ -14,9 +14,9 @@ var session_id = $('#sessionId').val();
 
 msg_channel.bind('onMessage', function(data) {
   if(data.receiver == session_id){
-    // var template = _.template($("#msg-template").html());
-    // var tmpl = template({subject: data.subject, message: data.message, date: data.date});
-    // $("#table-message").append(tmpl);
+    var template = _.template($("#notify-template").html());
+    var tmpl = template({receiver: data.receiver, subject: data.subject, message: data.message, date: data.date});
+    $("#notify-list").append(tmpl);
     console.log(data);
   }
   return false;
