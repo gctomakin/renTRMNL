@@ -185,3 +185,12 @@
               throw new Error(xhr.responseText);
           });
   });
+
+  // $('.delete-trigger').click(function(e){
+  //   e.preventDefault();
+  //   var action = this.href;
+
+  //   alert(action);
+
+
+  // });
