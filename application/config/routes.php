@@ -80,6 +80,7 @@ $route['lessees/signin-page'] = 'lessees/signinPage';
 $route['lessee/dashboard'] = 'lessees';
 $route['lessee/profile'] = 'lessees/profilePage';
 $route['lessee/myshops'] = 'lessees/myShopsPage';
+$route['lessee/myshops/delete/(:num)'] = 'lessees/removeMyShop/$1';
 $route['lessee/myinterests'] = 'lessees/myInterestsPage';
 $route['lessee/inbox'] = 'lessees/inboxPage';
 $route['lessee/shops'] = 'lessees/shopsPage';
