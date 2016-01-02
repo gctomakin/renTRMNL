@@ -4,6 +4,7 @@
       <a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a>
     </div>
   </div>
+  <div id="message" class="alert alert-success text-center" hidden><strong>Successfully</strong> Added to your My Shop list.</div>
   <div class="row no-gutter">
       <div class="col-md-12">
           <div id="map" class="text-center" style="width:100%; height:480px;"></div>
@@ -15,7 +16,6 @@
     </div>
   <?php else: ?>
     <hr>
-    <div id="message" class="alert alert-success text-center" hidden><strong>Successfully</strong> Added to your My Shop list.</div>
     <?php foreach($shops as $shop):?>
     <div class="row no-gutter">
           <div class="col-md-7">
