@@ -80,8 +80,11 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row no-gutter">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div id="map2" class="text-center" style="width:100%; height:480px;"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="right-panel"></div>
                         </div>
                     </div>
                     <hr>

@@ -151,7 +151,7 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
         position: pos,
         title: address
       });
-      resultsMap.panTo(pos);
+      //resultsMap.panTo(pos);
       resultsMap.setZoom(16);
       google.maps.event.addListener(marker, 'mouseover', function() {
         infowindow.setContent(this.title);
@@ -176,6 +176,7 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
         });
 
         directionsDisplay.setMap(resultsMap);
+        directionsDisplay.setPanel(document.getElementById('right-panel'));
 
         directionsService.route({
           origin: geolocate,
