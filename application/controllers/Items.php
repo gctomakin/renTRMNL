@@ -154,19 +154,26 @@ class Items extends CI_Controller {
 		} else if (!$this->session->has_userdata('lessor_id')) {
 			$data['message'] = "Only lessor have the authority to process this.";
 		} else {
-			$post = $this->input->post();
-			$data['post'] = array(
-				$this->Item->getShopId() => $post['shop'],
-				$this->Item->getDesc() => $post['description'],
-				$this->Item->getRate() => $post['rate'],
-				$this->Item->getQty() => $post['qty'],
-				$this->Item->getCashbond() => $post['cashbond'],
-				$this->Item->getPenalty() => $post['penalty'],
-				$this->Item->getRentalmode() => $post['rentalmode'],
-				$this->Item->getSubscriberId() => $this->session->userdata('lessor_id'),
-				$this->Item->getStatus() => 'active'
-			);
-			$data['result'] = true;
+			$data['message'] = $this->_validateImage();
+			if (empty($data['message'])) {
+				$post = $this->input->post();
+				$data['post'] = array(
+					$this->Item->getShopId() => $post['shop'],
+					$this->Item->getDesc() => $post['description'],
+					$this->Item->getRate() => $post['rate'],
+					$this->Item->getQty() => $post['qty'],
+					$this->Item->getCashbond() => $post['cashbond'],
+					$this->Item->getPenalty() => $post['penalty'],
+					$this->Item->getRentalmode() => $post['rentalmode'],
+					$this->Item->getSubscriberId() => $this->session->userdata('lessor_id'),
+					$this->Item->getStatus() => 'active'
+				);
+				if (isset($_FILES['picture'])) {
+					$picture = file_get_contents($_FILES['picture']['tmp_name']);
+					$data['post'][$this->Item->getPic()] = $picture;
+				}
+				$data['result'] = true;
+			}
 		}
 		return $data;
 	}
@@ -190,6 +197,18 @@ class Items extends CI_Controller {
 					);
 				}	
 			}
+	}
+
+	private function _validateImage() {
+		$message = '';
+		if (!empty($_FILES['picture']) && $_FILES['picture']['size'] != 0) { // check if image has been upload
+			$this->load->library('MyFile', $_FILES['picture']); // Load My File Library
+			$validate = $this->myfile->validateImage(); // Validate Image
+			if (!$validate['result']) {
+				$message = implode(', ', $validate['message']); // Specify Image validate errors
+			}
+		}
+		return $message;
 	}
 
 }
