@@ -58,7 +58,10 @@ function initMap() {
   $('.map-modal-trigger').click(function(e) {
     e.preventDefault();
     var address = $(this).data('address');
+    var shop_name = $(this).data('shop-name');
+    $('#map-modal-title').empty().text(shop_name);
     goToAddress(geocoder, map2, address);
+
     $('#map-modal').modal('show');
 
   });

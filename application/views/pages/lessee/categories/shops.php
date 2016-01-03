@@ -28,7 +28,7 @@
               <h4><?php echo $shop->address; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <div class="btn-group" role="group" aria-label="Shop Actions">
-              <a class="btn btn-info map-modal-trigger" href="#" data-address="<?php echo $shop->address; ?>"><span class="fa fa-info"> More Info</span></a>
+              <a class="btn btn-info map-modal-trigger" href="#" data-shop-name="<?php echo $shop->shop_name; ?>" data-address="<?php echo $shop->address; ?>"><span class="fa fa-info"> More Info</span></a>
               <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $shop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
               <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $shop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
               <a class="btn btn-primary my-shop-trigger" data-shop-id="<?php echo $shop->shop_id; ?>" data-shop-name="<?php echo $shop->shop_name; ?>" href="<?php echo $action; ?>" <?php echo (in_array($shop->shop_id,$myshops)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($shop->shop_id,$myshops)) ? 'Added ' : 'My Shop '; ?></span></a>
@@ -74,18 +74,35 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title">Modal title</i></h4>
+                 <h4 class="modal-title" id="map-modal-title" >Modal title</i></h4>
 
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="row">
+                    <div class="row no-gutter">
                         <div class="col-md-12">
                             <div id="map2" class="text-center" style="width:100%; height:480px;"></div>
                         </div>
                     </div>
-                    <div class="row">
-                      Content here
+                    <hr>
+                    <div class="row no-gutter">
+                      <?php for ($i=0; $i < 12; $i++):?>
+                        <div class="col-sm-3 col-lg-3 col-md-3">
+                            <div class="thumbnail">
+                                <img src="http://placehold.it/320x150" alt="">
+                                <div class="caption">
+                                    <div class="btn-group inline pull-right" data-toggle="buttons-checkbox">
+                                      <a href="#" class="btn btn-info btn-xs">Reserve</a>
+                                      <a href="#" class="btn btn-success btn-xs">Rent</a>
+                                      <a href="#" class="btn btn-primary btn-xs">My Interest</a>
+                                    </div>
+                                    <h4><a href="#">First Interest</a>
+                                    </h4>
+                                    <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                      <?php endfor; ?>
                     </div>
                 </div>
             </div>
