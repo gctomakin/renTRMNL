@@ -16,13 +16,13 @@
                     <a href="<?php echo site_url("lessees");?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="<?php echo site_url("lessee/myinterests");?>"><i class="fa fa-table fa-fw"></i> My Interests</a>
+                    <a href="<?php echo site_url("lessee/myinterests");?>"><i class="fa fa-archive fa-fw"></i> My Interests</a>
                 </li>
                 <li>
-                    <a href="<?php echo site_url("lessee/myshops");?>"><i class="fa fa-edit fa-fw"></i> My Shops</a>
+                    <a href="<?php echo site_url("lessee/myshops");?>"><i class="fa fa-building-o fa-fw"></i> My Shops</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Items<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-cart-plus fa-fw"></i> Items<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="panels-wells.html">Rent</a>
@@ -34,7 +34,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="<?php echo site_url("lessee/inbox");?>"><i class="fa fa-dashboard fa-fw"></i> Inbox</a>
+                    <a href="<?php echo site_url("lessee/inbox");?>"><i class="fa fa-inbox fa-fw"></i> Inbox</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample<span class="fa arrow"></span></a>
