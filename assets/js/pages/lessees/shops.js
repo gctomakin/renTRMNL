@@ -3,6 +3,13 @@ function initMap() {
 
   var directionsDisplay = new google.maps.DirectionsRenderer();
   var directionsService = new google.maps.DirectionsService();
+  var geocoder = new google.maps.Geocoder();
+  var imageBounds = {
+    north: 40.773941,
+    south: 40.712216,
+    east: -74.12544,
+    west: -74.22655
+  };
   var historicalOverlay = new google.maps.GroundOverlay(
     'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
     imageBounds);
@@ -28,16 +35,8 @@ function initMap() {
     scrollwheel: false,
   });
 
-  var imageBounds = {
-    north: 40.773941,
-    south: 40.712216,
-    east: -74.12544,
-    west: -74.22655
-  };
-
   historicalOverlay.setMap(map);
   historicalOverlay.setMap(map2);
-  var geocoder = new google.maps.Geocoder();
 
   $.getJSON(getShopsJson)
     .done(function(data) {
