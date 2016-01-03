@@ -5,7 +5,8 @@
     <div class="row no-gutter">
   		<div class="col-md-7 col-sm-7">
         <a href="#">
-          <img class="thumbnail img-responsive" src="http://placehold.it/700x300" alt="">
+          <?php $itemPic = $item['info']->item_pic == NULL ? 'http://placehold.it/700x300' : 'data:image/jpeg;base64,'.base64_encode($item['info']->item_pic); ?>
+          <img class="thumbnail img-responsive" src="<?php echo $itemPic; ?>" alt="">
         </a>
       </div>
       <div class="col-md-5 col-sm-5">
