@@ -34,6 +34,7 @@ function initMap() {
     'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
     imageBounds);
   historicalOverlay.setMap(map);
+  historicalOverlay.setMap(map2);
   var geocoder = new google.maps.Geocoder();
 
   $.getJSON(getShopsJson)
