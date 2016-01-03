@@ -159,6 +159,40 @@ function goToAddress(geocoder, resultsMap, address) {
       google.maps.event.addListener(marker, 'mouseout', function() {
         infowindow.close();
       });
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+             var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+             var marker = new google.maps.Marker({
+               map: resultsMap,
+               position: geolocate
+             });
+             var infowindow = new google.maps.InfoWindow({
+                 map: resultsMap,
+                 position: geolocate,
+                 content:
+                     '<h1>Your Current location!</h1>' +
+                     '<h2>Latitude: ' + position.coords.latitude + '</h2>' +
+                     '<h2>Longitude: ' + position.coords.longitude + '</h2>'
+             });
+
+             resultsMap.setCenter(geolocate);
+
+             var line = new google.maps.Polyline({
+                 path: [
+                    pos,
+                     geolocate
+                 ],
+                 geodesic: true,
+                 strokeColor: '#0000FF',
+                 strokeOpacity: 0.7,
+                 strokeWeight: 1,
+                 map: resultsMap
+             });
+
+
+
+      });
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }

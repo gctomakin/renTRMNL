@@ -186,7 +186,7 @@
   box-shadow: none;
 }
 .modal-backdrop.modal-backdrop-fullscreen {
-  background: #ffffff;
+  background-color: #ffffff;
 }
 .modal-backdrop.modal-backdrop-fullscreen.in {
   opacity: .97;
