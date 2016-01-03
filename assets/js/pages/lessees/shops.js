@@ -1,6 +1,11 @@
 
 function initMap() {
 
+  var directionsDisplay = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  var historicalOverlay = new google.maps.GroundOverlay(
+    'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+    imageBounds);
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {
       lat: 14.2990183,
@@ -30,9 +35,6 @@ function initMap() {
     west: -74.22655
   };
 
-  historicalOverlay = new google.maps.GroundOverlay(
-    'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
-    imageBounds);
   historicalOverlay.setMap(map);
   historicalOverlay.setMap(map2);
   var geocoder = new google.maps.Geocoder();
@@ -60,7 +62,7 @@ function initMap() {
     var address = $(this).data('address');
     var shop_name = $(this).data('shop-name');
     $('#map-modal-title').empty().text(shop_name);
-    goToAddress(geocoder, map2, address);
+    goToAddress(geocoder, map2, address, directionsService, directionsDisplay);
 
     $('#map-modal').modal('show');
 
@@ -69,7 +71,7 @@ function initMap() {
   $('.locate-trigger').click(function(e) {
     e.preventDefault();
     var address = $(this).data('address');
-    goToAddress(geocoder, map, address);
+    goToAddress(geocoder, map, address, directionsService, directionsDisplay);
     $("html, body").animate({
       scrollTop: $('body').offset().top
     }, 100);
@@ -136,7 +138,7 @@ function geocodeAddress(geocoder, resultsMap, address) {
   }
 }
 
-function goToAddress(geocoder, resultsMap, address) {
+function goToAddress(geocoder, resultsMap, address, directionsService, directionsDisplay) {
   geocoder.geocode({
     'address': address
   }, function(results, status) {
@@ -161,34 +163,32 @@ function goToAddress(geocoder, resultsMap, address) {
       });
 
       navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var marker = new google.maps.Marker({
+          map: resultsMap,
+          position: geolocate
+        });
+        var infowindow = new google.maps.InfoWindow({
+          map: resultsMap,
+          position: geolocate,
+          content: '<h1>Your Current location!</h1>' +
+            '<h2>Latitude: ' + position.coords.latitude + '</h2>' +
+            '<h2>Longitude: ' + position.coords.longitude + '</h2>'
+        });
 
-             var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-             var marker = new google.maps.Marker({
-               map: resultsMap,
-               position: geolocate
-             });
-             var infowindow = new google.maps.InfoWindow({
-                 map: resultsMap,
-                 position: geolocate,
-                 content:
-                     '<h1>Your Current location!</h1>' +
-                     '<h2>Latitude: ' + position.coords.latitude + '</h2>' +
-                     '<h2>Longitude: ' + position.coords.longitude + '</h2>'
-             });
+        directionsDisplay.setMap(resultsMap);
 
-             resultsMap.setCenter(geolocate);
-
-             var line = new google.maps.Polyline({
-                 path: [
-                    pos,
-                     geolocate
-                 ],
-                 geodesic: true,
-                 strokeColor: '#0000FF',
-                 strokeOpacity: 0.7,
-                 strokeWeight: 1,
-                 map: resultsMap
-             });
+        directionsService.route({
+          origin: geolocate,
+          destination: pos,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
 
 
 
@@ -204,8 +204,6 @@ function loadScript() {
   script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q&signed_in=true&callback=initMap";
   document.body.appendChild(script);
 }
-
-
 
 window.onload = loadScript;
 
@@ -255,34 +253,34 @@ $('.delete-trigger').click(function(e) {
 
 });
 
-$('.message-trigger').click(function(e){
+$('.message-trigger').click(function(e) {
   e.preventDefault();
   var subscriber_id = $(this).data('subscriber-id');
   $('#subscriber_id').val(subscriber_id);
   $('#compose-message-modal').modal('show');
 });
 
-$('#message-form').submit(function(e){
+$('#message-form').submit(function(e) {
   e.preventDefault();
   var action = this.action;
-  $.post(action,$(this).serialize())
-  .done(function(data) {
-    if (data) {
-      $('#message2').fadeIn(2000, function() {
-        $("html, body").animate({
-          scrollTop: $('body').offset().top
-        }, 100);
-        $('#message2').delay(2000).fadeOut();
-      });
+  $.post(action, $(this).serialize())
+    .done(function(data) {
+      if (data) {
+        $('#message2').fadeIn(2000, function() {
+          $("html, body").animate({
+            scrollTop: $('body').offset().top
+          }, 100);
+          $('#message2').delay(2000).fadeOut();
+        });
 
-    } else {
-      alert('somethings wong..');
-    }
-    console.log(data);
+      } else {
+        alert('somethings wong..');
+      }
+      console.log(data);
 
-  })
-  .fail(function(xhr, textStatus, errorThrown) {
-    throw new Error(xhr.responseText);
-  });
+    })
+    .fail(function(xhr, textStatus, errorThrown) {
+      throw new Error(xhr.responseText);
+    });
 
 });
