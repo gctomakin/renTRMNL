@@ -63,14 +63,15 @@ $route['admin/signin-page'] = 'admins/signinPage';
 $route['admin/signin'] = 'admins/signin';
 $route['admin/accounts/add'] = 'admins/accountsAddPage';
 $route['admin/accounts'] = 'admins/accountsViewPage';
-$route['admin/subscription/add'] = 'admins/subscription_plansAddPage';
-$route['admin/subscription'] = 'admins/subscription_plansViewPage';
+$route['admin/subscriptions/add'] = 'admins/subscription_plansAddPage';
+$route['admin/subscriptions'] = 'admins/subscription_plansViewPage';
 $route['admin/rentalshops/add'] = 'admins/rental_shopsAddPage';
 $route['admin/rentalshops'] = 'admins/rental_shopsViewPage';
 $route['admin/categories/add'] = 'admins/categoriesAddPage';
 $route['admin/categories'] = 'admins/categoriesViewPage';
 /** Admin Actions*/
-$route['admin/add'] = 'admins/add';
+$route['admin/account/add'] = 'admins/addAccount';
+$route['admin/subscription/add'] = 'admins/addSubscriptionPlan';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';
