@@ -80,7 +80,7 @@ class MyInterest extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('items');
-    $this->db->join($this->my_interests_table, 'my_interests.item_id = items.shop_id');
+    $this->db->join($this->my_interests_table, 'my_interests.item_id = items.item_id');
     $query  = $this->db->get();
     $result = $query->result();
 

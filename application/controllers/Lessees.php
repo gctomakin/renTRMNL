@@ -243,8 +243,11 @@ class Lessees extends CI_Controller
   public function myInterestsPage()
   {
       $data['title']      = 'MY INTERESTS';
-      $content['myshops'] = $this->Lessee->myInterests();
+      $content['myinterests'] = $this->MyInterest->all();
       $data['content']    = $this->load->view('pages/lessee/myinterests', $content, TRUE);
+      $data['script']           = array(
+          'pages/lessees/items'
+      );
       //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
@@ -353,10 +356,10 @@ class Lessees extends CI_Controller
 
     if ($result):
         $this->session->set_flashdata('success', TRUE);
-        redirect('lessee/myshops', 'refresh');
+        redirect('lessee/myinterests', 'refresh');
     else:
         $this->session->set_flashdata('error', TRUE);
-        redirect('lessee/myshops', 'refresh');
+        redirect('lessee/myinterests', 'refresh');
     endif;
   }
 

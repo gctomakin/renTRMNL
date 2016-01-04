@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   $('.my-interest-trigger').click(function(e) {
     e.preventDefault();
     var item_id = $(this).data('item-id');
@@ -33,4 +34,16 @@ $(document).ready(function(){
         throw new Error(xhr.responseText);
       });
   });
+
+  $('.delete-trigger').click(function(e) {
+    e.preventDefault();
+    var action = this.href;
+    var interest_id = $(this).data('id');
+    var item_name = $(this).data('item-name');
+
+    $('#confirm-modal-content').empty().html('Do you want to remove' + ' <strong>' + item_name + '</strong> ?');
+    $('#confirm-modal').modal('show');
+
+  });
+
 });
