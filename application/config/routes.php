@@ -57,7 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['signup'] = 'main/signUp';
 $route['logout'] = 'main/logout';
 
-/* Admin Routes */
+/* Admin Pages */
 $route['admin/dashboard'] = 'admins';
 $route['admin/signin-page'] = 'admins/signinPage';
 $route['admin/signin'] = 'admins/signin';
@@ -69,6 +69,8 @@ $route['admin/rentalshops/add'] = 'admins/rental_shopsAddPage';
 $route['admin/rentalshops'] = 'admins/rental_shopsViewPage';
 $route['admin/categories/add'] = 'admins/categoriesAddPage';
 $route['admin/categories'] = 'admins/categoriesViewPage';
+/** Admin Actions*/
+$route['admin/add'] = 'admins/add';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';

@@ -27,7 +27,7 @@ class Admins extends CI_Controller {
 
   public function accountsViewPage()
   {
-    $data['title'] = 'ACCOUNTS CREATE';
+    $data['title'] = 'ACCOUNTS LIST';
     $data['content'] = $this->load->view('pages/admin/accounts/view', '', TRUE);
     $this->load->view('common/admin', $data);
   }
@@ -41,7 +41,7 @@ class Admins extends CI_Controller {
 
   public function subscription_plansViewPage()
   {
-    $data['title'] = 'SUBSCRIPTION PLANS CREATE';
+    $data['title'] = 'SUBSCRIPTION PLANS LIST';
     $data['content'] = $this->load->view('pages/admin/subscription_plans/view', '', TRUE);
     $this->load->view('common/admin', $data);
   }
@@ -55,7 +55,7 @@ class Admins extends CI_Controller {
 
   public function rental_shopsViewPage()
   {
-    $data['title'] = 'RENTAL SHOPS CREATE';
+    $data['title'] = 'RENTAL SHOPS LIST';
     $data['content'] = $this->load->view('pages/admin/rental_shops/view', '', TRUE);
     $this->load->view('common/admin', $data);
   }
@@ -69,7 +69,7 @@ class Admins extends CI_Controller {
 
   public function categoriesViewPage()
   {
-    $data['title'] = 'CATEGORIES CREATE';
+    $data['title'] = 'CATEGORIES LIST';
     $data['content'] = $this->load->view('pages/admin/categories/view', '', TRUE);
     $this->load->view('common/admin', $data);
   }
@@ -117,6 +117,40 @@ class Admins extends CI_Controller {
     $data['content'] = $this->load->view('pages/admin', $content, TRUE);
     $data['title'] = 'SIGN IN';
     $this->load->view('common/plain', $data);
+  }
+
+  public function add()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
+    $this->form_validation->set_rules('fname', 'Firstname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('lname', 'Lastname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('midinit', 'Middle Initial', 'trim|required|xss_clean');
+
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/accounts/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $this->Admin->setFname($post['fname']);
+      $this->Admin->setLname($post['lname']);
+      $this->Admin->setMidinit($post['midinit']);
+      $this->Admin->setUsername($post['username']);
+      $this->Admin->setPassword($this->encrypt->encode($post['password']));
+      $this->Admin->insert();
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/accounts/add','refresh');
+
+    endif;
   }
 
 }
