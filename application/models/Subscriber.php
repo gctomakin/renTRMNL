@@ -81,6 +81,7 @@ class Subscriber extends CI_Model{
 	
 
 	/** GETTERS */
+	public function getTable() { return $this->table; }
 	public function getId() { return $this->id; }
 	public function getFname() { return $this->fname; }
 	public function getMi() { return $this->mi; }
