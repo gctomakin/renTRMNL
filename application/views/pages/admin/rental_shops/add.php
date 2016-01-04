@@ -3,7 +3,7 @@
     <div class="col-md-offset-2 col-md-8 col-md-offset-2 well">
       <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger text-center">'.$this->session->flashdata('error').'</div>'; }?>
       <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success text-center"><strong>Successfully</strong> Added Account!</div>';} ?>
-      <?php echo form_open('admin/add'); ?>
+      <?php echo form_open('admin/rentalshop/add'); ?>
         <div class="form-group">
           <label for="username">Username:</label>
           <input type="text" name="username" class="form-control" id="username">

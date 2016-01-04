@@ -8,6 +8,8 @@ class Admins extends CI_Controller {
       parent::__construct(4);
       $this->load->model('Admin');
       $this->load->model('SubscriptionPlan');
+      $this->load->model('RentalShop');
+      $this->load->model('Category');
       $this->Admin->setId($this->session->userdata('admin_id'));
       LibsLoader();
   }
@@ -181,6 +183,35 @@ class Admins extends CI_Controller {
 
       $this->session->set_flashdata('success', TRUE);
       redirect('admin/subscriptions/add','refresh');
+
+    endif;
+  }
+
+  public function addRentalShop()
+  {
+    echo "TODO";
+  }
+
+  public function addCategory()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[4]|xss_clean');
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/categories/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $data = array('category_type' => $this->input->post('category'));
+      $this->Category->create($data);
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/categories/add','refresh');
 
     endif;
   }
