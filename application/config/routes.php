@@ -72,6 +72,8 @@ $route['admin/categories'] = 'admins/categoriesViewPage';
 /** Admin Actions*/
 $route['admin/account/add'] = 'admins/addAccount';
 $route['admin/subscription/add'] = 'admins/addSubscriptionPlan';
+$route['admin/rentalshop/add'] = 'admins/addRentalShop';
+$route['admin/category/add'] = 'admins/addCategory';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';
