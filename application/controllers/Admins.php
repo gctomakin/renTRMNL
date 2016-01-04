@@ -7,6 +7,7 @@ class Admins extends CI_Controller {
   {
       parent::__construct(4);
       $this->load->model('Admin');
+      $this->load->model('SubscriptionPlan');
       $this->Admin->setId($this->session->userdata('admin_id'));
       LibsLoader();
   }
@@ -119,7 +120,7 @@ class Admins extends CI_Controller {
     $this->load->view('common/plain', $data);
   }
 
-  public function add()
+  public function addAccount()
   {
     /*
     | field name, error message, validation rules
@@ -149,6 +150,37 @@ class Admins extends CI_Controller {
 
       $this->session->set_flashdata('success', TRUE);
       redirect('admin/accounts/add','refresh');
+
+    endif;
+  }
+
+  public function addSubscriptionPlan()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('plan_name', 'Plan Name', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('plan_desc', 'Plan Desc', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('plan_type', 'Plan Type', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('plan_rate', 'Plan Rate', 'trim|required|xss_clean');
+
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/subscriptions/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $this->SubscriptionPlan->setName($post['plan_name']);
+      $this->SubscriptionPlan->setDesc($post['plan_desc']);
+      $this->SubscriptionPlan->setType($post['plan_type']);
+      $this->SubscriptionPlan->setRate($post['plan_rate']);
+      $this->SubscriptionPlan->insert();
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/subscriptions/add','refresh');
 
     endif;
   }
