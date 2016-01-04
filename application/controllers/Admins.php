@@ -7,6 +7,9 @@ class Admins extends CI_Controller {
   {
       parent::__construct(4);
       $this->load->model('Admin');
+      $this->load->model('SubscriptionPlan');
+      $this->load->model('RentalShop');
+      $this->load->model('Category');
       $this->Admin->setId($this->session->userdata('admin_id'));
       LibsLoader();
   }
@@ -15,6 +18,65 @@ class Admins extends CI_Controller {
   {
     $data['title'] = 'DASHBOARD';
     $data['content'] = $this->load->view('pages/admin/dashboard', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function accountsAddPage()
+  {
+    $data['title'] = 'ACCOUNTS ADD';
+    $data['content'] = $this->load->view('pages/admin/accounts/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function accountsViewPage()
+  {
+    $data['title'] = 'ACCOUNTS LIST';
+    $content['admins'] = $this->Admin->all();
+    $data['content'] = $this->load->view('pages/admin/accounts/view', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function subscription_plansAddPage()
+  {
+    $data['title'] = 'SUBSCRIPTION PLANS ADD';
+    $data['content'] = $this->load->view('pages/admin/subscription_plans/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function subscription_plansViewPage()
+  {
+    $data['title'] = 'SUBSCRIPTION PLANS LIST';
+    $content['plans'] = $this->SubscriptionPlan->all();
+    $data['content'] = $this->load->view('pages/admin/subscription_plans/view', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function rental_shopsAddPage()
+  {
+    $data['title'] = 'RENTAL SHOPS ADD';
+    $data['content'] = $this->load->view('pages/admin/rental_shops/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function rental_shopsViewPage()
+  {
+    $data['title'] = 'RENTAL SHOPS LIST';
+    $data['content'] = $this->load->view('pages/admin/rental_shops/view', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function categoriesAddPage()
+  {
+    $data['title'] = 'CATEGORIES ADD';
+    $data['content'] = $this->load->view('pages/admin/categories/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function categoriesViewPage()
+  {
+    $data['title'] = 'CATEGORIES LIST';
+    $content['categories'] = $this->Category->all($select = "*", $like = "");
+    $data['content'] = $this->load->view('pages/admin/categories/view', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
@@ -61,6 +123,100 @@ class Admins extends CI_Controller {
     $data['content'] = $this->load->view('pages/admin', $content, TRUE);
     $data['title'] = 'SIGN IN';
     $this->load->view('common/plain', $data);
+  }
+
+  public function addAccount()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
+    $this->form_validation->set_rules('fname', 'Firstname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('lname', 'Lastname', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('midinit', 'Middle Initial', 'trim|required|xss_clean');
+
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/accounts/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $this->Admin->setFname($post['fname']);
+      $this->Admin->setLname($post['lname']);
+      $this->Admin->setMidinit($post['midinit']);
+      $this->Admin->setUsername($post['username']);
+      $this->Admin->setPassword($this->encrypt->encode($post['password']));
+      $this->Admin->insert();
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/accounts/add','refresh');
+
+    endif;
+  }
+
+  public function addSubscriptionPlan()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('plan_name', 'Plan Name', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('plan_desc', 'Plan Desc', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('plan_type', 'Plan Type', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('plan_rate', 'Plan Rate', 'trim|required|xss_clean');
+
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/subscriptions/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $this->SubscriptionPlan->setName($post['plan_name']);
+      $this->SubscriptionPlan->setDesc($post['plan_desc']);
+      $this->SubscriptionPlan->setType($post['plan_type']);
+      $this->SubscriptionPlan->setRate($post['plan_rate']);
+      $this->SubscriptionPlan->insert();
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/subscriptions/add','refresh');
+
+    endif;
+  }
+
+  public function addRentalShop()
+  {
+    echo "TODO";
+  }
+
+  public function addCategory()
+  {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[4]|xss_clean');
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/categories/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $data = array('category_type' => $this->input->post('category'));
+      $this->Category->create($data);
+
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/categories/add','refresh');
+
+    endif;
   }
 
 }

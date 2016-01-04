@@ -57,10 +57,23 @@ $route['translate_uri_dashes'] = FALSE;
 $route['signup'] = 'main/signUp';
 $route['logout'] = 'main/logout';
 
-/* Admin Routes */
+/* Admin Pages */
 $route['admin/dashboard'] = 'admins';
 $route['admin/signin-page'] = 'admins/signinPage';
 $route['admin/signin'] = 'admins/signin';
+$route['admin/accounts/add'] = 'admins/accountsAddPage';
+$route['admin/accounts'] = 'admins/accountsViewPage';
+$route['admin/subscriptions/add'] = 'admins/subscription_plansAddPage';
+$route['admin/subscriptions'] = 'admins/subscription_plansViewPage';
+$route['admin/rentalshops/add'] = 'admins/rental_shopsAddPage';
+$route['admin/rentalshops'] = 'admins/rental_shopsViewPage';
+$route['admin/categories/add'] = 'admins/categoriesAddPage';
+$route['admin/categories'] = 'admins/categoriesViewPage';
+/** Admin Actions*/
+$route['admin/account/add'] = 'admins/addAccount';
+$route['admin/subscription/add'] = 'admins/addSubscriptionPlan';
+$route['admin/rentalshop/add'] = 'admins/addRentalShop';
+$route['admin/category/add'] = 'admins/addCategory';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page'] = 'lessors/signinPage';
@@ -75,17 +88,18 @@ $route['lessor/shops/list/(:num)'] = 'lessors/shopList/$1';
 $route['lessor'] = 'lessors';
 $route['lessor/dashboard'] = 'lessors/dashboard';
 
-/** Lessees */
-$route['lessees/signin-page'] = 'lessees/signinPage';
+/** Lessees Pages*/
 $route['lessee/dashboard'] = 'lessees';
+$route['lessees/signin-page'] = 'lessees/signinPage';
 $route['lessee/profile'] = 'lessees/profilePage';
 $route['lessee/myshops'] = 'lessees/myShopsPage';
-$route['lessee/myshops/delete/(:num)'] = 'lessees/removeMyShop/$1';
 $route['lessee/myinterests'] = 'lessees/myInterestsPage';
+$route['lessee/items'] = 'lessees/itemsPage';
+/** Lessees Actions*/
 $route['lessee/inbox'] = 'lessees/inboxPage';
 $route['lessee/shops'] = 'lessees/shopsPage';
+$route['lessee/myshops/delete/(:num)'] = 'lessees/removeMyShop/$1';
 $route['lessee/getshops'] = 'lessees/shopsJson';
-$route['lessee/items'] = 'lessees/itemsPage';
 $route['lessee/send'] = 'lessees/sendMessage';
 $route['lessee/update-info'] = 'lessees/updateInfo';
 $route['lessee/update-account'] = 'lessees/updateAccount';

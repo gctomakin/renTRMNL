@@ -58,9 +58,9 @@
 					<select required name="rentalmode" id="rentalmode" class="form-control">
 						<?php
 							for ($i = 1; $i <= count($rental_modes); $i++) {
-								$isSelected = isset($item['item_rental_mode']) && $item['item_rental_mode'] == $i ? 'selected' : ''; 
+								$isSelected = isset($item['item_rental_mode']) && $item['item_rental_mode'] == $i ? 'selected' : '';
 						 		echo "<option value='$i' $isSelected>" . $rental_modes[($i)] . "</option>";
-						 	} 
+						 	}
 						?>
 					<select>
 				</div>
@@ -70,13 +70,13 @@
 				<div class="col-lg-5">
 					<select name="category[]" id="category" class="form-control" multiple>
 						<?php
-							if (isset($categories)) { 
+							if (isset($categories)) {
 								foreach($categories as $category) {
 						?>
 						<option value="<?php echo $category->category_id ?>" selected><?php echo $category->category_type; ?></option>
-						<?php 
+						<?php
 								}
-							} 
+							}
 						?>
 					</select>
 				</div>
