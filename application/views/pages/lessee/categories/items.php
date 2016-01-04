@@ -3,6 +3,8 @@
     <div class="col-md-12">
       <p><a href="<?php echo site_url('lessees');?>" class="text-center"><i class="fa fa-dashboard"></i> Go back to dashboard </a></p>
     </div>
+   </div>
+    <div id="message" class="alert alert-success text-center" hidden><strong>Successfully</strong> Added to your My Interests list.</div>
     <?php if(empty($items)): ?>
       <div class="col-md-12">
         <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no items added yet. </div>
@@ -27,7 +29,7 @@
                     <div class="btn-group">
                       <a href="#" class="btn btn-info btn-xs">Reserve</a>
                       <a href="#" class="btn btn-success btn-xs">Rent</a>
-                      <a href="#" class="btn btn-primary btn-xs">My Interest</a>
+                      <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item->item_id; ?>" data-interest-name="<?php echo $item->item_desc; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item->item_id,$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item->item_id,$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
                     </div>
                 </div>
             </div>

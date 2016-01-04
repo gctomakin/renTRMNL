@@ -11,8 +11,10 @@ class Lessees extends CI_Controller
       $this->load->model('RentalShop');
       $this->load->model('Item');
       $this->load->model('MyShop');
+      $this->load->model('MyInterest');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
+      $this->MyInterest->setLesseeId($this->session->userdata('lessee_id'));
       LibsLoader();
   }
 
@@ -281,6 +283,8 @@ class Lessees extends CI_Controller
   {
       $data['title']    = 'ITEMS';
       $content['items'] = $this->Item->all($select = "*");
+      $content['myinterests']       = $this->MyInterest->getMyInterestId();
+      $content['action']        = site_url('lessee/add-myinterest');
       $data['content']  = $this->load->view('pages/lessee/categories/items', $content, TRUE);
       $data['script']           = array(
           'pages/lessees/items'
@@ -323,6 +327,29 @@ class Lessees extends CI_Controller
   {
     $this->MyShop->setId($id);
     $result = $this->MyShop->delete();
+
+    if ($result):
+        $this->session->set_flashdata('success', TRUE);
+        redirect('lessee/myshops', 'refresh');
+    else:
+        $this->session->set_flashdata('error', TRUE);
+        redirect('lessee/myshops', 'refresh');
+    endif;
+  }
+
+
+  public function addMyInterest()
+  {
+      $post = $this->input->post(NULL, TRUE);
+      $this->MyInterest->setMyInterestName($post['interest_name']);
+      $this->MyInterest->setItemId($post['item_id']);
+      echo $this->MyInterest->insert();
+  }
+
+  public function removeMyInterest($id)
+  {
+    $this->MyInterest->setId($id);
+    $result = $this->MyInterest->delete();
 
     if ($result):
         $this->session->set_flashdata('success', TRUE);
