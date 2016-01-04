@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | and its corresponding controller class/method. The segments in a
 | URL normally follow this pattern:
 |
-|	example.com/class/method/id/
+|    example.com/class/method/id/
 |
 | In some instances, however, you may want to remap this relationship
 | so that a different class/function is called than the one
@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | Please see the user guide for complete details:
 |
-|	http://codeigniter.com/user_guide/general/routing.html
+|    http://codeigniter.com/user_guide/general/routing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
@@ -27,18 +27,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | There are three reserved routes:
 |
-|	$route['default_controller'] = 'welcome';
+|    $route['default_controller'] = 'welcome';
 |
 | This route indicates which controller class should be loaded if the
 | URI contains no data. In the above example, the "welcome" class
 | would be loaded.
 |
-|	$route['404_override'] = 'errors/page_missing';
+|    $route['404_override'] = 'errors/page_missing';
 |
 | This route will tell the Router which controller/method to use if those
 | provided in the URL cannot be matched to a valid route.
 |
-|	$route['translate_uri_dashes'] = FALSE;
+|    $route['translate_uri_dashes'] = FALSE;
 |
 | This is not exactly a route, but allows you to automatically route
 | controller and method names that contain dashes. '-' isn't a valid
@@ -46,11 +46,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | When you set this option to TRUE, it will replace ALL dashes in the
 | controller and method URI segments.
 |
-| Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
+| Examples:    my-controller/index    -> my_controller/index
+|        my-controller/my-method    -> my_controller/my_method
 */
-$route['default_controller'] = 'main';
-$route['404_override'] = '';
+$route['default_controller']   = 'main';
+$route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /* Main Routes */
@@ -58,49 +58,50 @@ $route['signup'] = 'main/signUp';
 $route['logout'] = 'main/logout';
 
 /* Admin Pages */
-$route['admin/dashboard'] = 'admins';
-$route['admin/signin-page'] = 'admins/signinPage';
-$route['admin/signin'] = 'admins/signin';
-$route['admin/accounts/add'] = 'admins/accountsAddPage';
-$route['admin/accounts'] = 'admins/accountsViewPage';
+$route['admin/dashboard']         = 'admins';
+$route['admin/signin-page']       = 'admins/signinPage';
+$route['admin/signin']            = 'admins/signin';
+$route['admin/accounts/add']      = 'admins/accountsAddPage';
+$route['admin/accounts']          = 'admins/accountsViewPage';
 $route['admin/subscriptions/add'] = 'admins/subscription_plansAddPage';
-$route['admin/subscriptions'] = 'admins/subscription_plansViewPage';
-$route['admin/rentalshops/add'] = 'admins/rental_shopsAddPage';
-$route['admin/rentalshops'] = 'admins/rental_shopsViewPage';
-$route['admin/categories/add'] = 'admins/categoriesAddPage';
-$route['admin/categories'] = 'admins/categoriesViewPage';
+$route['admin/subscriptions']     = 'admins/subscription_plansViewPage';
+$route['admin/rentalshops/add']   = 'admins/rental_shopsAddPage';
+$route['admin/rentalshops']       = 'admins/rental_shopsViewPage';
+$route['admin/categories/add']    = 'admins/categoriesAddPage';
+$route['admin/categories']        = 'admins/categoriesViewPage';
 /** Admin Actions*/
-$route['admin/account/add'] = 'admins/addAccount';
-$route['admin/subscription/add'] = 'admins/addSubscriptionPlan';
-$route['admin/rentalshop/add'] = 'admins/addRentalShop';
-$route['admin/category/add'] = 'admins/addCategory';
+$route['admin/account/add']       = 'admins/addAccount';
+$route['admin/subscription/add']  = 'admins/addSubscriptionPlan';
+$route['admin/rentalshop/add']    = 'admins/addRentalShop';
+$route['admin/category/add']      = 'admins/addCategory';
 
 /** Subscriber/Lessors */
-$route['lessor/signin-page'] = 'lessors/signinPage';
-$route['lessor/items/create'] = 'lessors/itemCreate';
+$route['lessor/signin-page']       = 'lessors/signinPage';
+$route['lessor/items/create']      = 'lessors/itemCreate';
 $route['lessor/items/edit/(:num)'] = 'lessors/itemEdit/$1';
-$route['lessor/items/list'] = 'lessors/itemList';
+$route['lessor/items/list']        = 'lessors/itemList';
 $route['lessor/items/list/(:num)'] = 'lessors/itemList/$1';
-$route['lessor/shops/create'] = 'lessors/shopCreate';
+$route['lessor/shops/create']      = 'lessors/shopCreate';
 $route['lessor/shops/edit/(:num)'] = "lessors/shopEdit/$1";
-$route['lessor/shops/list'] = 'lessors/shopList';
+$route['lessor/shops/list']        = 'lessors/shopList';
 $route['lessor/shops/list/(:num)'] = 'lessors/shopList/$1';
-$route['lessor'] = 'lessors';
-$route['lessor/dashboard'] = 'lessors/dashboard';
+$route['lessor']                   = 'lessors';
+$route['lessor/dashboard']         = 'lessors/dashboard';
 
 /** Lessees Pages*/
-$route['lessee/dashboard'] = 'lessees';
-$route['lessees/signin-page'] = 'lessees/signinPage';
-$route['lessee/profile'] = 'lessees/profilePage';
-$route['lessee/myshops'] = 'lessees/myShopsPage';
-$route['lessee/myinterests'] = 'lessees/myInterestsPage';
-$route['lessee/items'] = 'lessees/itemsPage';
+$route['lessee/dashboard']             = 'lessees';
+$route['lessees/signin-page']          = 'lessees/signinPage';
+$route['lessee/profile']               = 'lessees/profilePage';
+$route['lessee/myshops']               = 'lessees/myShopsPage';
+$route['lessee/myinterests']           = 'lessees/myInterestsPage';
+$route['lessee/items']                 = 'lessees/itemsPage';
 /** Lessees Actions*/
-$route['lessee/inbox'] = 'lessees/inboxPage';
-$route['lessee/shops'] = 'lessees/shopsPage';
+$route['lessee/inbox']                 = 'lessees/inboxPage';
+$route['lessee/shops']                 = 'lessees/shopsPage';
 $route['lessee/myshops/delete/(:num)'] = 'lessees/removeMyShop/$1';
-$route['lessee/getshops'] = 'lessees/shopsJson';
-$route['lessee/send'] = 'lessees/sendMessage';
-$route['lessee/update-info'] = 'lessees/updateInfo';
-$route['lessee/update-account'] = 'lessees/updateAccount';
-$route['lessee/add-myshop'] = 'lessees/addMyShop';
+$route['lessee/send']                  = 'lessees/sendMessage';
+$route['lessee/update-info']           = 'lessees/updateInfo';
+$route['lessee/update-account']        = 'lessees/updateAccount';
+$route['lessee/add-myshop']            = 'lessees/addMyShop';
+$route['lessee/add-myinterest']        = 'lessees/addMyInterest';
+$route['lessee/getshops']              = 'lessees/shopsJson';
