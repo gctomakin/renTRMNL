@@ -48,7 +48,7 @@ class SubscriptionPlan extends CI_Model{
 
       $this->db->set($data);
       $this->db->insert($this->subscription_plans_table);
-      $this->db->cache_delete('admins', 'subscription_plansViewPage');
+      $this->db->cache_delete('admins', 'subscriptions');
 
     }
     catch (Exception $err) {

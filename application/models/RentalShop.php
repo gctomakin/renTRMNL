@@ -91,6 +91,7 @@ class RentalShop extends CI_Model{
 	private function deleteCache() {
 		$this->db->cache_delete('rentalshops','allByLessor');
 		$this->db->cache_delete('lessor','shops');
-		$this->db->cache_delete('lessee','shops');	
+		$this->db->cache_delete('lessee','shops');
+		$this->db->cache_delete('admin','rentalshops');
 	}
 }

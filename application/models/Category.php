@@ -55,6 +55,7 @@ class Category extends CI_Model {
 
 	private function deleteCache() {
 		$this->db->cache_delete('categories','all');
+		$this->db->cache_delete('admin','categories');
 	}
 
 }

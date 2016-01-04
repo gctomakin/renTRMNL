@@ -68,7 +68,7 @@ class Admin extends CI_Model{
 
       $this->db->set($data);
       $this->db->insert($this->admin_table);
-      $this->db->cache_delete('admins', 'accountsViewPage');
+      $this->db->cache_delete('admin', 'account');
 
     }
     catch (Exception $err) {
