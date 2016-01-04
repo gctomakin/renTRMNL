@@ -282,6 +282,9 @@ class Lessees extends CI_Controller
       $data['title']    = 'ITEMS';
       $content['items'] = $this->Item->all($select = "*");
       $data['content']  = $this->load->view('pages/lessee/categories/items', $content, TRUE);
+      $data['script']           = array(
+          'pages/lessees/items'
+      );
       //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
