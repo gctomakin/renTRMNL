@@ -61,7 +61,8 @@ class Admins extends CI_Controller {
   public function rental_shopsViewPage()
   {
     $data['title'] = 'RENTAL SHOPS LIST';
-    $data['content'] = $this->load->view('pages/admin/rental_shops/view', '', TRUE);
+    $content['shops'] = $this->RentalShop->all($select = "*");
+    $data['content'] = $this->load->view('pages/admin/rental_shops/view', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
@@ -192,7 +193,27 @@ class Admins extends CI_Controller {
 
   public function addRentalShop()
   {
-    echo "TODO";
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('shop_name', 'Shop Name', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('shop_branch', 'Shop Branch', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('address', 'Address', 'trim|required|xss_clean');
+
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect('admin/rentalshops/add','refresh');
+
+    else:
+      $post = $this->input->post(NULL, TRUE);
+
+      $data = array('shop_name' => $post['shop_name'], 'shop_branch' => $post['shop_branch'], 'address' => $post['address'], 'subscriber_id' => $this->session->userdata('admin_id'));
+      $this->RentalShop->create($data);
+      $this->session->set_flashdata('success', TRUE);
+      redirect('admin/rentalshops/add','refresh');
+
+    endif;
   }
 
   public function addCategory()
@@ -208,7 +229,6 @@ class Admins extends CI_Controller {
       redirect('admin/categories/add','refresh');
 
     else:
-      $post = $this->input->post(NULL, TRUE);
 
       $data = array('category_type' => $this->input->post('category'));
       $this->Category->create($data);
