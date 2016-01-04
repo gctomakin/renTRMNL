@@ -67,12 +67,34 @@ class Item extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	public function all($select = "*", $status = "") {
-		$this->db->select($select);
+	public function all($select = "", $status = "") {
+		// Load reference Table
+		$this->load->model('RentalShop');
+		$this->load->model('Subscriber');
+
+		// Aliases
+		$itemAlias = 'i';
+		$shopAlias = 's';
+		$subscriberAlias = 'sub';
+
+		// Conditions
+		$itemShopCon = "$shopAlias." .  $this->RentalShop->getId() .  " = $itemAlias." . $this->shopId;
+		$itemSubscriberCon = "$subscriberAlias." . $this->Subscriber->getId() . " = $itemAlias.". $this->subscriberId;
+
 		if (!empty($status)) {
-			$this->db->where("{$this->status} = $status");
+			$this->db->where("$itemAlias.{$this->status} = $status");
 		}
-		$query = $this->db->get($this->table);
+
+		if (empty($select)) {
+			$select = "$itemAlias.*, $shopAlias.*, $subscriberAlias.*";
+		}
+
+		$query = $this->db
+			->select($select)
+			->from($this->table ." as $itemAlias")
+			->join($this->RentalShop->getTable() . " as $shopAlias", $itemShopCon, "left")
+			->join($this->Subscriber->getTable() . " as $subscriberAlias", $itemSubscriberCon, "left")
+			->get();
 		return $query->result();
 	}
 
