@@ -25,8 +25,8 @@
                 <li>
                     <a href="#item-nav"><i class="fa fa-pencil fa-fw"></i> Subscription Plans<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="<?php echo site_url('admin/subscription/add'); ?>">Add Subscription</a></li>
-                        <li><a href="<?php echo site_url('admin/subscription'); ?>">View Subscription</a></li>
+                        <li><a href="<?php echo site_url('admin/subscriptions/add'); ?>">Add Subscription</a></li>
+                        <li><a href="<?php echo site_url('admin/subscriptions'); ?>">View Subscription</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
