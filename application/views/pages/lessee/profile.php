@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row">
+<div class="container-fluid">
+  <div class="row no-gutter">
     <div class="col-sm-12 col-md-offset-1 col-md-10 col-md-offset-1">
       <h2 class="page-header">Personal Information</h2>
       <?php

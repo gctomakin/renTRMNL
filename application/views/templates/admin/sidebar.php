@@ -13,88 +13,53 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="<?php echo site_url('lessor/dashboard'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="<?php echo site_url('admin/dashboard'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="#shops"><i class="fa fa-table fa-fw"></i> Shops<span class="fa arrow"></span></a>
+                    <a href="#shops"><i class="fa fa-users fa-fw"></i> Accounts<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="<?php echo site_url('lessor/shops/create'); ?>">Create</a></li>
-                        <li><a href="<?php echo site_url('lessor/shops/list'); ?>">List</a></li>
+                        <li><a href="<?php echo site_url('admin/accounts/add'); ?>">Add Account</a></li>
+                        <li><a href="<?php echo site_url('admin/accounts'); ?>">View Accounts</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#item-nav"><i class="fa fa-cubes fa-fw"></i> Items<span class="fa arrow"></span></a>
+                    <a href="#item-nav"><i class="fa fa-pencil fa-fw"></i> Subscription Plans<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="<?php echo site_url('lessor/items/create'); ?>">Create</a></li>
-                        <li><a href="<?php echo site_url('lessor/items'); ?>">List</a></li>
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
-                <li>
-                    <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="panels-wells.html">Panels and Wells</a>
-                        </li>
-                        <li>
-                            <a href="buttons.html">Buttons</a>
-                        </li>
-                        <li>
-                            <a href="notifications.html">Notifications</a>
-                        </li>
-                        <li>
-                            <a href="typography.html">Typography</a>
-                        </li>
-                        <li>
-                            <a href="icons.html"> Icons</a>
-                        </li>
-                        <li>
-                            <a href="grid.html">Grid</a>
-                        </li>
+                        <li><a href="<?php echo site_url('admin/subscription/add'); ?>">Add Subscription</a></li>
+                        <li><a href="<?php echo site_url('admin/subscription'); ?>">View Subscription</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                    <a href="#item-nav"><i class="fa fa-building fa-fw"></i> Rental Shops<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Third Level <span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-third-level -->
-                        </li>
+                        <li><a href="<?php echo site_url('admin/rentalshops/add'); ?>">Add Rental Shop</a></li>
+                        <li><a href="<?php echo site_url('admin/rentalshops'); ?>">View Rental Shop</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                    <a href="#item-nav"><i class="fa fa-list fa-fw"></i> Categories<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="<?php echo site_url('admin/categories/add'); ?>">Add Category</a></li>
+                        <li><a href="<?php echo site_url('admin/categories'); ?>">View Category</a></li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-file-text-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="blank.html">Blank Page</a>
+                            <a href="panels-wells.html">Sales Report</a>
                         </li>
                         <li>
-                            <a href="login.html">Login Page</a>
+                            <a href="buttons.html">Subscription</a>
+                        </li>
+                        <li>
+                            <a href="notifications.html">Rental Shops</a>
+                        </li>
+                        <li>
+                            <a href="typography.html">Lessees</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->

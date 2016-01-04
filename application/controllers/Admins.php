@@ -18,6 +18,62 @@ class Admins extends CI_Controller {
     $this->load->view('common/admin', $data);
   }
 
+  public function accountsAddPage()
+  {
+    $data['title'] = 'ACCOUNTS ADD';
+    $data['content'] = $this->load->view('pages/admin/accounts/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function accountsViewPage()
+  {
+    $data['title'] = 'ACCOUNTS CREATE';
+    $data['content'] = $this->load->view('pages/admin/accounts/view', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function subscription_plansAddPage()
+  {
+    $data['title'] = 'SUBSCRIPTION PLANS ADD';
+    $data['content'] = $this->load->view('pages/admin/subscription_plans/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function subscription_plansViewPage()
+  {
+    $data['title'] = 'SUBSCRIPTION PLANS CREATE';
+    $data['content'] = $this->load->view('pages/admin/subscription_plans/view', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function rental_shopsAddPage()
+  {
+    $data['title'] = 'RENTAL SHOPS ADD';
+    $data['content'] = $this->load->view('pages/admin/rental_shops/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function rental_shopsViewPage()
+  {
+    $data['title'] = 'RENTAL SHOPS CREATE';
+    $data['content'] = $this->load->view('pages/admin/rental_shops/view', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function categoriesAddPage()
+  {
+    $data['title'] = 'CATEGORIES ADD';
+    $data['content'] = $this->load->view('pages/admin/categories/add', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function categoriesViewPage()
+  {
+    $data['title'] = 'CATEGORIES CREATE';
+    $data['content'] = $this->load->view('pages/admin/categories/view', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
   public function signin()
   {
     $usertype = 'admin';
