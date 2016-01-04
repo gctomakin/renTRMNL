@@ -87,4 +87,11 @@ class Admin extends CI_Model{
     return $query->row_array();
   }
 
+  public function all()
+  {
+    $query = $this->db->get($this->admin_table);
+
+    return $query->result();
+  }
+
 }

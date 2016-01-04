@@ -60,4 +60,11 @@ class SubscriptionPlan extends CI_Model{
     return true;
   }
 
+  public function all()
+  {
+    $query = $this->db->get($this->subscription_plans_table);
+
+    return $query->result();
+  }
+
 }

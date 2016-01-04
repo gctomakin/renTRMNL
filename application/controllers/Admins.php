@@ -31,7 +31,8 @@ class Admins extends CI_Controller {
   public function accountsViewPage()
   {
     $data['title'] = 'ACCOUNTS LIST';
-    $data['content'] = $this->load->view('pages/admin/accounts/view', '', TRUE);
+    $content['admins'] = $this->Admin->all();
+    $data['content'] = $this->load->view('pages/admin/accounts/view', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
@@ -45,7 +46,8 @@ class Admins extends CI_Controller {
   public function subscription_plansViewPage()
   {
     $data['title'] = 'SUBSCRIPTION PLANS LIST';
-    $data['content'] = $this->load->view('pages/admin/subscription_plans/view', '', TRUE);
+    $content['plans'] = $this->SubscriptionPlan->all();
+    $data['content'] = $this->load->view('pages/admin/subscription_plans/view', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
@@ -73,7 +75,8 @@ class Admins extends CI_Controller {
   public function categoriesViewPage()
   {
     $data['title'] = 'CATEGORIES LIST';
-    $data['content'] = $this->load->view('pages/admin/categories/view', '', TRUE);
+    $content['categories'] = $this->Category->all($select = "*", $like = "");
+    $data['content'] = $this->load->view('pages/admin/categories/view', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
