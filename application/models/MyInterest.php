@@ -63,7 +63,7 @@ class MyInterest extends CI_Model
 
       $this->db->set($data);
       $this->db->insert($this->my_interests_table);
-      $this->db->cache_delete('lessee', 'myshops');
+      $this->db->cache_delete('lessee', 'myinterests');
 
     }
     catch (Exception $err) {

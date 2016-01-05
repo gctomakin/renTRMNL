@@ -101,6 +101,7 @@ class Lessee extends CI_Model
     $user = $this->findByUsername($this->getUsername());
 
     if (!empty($user) && $this->encrypt->decode($user['password']) == $this->getPassword()):
+      $this->db->cache_delete('lessees', 'signin');
       return $user;
     else:
       return false;

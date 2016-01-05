@@ -142,6 +142,7 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
     'address': address
   }, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
+      var geolocate;
       var lat = results[0].geometry.location.lat();
       var lng = results[0].geometry.location.lng();
       var pos = new google.maps.LatLng(lat, lng);
@@ -151,7 +152,7 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
         position: pos,
         title: address
       });
-      //resultsMap.panTo(pos);
+      resultsMap.panTo(pos);
       resultsMap.setZoom(16);
       google.maps.event.addListener(marker, 'mouseover', function() {
         infowindow.setContent(this.title);
@@ -161,38 +162,51 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
         infowindow.close();
       });
 
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var marker = new google.maps.Marker({
-          map: resultsMap,
-          position: geolocate
-        });
-        var infowindow = new google.maps.InfoWindow({
-          map: resultsMap,
-          position: geolocate,
-          content: '<h1>Your Current location!</h1>' +
-            '<h2>Latitude: ' + position.coords.latitude + '</h2>' +
-            '<h2>Longitude: ' + position.coords.longitude + '</h2>'
-        });
-
-        directionsDisplay.setMap(resultsMap);
-        directionsDisplay.setPanel(document.getElementById('right-panel'));
-
-        directionsService.route({
-          origin: geolocate,
-          destination: pos,
-          travelMode: google.maps.TravelMode.DRIVING
-        }, function(response, status) {
-          if (status === google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
+      if (navigator && navigator.geolocation) {
+        function getLocation(position) {
+          geolocate = {
+            "lat": position.coords.latitude,
+            "lng": position.coords.longitude
           }
-        });
+          var marker = new google.maps.Marker({
+            map: resultsMap,
+            position: geolocate
+          });
+          var infowindow = new google.maps.InfoWindow({
+            map: resultsMap,
+            position: geolocate,
+            content: '<h1>Your Current location!</h1>' +
+              '<h2>Latitude: ' + position.coords.latitude + '</h2>' +
+              '<h2>Longitude: ' + position.coords.longitude + '</h2>'
+          });
 
+          directionsDisplay.setMap(resultsMap);
+          directionsDisplay.setPanel(document.getElementById('right-panel'));
 
+          directionsService.route({
+            origin: geolocate,
+            destination: pos,
+            travelMode: google.maps.TravelMode.DRIVING
+          }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+              directionsDisplay.setDirections(response);
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          });
+        }
+        navigator.geolocation.getCurrentPosition(getLocation);
+      } else {
+        // Google AJAX API fallback GeoLocation
+        if ((typeof google == 'object') && google.loader && google.loader.ClientLocation) {
+          geolocate = {
+            "lat": google.loader.ClientLocation.latitude,
+            "lng": google.loader.ClientLocation.longitude
+          }
 
-      });
+        }
+      }
+
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
