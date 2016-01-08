@@ -140,14 +140,14 @@ class CI_Controller {
 	  			exit();
 	  		}
 	  	} else {
-	  		// echo $method;
-	  		// exit();
 	  		if (!$isLogin && $this->input->is_ajax_request()) {
 	  			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
 	  			exit();
 	  		} else if (!$isLogin) { // Redirect to signin page if not signed in
 	  			redirect($role . "/signin-page");
 	  			exit();
+	  		} else if ($role == 'lessor' && $this->uri->segments[1] != 'subscriptions') {
+	  			$this->_checkSubscription();
 	  		}
 	  	}
 	  }
@@ -161,4 +161,13 @@ class CI_Controller {
 		}
 	}
 
+	private function _checkSubscription() {
+    $this->load->model('Subscription');
+    $lessorId = $this->session->userdata('lessor_id');
+    $subs = $this->Subscription->findActiveBySubscriberId($lessorId);
+    if (empty($subs)) {
+      redirect('subscriptions/entry');
+      exit();
+    }
+  }
 }
