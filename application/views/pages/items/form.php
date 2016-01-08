@@ -24,7 +24,7 @@
 		  	<label for="name" class="control-label col-lg-3">Picture</label>
 		  	<div class="col-lg-5">
 		  		<input type="file" accept="image/*" value="<?php echo set_value('picture', empty($item['item_pic']) ? '' : $item['item_pic']); ?>" id="picture" required name="picture">
-		  		<?php $itemPic = $item['item_pic'] == NULL ? '' : 'data:image/jpeg;base64,'.base64_encode($item['item_pic']); ?>
+		  		<?php $itemPic = empty($item['item_pic']) ? '' : 'data:image/jpeg;base64,'.base64_encode($item['item_pic']); ?>
           <img src="<?php echo $itemPic; ?>" id="preview-image" alt="" class="thumbnail" style="<?php echo empty($itemPic) ? 'display:none;' : ''; ?> width:100%; height: auto;">
 		  	</div>
 			</div>
