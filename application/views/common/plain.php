@@ -2,10 +2,19 @@
 
 $data['content'] = $content;
 
-$data['script'] = array(
+$mainScript 	= empty($script) ? array() : $script;
+$pageScript = array(
   'pages/main' // Page Script
 );
 
-$data['style'] = array('creative');
+$mainStyle = empty($style) ? array() : $style;
+$pageStyle = array(
+	'creative',
+);
+
+// Merging
+$data['script'] = array_merge($pageScript, $mainScript);
+$data['style'] = array_merge($pageStyle, $mainStyle);
+
 
 $this->load->view('base', $data);
