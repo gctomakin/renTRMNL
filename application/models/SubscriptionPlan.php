@@ -67,4 +67,9 @@ class SubscriptionPlan extends CI_Model{
     return $query->result();
   }
 
+  public function findById($id) {
+    $query = $this->db->get_where($this->subscription_plans_table, array('plan_id' => $id));
+    return $query->row_array();
+  }
+
 }
