@@ -70,7 +70,9 @@ class Lessors extends CI_Controller {
     $data['script'] = array(
       'libs/pnotify.core',
       'libs/pnotify.buttons',
-      'pages/create-form'
+      'libs/map',
+      'pages/create-form',
+      'pages/shops/form'
     );
     $data['style'] = array('libs/pnotify');
     $this->load->view('common/lessor', $data);
@@ -88,7 +90,9 @@ class Lessors extends CI_Controller {
       $data['script'] = array(
         'libs/pnotify.core',
         'libs/pnotify.buttons',
-        'pages/create-form'
+        'libs/map',
+        'pages/create-form',
+        'pages/shops/form'
       );
       $data['style'] = array('libs/pnotify');
       $this->load->view('common/lessor', $data); 
