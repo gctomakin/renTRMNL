@@ -184,7 +184,7 @@ class Lessees extends CI_Controller
           $this->Lessee->setUsername($post['username']);
           $this->Lessee->setPassword($post['password']);
           if ($this->Lessee->checkPassword()):
-              $this->Lessee->setPassword($this->encrypt->encode($post['new_password']));
+              $this->Lessee->setPassword($this->encryption->encrypt($post['new_password']));
               $result = $this->Lessee->updateAccount();
           else:
               $this->session->set_flashdata('warning', TRUE);

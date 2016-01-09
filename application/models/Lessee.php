@@ -99,9 +99,9 @@ class Lessee extends CI_Model
   public function authenticate()
   {
     $user = $this->findByUsername($this->getUsername());
+    $this->db->cache_delete('lessees', 'signin');
 
-    if (!empty($user) && $this->encrypt->decode($user['password']) == $this->getPassword()):
-      $this->db->cache_delete('lessees', 'signin');
+    if (!empty($user) && $this->encryption->decrypt($user['password']) == $this->getPassword()):
       return $user;
     else:
       return false;
@@ -260,7 +260,7 @@ class Lessee extends CI_Model
     $query = $this->db->get_where($this->lessees_table, array(
       'password' => $user['password']
     ));
-    if ($this->getPassword() == $this->encrypt->decode($query->row()->password)):
+    if ($this->getPassword() == $this->encryption->decrypt($query->row()->password)):
       return true;
     else:
       return false;

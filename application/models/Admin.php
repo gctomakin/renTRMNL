@@ -44,8 +44,9 @@ class Admin extends CI_Model{
   public function authenticate()
   {
     $user = $this->findByUsername($this->getUsername());
+    $this->db->cache_delete('admin', 'signin');
 
-    if(!empty( $user ) && $this->encrypt->decode($user['password']) == $this->getPassword()):
+    if(!empty( $user ) && $this->encryption->decrypt($user['password']) == $this->getPassword()):
 
       return $user;
 

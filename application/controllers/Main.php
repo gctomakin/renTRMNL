@@ -127,13 +127,13 @@ class Main extends CI_Controller {
         $this->Lessee->setEmail($post['email']);
         $this->Lessee->setPhoneno($post['phoneno']);
         $this->Lessee->setUsername($post['username']);
-        $this->Lessee->setPassword($this->encrypt->encode($post['password']));
+        $this->Lessee->setPassword($this->encryption->encrypt($post['password']));
         $this->Lessee->insert();
       } else {
         $this->load->model('Subscriber');
         $data = array(
           'username'=> $post['username'],
-          'password'=> $this->encrypt->encode($post['password'])
+          'password'=> $this->encryption->encrypt($post['password'])
         );
         $data[$this->Subscriber->getFname()] = $post['fname'];
         $data[$this->Subscriber->getLname()] = $post['lname'];

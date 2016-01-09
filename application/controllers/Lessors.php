@@ -27,7 +27,7 @@ class Lessors extends CI_Controller {
 	    $user = $sub->findUsername($username);
 	    if (
 	    	!empty( $user ) &&
-	    	$this->encrypt->decode($user[$sub->getPassword()]) == $password
+	    	$this->encryption->decrypt($user[$sub->getPassword()]) == $password
 	    ):
 
 	      $userdata = array(
@@ -95,7 +95,7 @@ class Lessors extends CI_Controller {
         'pages/shops/form'
       );
       $data['style'] = array('libs/pnotify');
-      $this->load->view('common/lessor', $data); 
+      $this->load->view('common/lessor', $data);
     } else {
       redirect('lessor/shops/list');
     }
@@ -107,9 +107,9 @@ class Lessors extends CI_Controller {
 
     $data['title'] = "My Shops";
     $lessorId = $this->session->userdata('lessor_id');
-    
+
     $content['shops'] = $this->RentalShop->findAllBySubscriberId($lessorId);
-    
+
     $data['content'] = $this->load->view('pages/shops/list', $content, true);
     $data['style'] = array(
       'libs/pnotify',
@@ -180,7 +180,7 @@ class Lessors extends CI_Controller {
 
     $data['title'] = "List All Items";
     $lessorId = $this->session->userdata('lessor_id');
-    
+
     $this->Item->setOffset($page); // Setting Rentalshop offset rows
     $items = $this->Item->findBySubscriberId($lessorId);
     $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
@@ -189,10 +189,10 @@ class Lessors extends CI_Controller {
     $config['total_rows'] = $items['count']-1;
     $config['per_page'] = $this->Item->getLimit();
     $this->pagination->initialize($config);
-    
+
     $content['pagination'] = $this->pagination->create_links();
     $content['rental_modes'] = $this->rentalmodes->getModes();
-    
+
     $data['content'] = $this->load->view('pages/items/list', $content, true);
     $data['script'] = array(
       'libs/pnotify.core',

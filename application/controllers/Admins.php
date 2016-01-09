@@ -151,7 +151,7 @@ class Admins extends CI_Controller {
       $this->Admin->setLname($post['lname']);
       $this->Admin->setMidinit($post['midinit']);
       $this->Admin->setUsername($post['username']);
-      $this->Admin->setPassword($this->encrypt->encode($post['password']));
+      $this->Admin->setPassword($this->encryption->encrypt($post['password']));
       $this->Admin->insert();
 
       $this->session->set_flashdata('success', TRUE);
