@@ -101,30 +101,24 @@ class Lessors extends CI_Controller {
     }
   }
 
-  public function shopList($page = 1) {
+  public function shopList() {
     $this->load->model('RentalShop');
     $this->load->library('pagination');
 
     $data['title'] = "My Shops";
     $lessorId = $this->session->userdata('lessor_id');
-    $this->RentalShop->setOffset($page); // Setting Rentalshop offset rows
-
-    $shops = $this->RentalShop->findBySubscriberId($lessorId);
     
-    // Configuring Pagination
-    $config['base_url'] = site_url('lessor/shops/list/');
-    $config['total_rows'] = $shops['count'] - 1;
-    $config['per_page'] = $this->RentalShop->getLimit();
-    $this->pagination->initialize($config);
+    $content['shops'] = $this->RentalShop->findAllBySubscriberId($lessorId);
     
-    $content['pagination'] = $this->pagination->create_links();
-    $content['shops'] = $shops['data'];
-
     $data['content'] = $this->load->view('pages/shops/list', $content, true);
-    $data['style'] = array('libs/pnotify');
+    $data['style'] = array(
+      'libs/pnotify',
+      'libs/dataTables.min'
+    );
     $data['script'] = array(
       'libs/pnotify.core',
       'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
       'pages/shops/list'
     );
 
