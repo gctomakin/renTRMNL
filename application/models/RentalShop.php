@@ -64,6 +64,12 @@ class RentalShop extends CI_Model{
 		return $data;
 	}
 
+	public function findAllBySubscriberId($lessorId, $key = "") {
+		$where = array($this->subscriberId => $lessorId);
+		$query = $this->db->from($this->table)->where($where)->like($this->name, $key)->get();
+		return $query->result();
+	}
+
 	public function findById($id, $subscriberId = "") {
 		$whereArray = array($this->id => $id);
 		if ($subscriberId) {
