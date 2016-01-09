@@ -22,7 +22,7 @@ class Lessees extends CI_Controller
   {
       $data['title']   = 'DASHBOARD';
       $data['content'] = $this->load->view('pages/lessee/dashboard', '', TRUE);
-      //$this->output->cache(1);
+      $this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -129,7 +129,7 @@ class Lessees extends CI_Controller
       $content['action'] = site_url('lessees/signin');
       $data['content']   = $this->load->view('pages/signin', $content, TRUE);
       $data['title']     = 'SIGN IN';
-      //$this->output->cache(1);
+      $this->output->cache(1);
       $this->load->view('common/plain', $data);
   }
 
@@ -139,7 +139,6 @@ class Lessees extends CI_Controller
       $content['lessee'] = $this->Lessee->findById();
       $data['content']   = $this->load->view('pages/lessee/profile', $content, TRUE);
       $data['title']     = 'MY PROFILE';
-      //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -236,7 +235,6 @@ class Lessees extends CI_Controller
       $data['script']     = array(
           'pages/lessees/shops'
       );
-      //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -248,7 +246,6 @@ class Lessees extends CI_Controller
       $data['script']           = array(
           'pages/lessees/items'
       );
-      //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -257,7 +254,6 @@ class Lessees extends CI_Controller
       $data['title']      = 'INBOX';
       $content['myshops'] = $this->Lessee->myInterests();
       $data['content']    = $this->load->view('pages/lessee/inbox', $content, TRUE);
-      //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -272,7 +268,6 @@ class Lessees extends CI_Controller
       $data['script']           = array(
           'pages/lessees/shops'
       );
-      //$this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
@@ -292,7 +287,7 @@ class Lessees extends CI_Controller
       $data['script']           = array(
           'pages/lessees/items'
       );
-      //$this->output->cache(1);
+      $this->output->cache(1);
       $this->load->view('common/lessee', $data);
   }
 
