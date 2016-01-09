@@ -12,4 +12,6 @@ $(document).ready(function() {
 			}, 'JSON');
 		}
 	});
+
+	$('#shop-table').DataTable();
 }); 
