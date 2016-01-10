@@ -215,8 +215,20 @@ class Lessors extends CI_Controller {
     $this->load->model('Subscription');
     $lessorId = $this->session->userdata('lessor_id');
     $content['subscriptions'] = $this->Subscription->findBySubscriberId($lessorId);
+    $content['plan'] = $this->Subscription->findActivePlanBySubId($lessorId);
     $data['title'] = 'Subscription Informations';
     $data['content'] = $this->load->view('pages/lessor/subscriptions/informations', $content, TRUE);
+    
+    $data['style'] = array(
+      'libs/price-table',
+      'libs/dataTables.min'
+    );
+
+    $data['script'] = array(
+      'libs/jquery.dataTables',
+      'pages/lessor/subscription'
+    );
+
     $this->load->view('common/lessor', $data);
   }
 

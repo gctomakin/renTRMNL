@@ -46,7 +46,11 @@ class Subscription extends CI_Model{
 	}
 
 	public function findBySubscriberId($id) {
-		$query = $this->db->get_where($this->table, array($this->subscriberId => $id));
+		$query = $this->db
+			->from($this->table . ' as s')
+			->join('subscription_plans as sp', 's.' . $this->planId . ' = sp.plan_id')
+			->where(array('s.' . $this->subscriberId => $id))
+			->get();
 		return $query->result();
 	}
 
@@ -56,6 +60,20 @@ class Subscription extends CI_Model{
 				$this->status => 'active'
 			)
 		);
+		return $query->row_array();
+	}
+
+	/**
+	 * Find Subscription and Plan from Active by Subscriber's id
+	 * @param  Int $id Subscriber's Id
+	 * @return array     SubscriptionPlan
+	 */
+	public function findActivePlanBySubId($id) {
+		$query = $this->db
+			->from($this->table . ' as s')
+			->join('subscription_plans as sp', 's.' . $this->planId . ' = sp.plan_id')
+			->where(array('s.' . $this->subscriberId => $id, 's.' . $this->status => 'active'))
+			->get();
 		return $query->row_array();
 	}
 
