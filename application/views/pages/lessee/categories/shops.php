@@ -7,13 +7,15 @@
   <div id="message" class="alert alert-success text-center" hidden><strong>Successfully</strong> Added to your My Shop list.</div>
   <div class="row no-gutter">
       <div class="col-md-12">
-          <div id="map" class="text-center" style="width:100%; height:480px;"></div>
+          <div id="map" class="text-center" style="width:100%; height:480px;" <?php echo (empty($shops)) ? 'hidden': '';?>></div>
       </div>
   </div>
   <?php if(empty($shops)): ?>
+  <div class="row no-gutter">
     <div class="col-md-12">
         <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no shops added yet. </div>
     </div>
+  </div>
   <?php else: ?>
     <hr>
     <?php foreach($shops as $shop):?>

@@ -14,13 +14,15 @@
   ?>
     <div class="row no-gutter">
         <div class="col-md-12">
-            <div id="map" class="text-center" style="width:100%; height:480px;"></div>
+            <div id="map" class="text-center" style="width:100%; height:480px;" <?php echo (empty($myshops)) ? 'hidden': '';?>></div>
         </div>
     </div>
     <?php if(empty($myshops)): ?>
+    <div class="row no-gutter">
       <div class="col-md-12">
           <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> Better check later, no my shops added yet. </div>
       </div>
+    </div>
     <?php else: ?>
     <hr>
     <?php foreach($myshops as $myshop): ?>
@@ -40,6 +42,7 @@
               <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $myshop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
               <a class="btn btn-danger delete-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-id="<?php echo $myshop->myshop_id; ?>" href="<?php echo site_url("lessee/myshops/delete/".$myshop->myshop_id); ?>" role="button"><span class="fa fa-trash"> Delete</span></a>
           </div>
+      </div>
       </div>
       <hr>
     <?php endforeach; ?>
