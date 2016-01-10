@@ -131,7 +131,7 @@ function geocodeAddress(geocoder, resultsMap, address) {
           infoWindow.close();
         });
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+        console.log('Geocode was not successful for the following reason: ' + status);
       }
     };
   }
@@ -208,7 +208,7 @@ function goToAddress(geocoder, resultsMap, address, directionsService, direction
       }
 
     } else {
-      alert('Geocode was not successful for the following reason: ' + status);
+      console.log('Geocode was not successful for the following reason: ' + status);
     }
   });
 }
@@ -217,6 +217,12 @@ function loadScript() {
   var script = document.createElement("script");
   script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBWWornRguaHPgQJFRn74qHQD3ZxbelM_Q&signed_in=true&callback=initMap";
   document.body.appendChild(script);
+}
+
+function scrollTop() {
+  $("html, body").animate({
+    scrollTop: $('body').offset().top
+  }, 100);
 }
 
 window.onload = loadScript;
@@ -241,9 +247,7 @@ $('.my-shop-trigger').click(function(e) {
         el.attr("disabled", true);
         $(".fa-plus-circle").text(" Added");
         message.fadeIn(2000, function() {
-          $("html, body").animate({
-            scrollTop: $('body').offset().top
-          }, 100);
+          scrollTop();
           message.delay(2000).fadeOut();
         });
       } else {
@@ -281,9 +285,7 @@ $('#message-form').submit(function(e) {
     .done(function(data) {
       if (data) {
         $('#message2').fadeIn(2000, function() {
-          $("html, body").animate({
-            scrollTop: $('body').offset().top
-          }, 100);
+          scrollTop();
           $('#message2').delay(2000).fadeOut();
         });
 
