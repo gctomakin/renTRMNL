@@ -139,7 +139,7 @@ class Items extends CI_Controller {
 
 	private function _validate() {
 		$this->isAjax();
-		$this->form_validation->set_rules('shop', 'Shop', 'trim|required|numeric|xss_clean');
+		$this->form_validation->set_rules('shop', 'Shop', 'trim|numeric|xss_clean');
 		$this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[2]|xss_clean');
 		$this->form_validation->set_rules('rate', 'Rate', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('qty', 'Quantity', 'trim|required|numeric|xss_clean');
@@ -158,7 +158,7 @@ class Items extends CI_Controller {
 			if (empty($data['message'])) {
 				$post = $this->input->post();
 				$data['post'] = array(
-					$this->Item->getShopId() => $post['shop'],
+					$this->Item->getShopId() => empty($post['shop']) ? null : $post['shop'],
 					$this->Item->getDesc() => $post['description'],
 					$this->Item->getRate() => $post['rate'],
 					$this->Item->getQty() => $post['qty'],

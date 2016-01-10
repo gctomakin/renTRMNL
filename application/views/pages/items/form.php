@@ -7,7 +7,7 @@
   		<div class="form-group">
 		  	<label for="shop" class="control-label col-lg-3">Shop</label>
 		  	<div class="col-lg-5">
-		  		<select id="shop" required class="form-control" name="shop">
+		  		<select id="shop" class="form-control" name="shop">
 		  			<?php if (!empty($item['shop_id'])) { ?>
 		  			<option value="<?php echo $item['shop_id']; ?>"><?php echo $item['shop_name'] . ' - ' . $item['shop_branch']; ?></option>
 		  			<?php }?>
