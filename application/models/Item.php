@@ -110,7 +110,7 @@ class Item extends CI_Model{
 		$data['data'] = $this->db
 			->select($select)
 			->from($this->table ." as i")
-			->join($this->RentalShop->getTable() . " as s", $joinCondition)
+			->join($this->RentalShop->getTable() . " as s", $joinCondition, 'left')
 			->where($where)
 			->like($itemAlias.'.'.$this->desc, $key)
 			->limit($this->limit, $this->offset)
