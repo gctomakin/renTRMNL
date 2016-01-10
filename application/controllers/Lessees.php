@@ -12,6 +12,7 @@ class Lessees extends CI_Controller
       $this->load->model('Item');
       $this->load->model('MyShop');
       $this->load->model('MyInterest');
+      $this->load->model('Category');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
       $this->MyInterest->setLesseeId($this->session->userdata('lessee_id'));
@@ -21,8 +22,8 @@ class Lessees extends CI_Controller
   public function index()
   {
       $data['title']   = 'DASHBOARD';
-      $data['content'] = $this->load->view('pages/lessee/dashboard', '', TRUE);
-      $this->output->cache(1);
+      $content['categories'] = $this->Category->all($select = "*", $like = "");
+      $data['content'] = $this->load->view('pages/lessee/dashboard', $content, TRUE);
       $this->load->view('common/lessee', $data);
   }
 
