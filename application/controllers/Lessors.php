@@ -181,7 +181,9 @@ class Lessors extends CI_Controller {
     $data['title'] = "List All Items";
     $lessorId = $this->session->userdata('lessor_id');
 
-    $this->Item->setOffset($page); // Setting Rentalshop offset rows
+    $offset = ($page - 1) * $this->Item->getLimit();
+
+    $this->Item->setOffset($offset); // Setting Rentalshop offset rows
     $items = $this->Item->findBySubscriberId($lessorId);
     $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
     // Configuring Pagination
