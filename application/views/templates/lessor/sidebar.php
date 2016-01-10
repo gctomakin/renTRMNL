@@ -38,7 +38,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#subscriptions-nav"><i class="fa fa-info fa-fw"></i> Subscriptions</a>
+                    <a href="<?php echo site_url('lessor/subscriptions') ?>"><i class="fa fa-info fa-fw"></i> Subscriptions</a>
                 </li>
                 <li>
                     <!-- /.nav-second-level -->

@@ -211,4 +211,13 @@ class Lessors extends CI_Controller {
     );
   }
 
+  public function subscriptions() {
+    $this->load->model('Subscription');
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['subscriptions'] = $this->Subscription->findBySubscriberId($lessorId);
+    $data['title'] = 'Subscription Informations';
+    $data['content'] = $this->load->view('pages/lessor/subscriptions/informations', $content, TRUE);
+    $this->load->view('common/lessor', $data);
+  }
+
 }

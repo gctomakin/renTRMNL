@@ -84,7 +84,7 @@ $route['lessor/items/list/(:num)'] = 'lessors/itemList/$1';
 $route['lessor/shops/create']      = 'lessors/shopCreate';
 $route['lessor/shops/edit/(:num)'] = "lessors/shopEdit/$1";
 $route['lessor/shops/list']        = 'lessors/shopList';
-$route['lessor/shops/list/(:num)'] = 'lessors/shopList/$1';
+$route['lessor/subscriptions']        = 'lessors/subscriptions';
 $route['lessor']                   = 'lessors';
 $route['lessor/dashboard']         = 'lessors/dashboard';
 
