@@ -77,6 +77,37 @@ class Subscription extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function countTotalByDate($from, $to = "") {
+		if ($from == $to) {
+		 	$where = "DATE({$this->startDate}) = DATE('$from')";
+		} else {
+			$where = "{$this->startDate} between '$from' and '$to'";
+		}
+		$query = $this->db
+			->select('count('. $this->id .') as total')
+			->from($this->table)
+			->where($where)
+			->get();
+		$result = $query->row_array(); 
+		return $result['total'];
+	}
+
+	public function findByDate($from, $to = "", $status = "") {
+		$where = array("DATE({$this->startDate}) >=" => $from);
+		if (!empty($to)) {
+			$where["DATE({$this->startDate}) <="] = $to;
+		}
+		if (!empty($status)) {
+			$where[$this->status] = $status;
+		}
+		$query = $this->db
+			->from($this->table . ' as s')
+			->join('subscription_plans as sp', 's.' . $this->planId . ' = sp.plan_id')
+			->where($where)
+			->get();
+		return $query->result();
+	}
+
 	/** GETTERS **/
 	public function getId() { return $this->id; }
 	public function getStartDate() { return $this->startDate; }
