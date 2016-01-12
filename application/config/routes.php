@@ -69,6 +69,12 @@ $route['admin/rentalshops/add']   = 'admins/rental_shopsAddPage';
 $route['admin/rentalshops']       = 'admins/rental_shopsViewPage';
 $route['admin/categories/add']    = 'admins/categoriesAddPage';
 $route['admin/categories']        = 'admins/categoriesViewPage';
+$route['admin/reports/subscriptions'] = 'admins/reportsSubscriptions';
+$route['admin/reports/rentals'] = 'admins/reportsRentals';
+$route['admin/reports/lessees'] = 'admins/reportsLessees';
+$route['admin/reports/lessors'] = 'admins/reportsLessors';
+
+
 /** Admin Actions*/
 $route['admin/account/add']       = 'admins/addAccount';
 $route['admin/subscription/add']  = 'admins/addSubscriptionPlan';
