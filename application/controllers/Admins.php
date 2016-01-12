@@ -239,4 +239,54 @@ class Admins extends CI_Controller {
     endif;
   }
 
+  public function reportsSubscriptions() {
+    $data = $this->_reportAssets();
+    $data['title'] = 'SUBSCRIPTION\'s REPORTS';
+    $data['content'] = $this->load->view('pages/admin/reports/subscriptions', '', TRUE);
+    array_push($data['script'], 'pages/reports/subscriptions');
+    $this->load->view('common/admin', $data);
+  }
+
+  public function reportsRentals() {
+    $data = $this->_reportAssets();
+    $data['title'] = 'RENTAL\'s REPORTS';
+    $data['content'] = $this->load->view('pages/admin/reports/rentals', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function reportsLessees() {
+    $data = $this->_reportAssets();
+    $data['title'] = 'LESSEE\'s REPORTS';
+    $data['content'] = $this->load->view('pages/admin/reports/lessees', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function reportsLessors() {
+    $data = $this->_reportAssets();
+    $data['title'] = 'LESSOR\'s REPORTS';
+    $data['content'] = $this->load->view('pages/admin/reports/lessors', '', TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  private function _reportAssets() {
+    $data['script'] = array(
+      'common',
+      'libs/chart.min',
+      'libs/moment.min2',
+      'libs/daterangepicker',
+      'libs/daterange',
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'libs/dataTables.sum'
+    );
+
+    $data['style'] = array(
+      'style',
+      'libs/datepicker',
+      'libs/dataTables.min'
+
+    );
+    return $data;
+  }
 }
