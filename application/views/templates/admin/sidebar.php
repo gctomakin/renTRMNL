@@ -50,16 +50,16 @@
                     <a href="#"><i class="fa fa-file-text-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="panels-wells.html">Sales Report</a>
+                            <a href="<?php echo site_url('admin/reports/subscriptions'); ?>">Subscription</a>
                         </li>
                         <li>
-                            <a href="buttons.html">Subscription</a>
+                            <a href="<?php echo site_url('admin/reports/rentals'); ?>">Rental</a>
                         </li>
                         <li>
-                            <a href="notifications.html">Rental Shops</a>
+                            <a href="<?php echo site_url('admin/reports/lessees'); ?>">Lessees</a>
                         </li>
                         <li>
-                            <a href="typography.html">Lessees</a>
+                            <a href="<?php echo site_url('admin/reports/lessors'); ?>">lessors</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
