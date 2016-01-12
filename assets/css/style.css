@@ -217,3 +217,15 @@
   }
 }
 
+.col-centered {
+    display:inline-block;
+    float:none!important;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+.row-centered {
+    text-align:center;
+}
