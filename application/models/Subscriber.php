@@ -17,6 +17,7 @@ class Subscriber extends CI_Model{
 	private $status;
 	private $username;
 	private $password;
+	private $date;
 
 	public function __construct() {
 		parent::__construct();
@@ -32,7 +33,9 @@ class Subscriber extends CI_Model{
 		$this->status = "subscriber_status";
 		$this->username = "username";
 		$this->password = "password";
+		$this->date = "date_registered";
 		$this->table = "subscribers";
+
 	}
 
 	public function create($data) {
@@ -78,7 +81,32 @@ class Subscriber extends CI_Model{
 		return $query->row_array();
 	}
 
-	
+	public function countTotalByDate($from, $to = "") {
+		if ($from == $to) {
+		 	$where = "DATE({$this->date}) = DATE('$from')";
+		} else {
+			$where = "{$this->date} between '$from' and '$to'";
+		}
+		$query = $this->db
+			->select('count('. $this->id .') as total')
+			->from($this->table)
+			->where($where)
+			->get();
+		$result = $query->row_array(); 
+		return $result['total'];
+	}
+
+	public function findByDate($from, $to = "", $status = "") {
+		$where = array("DATE({$this->date}) >=" => $from);
+		if (!empty($to)) {
+			$where["DATE({$this->date}) <="] = $to;
+		}
+		if (!empty($status)) {
+			$where[$this->status] = $status;
+		}
+		$query = $this->db->get_where($this->table, $where);
+		return $query->result();
+	}	
 
 	/** GETTERS */
 	public function getTable() { return $this->table; }
@@ -94,4 +122,5 @@ class Subscriber extends CI_Model{
 	public function getStatus() { return $this->status; }	
 	public function getUsername() { return $this->username; }	
 	public function getPassword() { return $this->password; }	
+	public function getDate() { return $this->date; }
 }
