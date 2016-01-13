@@ -265,6 +265,7 @@ class Admins extends CI_Controller {
     $data = $this->_reportAssets();
     $data['title'] = 'LESSOR\'s REPORTS';
     $data['content'] = $this->load->view('pages/admin/reports/lessors', '', TRUE);
+    array_push($data['script'], 'pages/reports/lessors');
     $this->load->view('common/admin', $data);
   }
 
@@ -278,7 +279,8 @@ class Admins extends CI_Controller {
       'libs/pnotify.core',
       'libs/pnotify.buttons',
       'libs/jquery.dataTables',
-      'libs/dataTables.sum'
+      'libs/dataTables.sum',
+      'pages/reports/common'
     );
 
     $data['style'] = array(
