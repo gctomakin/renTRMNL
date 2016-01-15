@@ -297,4 +297,31 @@ class Lessee extends CI_Model
     return $result;
   }
 
+  public function countTotalByDate($from, $to = "") {
+    if ($from == $to) {
+      $where = "DATE(date_registered) = DATE('$from')";
+    } else {
+      $where = "date_registered between '$from' and '$to'";
+    }
+    $query = $this->db
+      ->select('count(lessee_id) as total')
+      ->from('lessees')
+      ->where($where)
+      ->get();
+    $result = $query->row_array(); 
+    return $result['total'];
+  }
+
+  public function findByDate($from, $to = "", $status = "") {
+    $where = array("DATE(date_registered) >=" => $from);
+    if (!empty($to)) {
+      $where["DATE(date_registered) <="] = $to;
+    }
+    if (!empty($status)) {
+      $where['status'] = $status;
+    }
+    $query = $this->db->get_where('lessees', $where);
+    return $query->result();
+  }
+
 }
