@@ -12,17 +12,9 @@ class Reports extends CI_Controller {
 		if ($res['result']) {			
 			$this->load->model('Subscription');
 			for ($i = 0; $i < count($res['date']); $i++) {
-				if (($i + 1) < count($res['date'])) {
-					// minus 1 second for interval date;
-					$to = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime($res['date'][$i + 1])));
-				} else if ($res['type'] == 'hours') {
-					$to = '';
-				} else {
-					$to = $res['date'][$i];
-				}
-				$from = $res['date'][$i];
-				$subs = $this->Subscription->countTotalByDate($from, $to);
-				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($from)) : date('Y-m-d' , strtotime($from));
+				$dates = $this->_getFromTo($res['date'], $i, $res['type']);
+				$subs = $this->Subscription->countTotalByDate($dates['from'], $dates['to']);
+				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($dates['from'])) : date('Y-m-d' , strtotime($dates['from']));
 				$res['intervals'][$label] = $subs;
 			}
 
@@ -32,26 +24,27 @@ class Reports extends CI_Controller {
 		echo json_encode($res);
 	}
 
-	public function lessors() {
+	public function users() {
 		$res = $this->_validate();
 		if ($res['result']) {			
 			$this->load->model('Subscriber');
+			$this->load->model('Lessee');
 			for ($i = 0; $i < count($res['date']); $i++) {
-				if (($i + 1) < count($res['date'])) {
-					// minus 1 second for interval date;
-					$to = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime($res['date'][$i + 1])));
-				} else if ($res['type'] == 'hours') {
-					$to = '';
-				} else {
-					$to = $res['date'][$i];
-				}
-				$from = $res['date'][$i];
-				$subs = $this->Subscriber->countTotalByDate($from, $to);
-				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($from)) : date('Y-m-d' , strtotime($from));
-				$res['intervals'][$label] = $subs;
+				$dates = $this->_getFromTo($res['date'], $i, $res['type']);
+				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($dates['from'])) : date('M d' , strtotime($dates['from']));
+	
+				$res['labels'][] = $label;
+				// Count lessors		
+				$subs = $this->Subscriber->countTotalByDate($dates['from'], $dates['to']);
+				$res['lessor']['intervals'][] = $subs;
+
+				// Count Lessee
+				$lessees = $this->Lessee->countTotalByDate($dates['from'], $dates['to']);
+				$res['lessee']['intervals'][] = $lessees;
 			}
-			$details['subscribers'] = $this->Subscriber->findByDate($res['startDate'], $res['endDate']);
-			$res['details'] = $this->load->view('pages/admin/reports/lessorDetails', $details, TRUE);
+			$details['lessors'] = $this->Subscriber->findByDate($res['startDate'], $res['endDate']);
+			$details['lessees'] = $this->Lessee->findByDate($res['startDate'], $res['endDate']);
+			$res['details'] = $this->load->view('pages/admin/reports/userDetails', $details, TRUE);
 		}
 		echo json_encode($res);
 	}
@@ -70,5 +63,18 @@ class Reports extends CI_Controller {
 			$res['message'] = 'Invalid parameter';
 		}
 		return $res;
+	}
+
+	private function _getFromTo($date, $index, $type) {
+		if (($index + 1) < count($date)) {
+			// minus 1 second for interval date;
+			$to = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime($date[$index + 1])));
+		} else if ($type == 'hours') {
+			$to = '';
+		} else {
+			$to = $date[$index];
+		}
+		$from = $date[$index];
+		return array('from' => $from, 'to' => $to);
 	}
 }

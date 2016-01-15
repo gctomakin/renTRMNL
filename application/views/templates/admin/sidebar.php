@@ -56,10 +56,7 @@
                             <a href="<?php echo site_url('admin/reports/rentals'); ?>">Rental</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('admin/reports/lessees'); ?>">Lessees</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('admin/reports/lessors'); ?>">lessors</a>
+                            <a href="<?php echo site_url('admin/reports/users'); ?>">Users</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
