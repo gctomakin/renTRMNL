@@ -27,8 +27,8 @@
                       <dd><?php echo $item->shop_branch; ?></dd>
                     </dl>
                     <div class="btn-group">
-                      <a href="#" class="btn btn-info btn-xs">Reserve</a>
-                      <a href="#" class="btn btn-success btn-xs">Rent</a>
+                      <button class="btn btn-info btn-xs">Reserve</button>
+                      <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item->item_id; ?>">Rent</button>
                       <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item->item_id; ?>" data-interest-name="<?php echo $item->item_desc; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item->item_id,$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item->item_id,$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
                     </div>
                 </div>
@@ -66,3 +66,13 @@
     <?php endif;?>
   </div>
 </div>
+<form id='paypal-form' class="standard" action="https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">
+  <input id="type" type="hidden" name="expType" value="light">
+  <input id="paykey" type="hidden" name="paykey" value="">
+  <input class="hidden" type="submit" id="btn-pay"> 
+</form>
+<script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+<script>
+  var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'btn-pay'});
+  var rentalPayUrl = "<?php echo site_url('rental/pay'); ?>";
+</script>
