@@ -280,15 +280,19 @@ class Lessees extends CI_Controller
 
   public function itemsPage()
   {
-      $data['title']    = 'ITEMS';
-      $content['items'] = $this->Item->all($select = "*");
-      $content['myinterests']       = $this->MyInterest->getMyInterestId();
-      $content['action']        = site_url('lessee/add-myinterest');
-      $data['content']  = $this->load->view('pages/lessee/categories/items', $content, TRUE);
-      $data['script']           = array(
-          'pages/lessees/items'
+      $data['title'] = 'ITEMS';
+      $keyword = $this->input->get('item');
+      $content['items'] = $this->Item->all($select = "*", '', $keyword);
+      $content['myinterests'] = $this->MyInterest->getMyInterestId();
+      $content['action'] = site_url('lessee/add-myinterest');
+      $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
+      $data['style'] = array('libs/pnotify');
+      $data['script'] = array(
+        'libs/pnotify.core',
+        'libs/pnotify.buttons',
+        'pages/lessees/items'
       );
-      $this->output->cache(1);
+      // $this->output->cache(0);
       $this->load->view('common/lessee', $data);
   }
 
