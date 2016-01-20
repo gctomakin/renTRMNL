@@ -46,4 +46,16 @@ $(document).ready(function(){
 
   });
 
+  $('.btn-rent').click(function() {
+    var itemId = $(this).data('item-id');
+    $.post(rentalPayUrl, {id: itemId}, function(data) {
+      if (data['result']) {
+        $('#paykey').val(data['split_pay']['payKey']);
+        $('#btn-pay').trigger('click');
+      } else {
+        errorMessage(data['message']);
+      }
+    }, 'JSON');
+  });
+
 });
