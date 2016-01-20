@@ -1,3 +1,4 @@
+
 <div class="container">
 	<h1 class="text-center">Subscription Entry Process</h1>
 	<div id="wizard" class="form_wizard wizard_horizontal">
@@ -78,6 +79,10 @@
       </div>
     </div>
 	</div>
+  <div class="text-center">
+    <hr>
+    <a href="/logout">Logout</a>
+  </div>
 </div>
 
 <script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
