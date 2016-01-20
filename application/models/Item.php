@@ -2,41 +2,32 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Item extends CI_Model{
-	private $table;
+	private $table = "items";
 	private $tableShop;
 
 	/** Item columns **/
-	private $id;
-	private $rate;
-	private $pic;
-	private $status;
-	private $qty;
-	private $desc;
-	private $cashBond;
-	private $rentalMode;
-	private $penalty;
-	private $shopId;
-	private $subscriberId;
+	private $id = "item_id";
+	private $rate = "item_rate";
+	private $pic = "item_pic";
+	private $status = "item_stats";
+	private $qty = "item_qty";
+	private $desc = "item_desc";
+	private $cashBond = "item_cash_bond";
+	private $rentalMode = "item_rental_mode";
+	private $penalty = "item_penalty";
+	private $shopId = "shop_id";
+	private $subscriberId = "subscriber_id";
 
 	private $limit = 5;
 	private $offset = 0;
 
+	// Alias
+	private $itemAlias = 'i';
+	private $shopAlias = 's';
+	private $subscriberAlias = 'sub';
+
 	public function __construct() {
 		parent::__construct();
-
-		$this->table = "items";
-		$this->id = "item_id";
-		$this->rate = "item_rate";
-		$this->pic = "item_pic";
-		$this->status = "item_stats";
-		$this->qty = "item_qty";
-		$this->desc = "item_desc";
-		$this->cashBond = "item_cash_bond";
-		$this->rentalMode = "item_rental_mode";
-		$this->penalty = "item_penalty";
-		$this->shopId = "shop_id";
-		$this->subscriberId = "subscriber_id";
-
 	}
 
 	public function create($data) {
@@ -67,33 +58,32 @@ class Item extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	public function all($select = "", $status = "") {
-		// Load reference Table
-		$this->load->model('RentalShop');
-		$this->load->model('Subscriber');
-
-		// Aliases
-		$itemAlias = 'i';
-		$shopAlias = 's';
-		$subscriberAlias = 'sub';
-
-		// Conditions
-		$itemShopCon = "$shopAlias." .  $this->RentalShop->getId() .  " = $itemAlias." . $this->shopId;
-		$itemSubscriberCon = "$subscriberAlias." . $this->Subscriber->getId() . " = $itemAlias.". $this->subscriberId;
+	public function all($select = "", $status = "", $like = "") {
+		$where = array();
 
 		if (!empty($status)) {
-			$this->db->where("$itemAlias.{$this->status} = $status");
+			$where[] = $this->itemAlias .".". $this->status ." = '$status'";
+		}
+
+		if (!empty($like)) {
+			$where[] = $this->itemAlias.".".$this->desc ." LIKE '%$like%'";
+		}
+
+		if (!empty($where)) {
+			$this->db->where(implode('AND ', $where));
 		}
 
 		if (empty($select)) {
-			$select = "$itemAlias.*, $shopAlias.*, $subscriberAlias.*";
+			$select = $this->_joinSelect();
 		}
 
+		$joinShop = $this->_joinShop();
+		$joinSubs = $this->_joinSubscriber();
 		$query = $this->db
 			->select($select)
-			->from($this->table ." as $itemAlias")
-			->join($this->RentalShop->getTable() . " as $shopAlias", $itemShopCon, "left")
-			->join($this->Subscriber->getTable() . " as $subscriberAlias", $itemSubscriberCon, "left")
+			->from($this->table ." as ". $this->itemAlias)
+			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
+			->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type'])
 			->get();
 		return $query->result();
 	}
@@ -124,18 +114,15 @@ class Item extends CI_Model{
 	}
 
 	public function findByIdComplete($id) {
-		$this->load->model('RentalShop');
-		$itemAlias = 'i';
-		$shopAlias = 's';
-		$select = "$itemAlias.*, $shopAlias." .
-							$this->RentalShop->getName() . ", $shopAlias." .
-							$this->RentalShop->getBranch();
-		$join = "$shopAlias.". $this->RentalShop->getId() . " = $itemAlias." . $this->shopId;
+		$select = $this->_joinSelect();
+		$joinShop = $this->_joinShop();
+		$joinSubs = $this->_joinSubscriber();
 		$query = $this->db
 			->select($select)
-			->from($this->table . " as $itemAlias")
-			->join($this->RentalShop->getTable() . " as $shopAlias", $join, 'LEFT')
-			->where(array("$itemAlias.".$this->id => $id))
+			->from($this->table . " as ". $this->itemAlias)
+			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
+			->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type'])
+			->where(array($this->itemAlias .".". $this->id => $id))
 			->get();
 
 		return $query->row_array();
@@ -172,5 +159,24 @@ class Item extends CI_Model{
 	public function clearCache() {
 		$this->db->cache_delete('lessor','items');
 		$this->db->cache_delete('lessee','items');
+	}
+
+	private function _joinSelect() {
+		return $this->itemAlias .".*, ". $this->shopAlias .".*, " . $this->subscriberAlias . ".*";
+	}
+	private function _joinShop() {
+		$this->load->model('RentalShop');
+		$table = $this->RentalShop->getTable() . " as " . $this->shopAlias;
+		$on = $this->shopAlias. "." .  $this->RentalShop->getId();
+		$on .= " = " . $this->itemAlias . "." . $this->shopId;
+		return array('table' => $table, 'on' => $on, 'type' => 'left');
+	}
+
+	private function _joinSubscriber() {
+		$this->load->model('Subscriber');
+		$table = $this->Subscriber->getTable() . " as " . $this->subscriberAlias;
+		$on = $this->subscriberAlias. "." . $this->Subscriber->getId();
+		$on .= " = " . $this->itemAlias. "." . $this->subscriberId;
+		return array('table' => $table, 'on' => $on, 'type' => 'left');
 	}
 }
