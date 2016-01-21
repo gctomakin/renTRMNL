@@ -27,7 +27,7 @@
                       <dd><?php echo $item->shop_branch; ?></dd>
                     </dl>
                     <div class="btn-group">
-                      <button class="btn btn-info btn-xs">Reserve</button>
+                      <a href="<?php echo site_url('reservations/item/' . $item->item_id); ?>" class="btn btn-info btn-xs">Reserve</a>
                       <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item->item_id; ?>">Rent</button>
                       <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item->item_id; ?>" data-interest-name="<?php echo $item->item_desc; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item->item_id,$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item->item_id,$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
                     </div>
