@@ -65,8 +65,15 @@
 }
 
 .daterangepicker.picker_3 table.table-condensed thead tr:first-child {
-    background: #1ABB9C;
+    /*background: #1ABB9C;*/
+    background: #D2220E;
     color: #ECF0F1;
+}
+
+.daterangepicker.picker_3 table.table-condensed tbody td.active {
+    background: #D2220E!important;
+    /*background: #536A7F;*/
+    color: #fff;
 }
 
 .daterangepicker.picker_4 table.table-condensed tbody td {
