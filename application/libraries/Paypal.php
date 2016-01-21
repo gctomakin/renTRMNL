@@ -5,7 +5,7 @@ class Paypal {
 	private $apiUrl = "https://svcs.sandbox.paypal.com/AdaptivePayments/";
 	private $paypalUrl = "https://www.sandbox.paypal.com/webscr?cmd=_ap-payment&paykey=";
 
-	public function createPacket($amount, $email) {
+	public function createPacket($amount, $email, $return = 'subscriptions/add', $cancel = 'subscriptions/cancel') {
 		// create the pay packet
 		if (is_numeric($amount) && $amount > 0) {
 			$createPacket = array(
@@ -16,9 +16,9 @@ class Paypal {
 						array('amount' => $amount, 'email' => $email)
 					)
 				),
-				"returnUrl" => site_url('subscriptions/add'),
+				"returnUrl" => site_url($return),
 				// Where the Sender is redirected to upon a canceled payment
-				"cancelUrl" => site_url('subscriptions/cancel') ,
+				"cancelUrl" => site_url($cancel) ,
 				"requestEnvelope" => $this->_envelops()
 			);
 			return $this->_paypalSend($createPacket, 'Pay');
