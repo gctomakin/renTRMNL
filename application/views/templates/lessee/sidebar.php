@@ -27,13 +27,13 @@
                     <a href="#"><i class="fa fa-cart-plus fa-fw"></i> Items<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="<?php echo site_url('lessee/items'); ?>">List</a>
+                            <a href="<?php echo site_url('lessee/items/'); ?>">List</a>
                         </li>
                         <li>
                             <a href="panels-wells.html">Rent</a>
                         </li>
                         <li>
-                            <a href="buttons.html">Reserved</a>
+                            <a href="<?php echo site_url('lessee/reserved/') ?>">Reserved</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
