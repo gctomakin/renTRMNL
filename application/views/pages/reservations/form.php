@@ -26,7 +26,7 @@
 	  			<div class="col-md-8">
 	  				<select id="quantity" name="quantity" class="form-control">
 	  					<option value="" selected></option>
-	  					<?php for($i = 1; $i < $item['item_qty']; $i++) { ?>
+	  					<?php for($i = 1; $i <= $item['item_qty']; $i++) { ?>
 							<option value="<?php echo $i; ?>"><?php echo $i . ' PCS'; ?></option>
 	  					<?php } ?>
 	  				</select>

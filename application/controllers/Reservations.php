@@ -53,12 +53,21 @@ class Reservations extends CI_Controller {
 			$this->Reservation->setStatus('pending');
 			$this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
 			$id = $this->Reservation->create();
+			$res['result'] = FALSE;
 			if ($id > 0) {
-				$res['result'] = TRUE;
-				$res['message'] = 'Reservation Created';
+				$this->load->model('ReservationDetail');
+				$this->ReservationDetail->setRentalAmt($item['item_rate']);
+				$this->ReservationDetail->setQty($res['qty']);
+				$this->ReservationDetail->setItemId($item['item_id']);
+				$this->ReservationDetail->setReserveId($id);
+				if ($this->ReservationDetail->create() > 0) {
+					$res['result'] = TRUE;
+					$res['message'] = 'Reservation Created';
+				} else {
+					$res['message'] = 'Reservation Detail: Internal Server Error';
+				}
 			} else {
-				$res['result'] = FALSE;
-				$res['message'] = 'Internal Server Error';
+				$res['message'] = 'Reservation: Internal Server Error';
 			}
   	}
   	echo json_encode($res);
