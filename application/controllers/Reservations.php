@@ -48,7 +48,7 @@ class Reservations extends CI_Controller {
 			$this->Reservation->setDateReturned($res['dateTo']);
 			$this->Reservation->setTotalAmt($total);
 			$this->Reservation->setDownPayment($total/2);
-			$this->Reservation->setTotalBalance(0);
+			$this->Reservation->setTotalBalance($total);
 			$this->Reservation->setPenalty(0);
 			$this->Reservation->setStatus('pending');
 			$this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
