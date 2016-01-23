@@ -296,6 +296,21 @@ class Lessees extends CI_Controller
       $this->load->view('common/lessee', $data);
   }
 
+  public function reservedPage() {
+    $this->load->model('Reservation');
+    $data['title'] = 'Item Reserved';
+    $lesseId = $this->session->userdata('lessee_id');
+    $this->Reservation->setLesseeId($lesseId);
+    $content['reservations'] = $this->Reservation->find();
+    $data['content'] = $this->load->view('pages/lessee/categories/reservations', $content, TRUE);
+    $data['style'] = array('libs/dataTables.min');
+    $data['script'] = array(
+      'libs/jquery.dataTables',
+      'pages/lessees/reservations'
+    );
+    $this->load->view('common/lessee', $data);
+  }
+
   public function sendMessage()
   {
       $app_id     = '163140';
