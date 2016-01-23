@@ -161,6 +161,11 @@ class CI_Controller {
 		}
 	}
 
+	public function validateDate($date, $format = 'Y-m-d H:i:s') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+	}
+
 	private function _checkSubscription() {
     $this->load->model('Subscription');
     $lessorId = $this->session->userdata('lessor_id');
