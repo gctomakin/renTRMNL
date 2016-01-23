@@ -65,6 +65,12 @@ class Reservation extends CI_Model{
 		return $query->result();
 	}
 
+	public function find() {
+		$data = array_filter($this->data);
+		$query = $this->db->get_where($this->table, $data);
+		return $query->result();
+	}
+
 	// GETTERS AND SETTERS
 
 	public function getId() { return $this->id; }
