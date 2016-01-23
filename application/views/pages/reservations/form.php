@@ -20,31 +20,32 @@
 			</div>
 		</div>
   	<div class="col-lg-6">
-  		<form action="" class="form-horizontal">
+  		<form action="<?php echo $action; ?>" id="reserve-form" method="POST" class="form-horizontal">
 	  		<div class="form-group">
 	  			<label class="control-label col-md-2" for="quantity">Quantity</label>
 	  			<div class="col-md-8">
 	  				<select id="quantity" name="quantity" class="form-control">
 	  					<option value="" selected></option>
-	  					<option value="1">1 PCS</option>
-	  					<option value="2">2 PCS</option>
-	  					<option value="3">3 PCS</option>
-	  					<option value="4">4 PCS</option>
-	  					<option value="5">5 PCS</option>
+	  					<?php for($i = 1; $i < $item['item_qty']; $i++) { ?>
+							<option value="<?php echo $i; ?>"><?php echo $i . ' PCS'; ?></option>
+	  					<?php } ?>
 	  				</select>
 	  			</div>
 	  		</div>
 	  		<div class="form-group">
 	  			<label class="control-label col-md-2" for="date">Date</label>
 	  			<div class="col-md-8">
-	  				<input type="text" id="date" name="date" placeholder="Choose date to rent" class="single-datepicker form-control">
+	  				<input type="text" required id="date" name="date" readonly placeholder="Choose date to rent" class="form-control">
 	  			</div>
 	  		</div>
 	  		<div class="form-group">
 	  			<label class="control-label col-md-2" for="total">Total</label>
 	  			<div class="col-md-8">
-	  				<h4>200.00</h4>
-	  				<input type="hidden" id="total">
+	  				<h4 id="total-info">0.00</h4>
+	  				<input type="hidden" name="total" id="total" value="0">
+	  				<input type="hidden" id="item-rate" value="<?php echo $item['item_rate']; ?>">
+	  				<input type="hidden" id="start-date" value="<?php echo $startDate; ?>">
+	  				<input type="hidden" name="itemId" id="item-id" value="<?php echo $item['item_id']; ?>">
 	  			</div>
 	  		</div>
 	  		<div class="form-group">
