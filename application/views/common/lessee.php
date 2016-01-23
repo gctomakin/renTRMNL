@@ -12,6 +12,7 @@ $data['content'] .= $this->load->view('templates/lessee/wrapper', $wrapper, true
 $data['script'] 	= empty($script) ? array() : $script;
 $data['script'][] = 'metisMenu.min';
 $data['script'][] = 'sb-admin-2';
+$data['script'][] = 'common';
 
 $data['style'] 		= empty($style) ? array() : $style;
 $data['style'][] 	= 'new-bootstrap.min';
