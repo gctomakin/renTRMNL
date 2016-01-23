@@ -305,6 +305,8 @@ class Lessees extends CI_Controller
     $data['content'] = $this->load->view('pages/lessee/categories/reservations', $content, TRUE);
     $data['style'] = array('libs/dataTables.min');
     $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',  
       'libs/jquery.dataTables',
       'pages/lessees/reservations'
     );
