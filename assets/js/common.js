@@ -47,9 +47,9 @@ function formatNumber(number, decimalsLength, decimalSeparator, thousandSeparato
      (decimalsLength ? decimalSeparator + Math.abs(n - i).toFixed(decimalsLength).slice(2) : "");
 }
 
-function proccessAction(url, id) {
+function proccessAction(url, pData) {
   var d = $.Deferred();
-  $.post(url, {id:id}, function(data) {
+  $.post(url, pData, function(data) {
     if (data['result']) {
       successMessage(data['message']);
       d.resolve('success');
