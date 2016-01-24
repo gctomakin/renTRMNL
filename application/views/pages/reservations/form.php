@@ -57,3 +57,6 @@
   	</div>
   </div>
 </div>
+<script type="text/javascript">
+	var reservationListUrl = "<?php echo site_url('lessee/reserved'); ?>";
+</script>

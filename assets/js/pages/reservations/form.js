@@ -18,10 +18,15 @@ $(document).ready(function() {
 
 	$('#reserve-form').submit(function(e) {
 		e.preventDefault();
-		var action = $(this).attr('action');
-		$.post(action, $(this).serialize(), function(data) {
+		var form = $(this);
+		var action = form.attr('action');
+		$.post(action, form.serialize(), function(data) {
 			if (data['result']) {
+				form[0].reset();
 				successMessage(data['message']);
+				setTimeout(function() {
+					window.location = reservationListUrl;
+				}, 1000);
 			} else {
 				errorMessage(data['message']);
 			}
