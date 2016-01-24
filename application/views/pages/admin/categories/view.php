@@ -13,10 +13,11 @@
             </div>
           <?php else:?>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table id="category-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Image</th>
                             <th>Category Type</th>
                             <th>Action</th>
                         </tr>
@@ -25,10 +26,18 @@
                         <?php foreach($categories as $category): ?>
                           <tr>
                               <td><?php echo $category->category_id;?></td>
+                              <td>
+                              <?php
+                                $itemPic = $category->category_image == NULL ?
+                                'http://placehold.it/150x100' :
+                                'data:image/jpeg;base64,'.base64_encode($category->category_image);
+                              ?>
+                              <img src="<?php echo $itemPic; ?>" alt="category image" style="width: 150px; height:150px;">
+                              </td>
                               <td><?php echo $category->category_type;?></td>
                               <td>
                                 <div class="btn-group btn-group">
-                                  <a href="#" class="btn btn-primary btn-xs">Update</a>
+                                  <a href="<?php echo site_url('admin/categories/edit/' . $category->category_id); ?>" class="btn btn-primary btn-xs">Update</a>
                                   <a href="#" class="btn btn-danger btn-xs">Delete</a>
                                 </div>
                               </td>
