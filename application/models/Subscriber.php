@@ -106,7 +106,50 @@ class Subscriber extends CI_Model{
 		}
 		$query = $this->db->get_where($this->table, $where);
 		return $query->result();
-	}	
+	}
+
+	public function findPendingReservation($id) {
+		$this->load->model('ReservationDetail');
+		$this->load->model('Reservation');
+		$this->load->model('Item');
+		$joinItem = $this->_joinItem();
+		$joinResDetail = $this->_joinReservationDetail();
+		$joinRes = $this->_joinReservation();
+		$where = array(
+			's.'.$this->id => $id,
+			'r.'.$this->Reservation->getStatus() => 'pending'
+		);
+		$query = $this->db
+			->select('r.*')
+			->from($this->table . ' as s')
+			->join($joinItem['table'], $joinItem['on'])
+			->join($joinResDetail['table'], $joinResDetail['on'])
+			->join($joinRes['table'], $joinRes['on'])
+			->where($where)
+			->get();
+		return $query->result();
+	}
+
+	private function _joinItem() {
+		$table = $this->Item->getTable() . ' as i';
+		$on = 'i.' . $this->Item->getSubscriberId() . ' = ';
+		$on .= 's.' . $this->id;
+		return array('table' => $table, 'on' => $on, 'type' => 'INNER');
+	}
+
+	private function _joinReservationDetail() {
+		$table = $this->ReservationDetail->getTable() . ' as rd';
+		$on = 'rd.' . $this->ReservationDetail->getItemId() . ' = ';
+		$on .= 'i.' . $this->Item->getId();
+		return array('table' => $table, 'on' => $on, 'type' => 'INNER');
+	}
+
+	private function _joinReservation() {
+		$table = $this->Reservation->getTable() . ' as r';
+		$on = 'r.' . $this->Reservation->getId() . ' = ';
+		$on .= 'rd.' . $this->ReservationDetail->getReserveId();
+		return array('table' => $table, 'on' => $on);
+	}
 
 	/** GETTERS */
 	public function getTable() { return $this->table; }
