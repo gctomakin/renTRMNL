@@ -74,22 +74,34 @@ class Reservations extends CI_Controller {
   }
 
   public function cancel() {
-  	$this->isAjax();
-  	$post = $this->input->post();
-  	$res['result'] = FALSE;
-  	if (empty($post['id']) || !is_numeric($post['id'])) {
-  		$res['message'] = 'Invalid Parameter';
-  	} else {
-  		$this->Reservation->setId($post['id']);
-  		$this->Reservation->setStatus('cancel');
-  		if ($this->Reservation->update()) {
-  			$res['message'] = 'Reservation Deleted';
-  			$res['result'] = TRUE;
-  		} else {
-  			$res['message'] = 'Internal Server Error';
-  		}
-  	}
-  	echo json_encode($res);
+  	echo $this->_changeStatus('cancel');
+  }
+
+  public function approve() {
+    echo $this->_changeStatus('approve');
+  }
+
+  public function disapprove() {
+    echo $this->_changeStatus('disapprove');
+  }
+
+  private function _changeStatus($status) {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+    if (empty($post['id']) || !is_numeric($post['id'])) {
+      $res['message'] = 'Invalid Parameter';
+    } else {
+      $this->Reservation->setId($post['id']);
+      $this->Reservation->setStatus($status);
+      if ($this->Reservation->update()) {
+        $res['message'] = 'Reservation ' . ucfirst($status);
+        $res['result'] = TRUE;
+      } else {
+        $res['message'] = 'Internal Server Error';
+      }
+    }
+    return json_encode($res);
   }
 
   public function detail() {
