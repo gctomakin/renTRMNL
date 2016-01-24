@@ -25,10 +25,12 @@
 					<td class="text-right"><?php echo $rev->total_amt; ?></td>
 					<td class="text-right"><?php echo $rev->penalty; ?></td>
 					<td class="text-right"><?php echo $rev->total_balance; ?></td>
-					<td><?php echo $rev->status; ?></td>
+					<td class="status"><?php echo $rev->status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
+							<?php if ($rev->status != 'cancel') { ?>
 							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
+							<?php } ?>
 							<button class="btn btn-default btn-xs">view details</button>
 						</div>
 					</td>
