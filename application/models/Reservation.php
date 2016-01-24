@@ -82,6 +82,7 @@ class Reservation extends CI_Model{
 	public function getPenalty() { return $this->penalty; }
 	public function getStatus() { return $this->status; }
 	public function getLesseeId() { return $this->lesseeId; }
+	public function getTable() { return $this->table; }
 
 	public function setId($value) { $this->data[$this->id] = $value; }
 	public function setDate($value) { $this->data[$this->date] = $value; }
@@ -96,5 +97,6 @@ class Reservation extends CI_Model{
 
 	private function deleteCache() {
 		$this->db->cache_delete('lessee','reserved');
+		$this->db->cache_delete('lessor','reservations');
 	}
 }
