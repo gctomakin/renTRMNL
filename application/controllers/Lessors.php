@@ -234,4 +234,28 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
+  // RENTALS
+  public function rentedItems() {
+
+  }
+
+  public function pendingReserves() {
+    $data['title'] = "Pending Reservations";
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['reservations'] = $this->Subscriber->findPendingReservation($lessorId);
+    $data['content'] = $this->load->view('pages/lessor/reservations/pending', $content, TRUE);
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'pages/lessor/reservations/pending'
+    );
+    $this->load->view('common/lessor', $data);
+  }
+
+  public function historyReserves() {
+
+  }
+
 }
