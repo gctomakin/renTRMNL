@@ -123,7 +123,7 @@ class CI_Controller {
   				$role = "lessor";
   				break;
   			case 3: // Check Lessor or Lessee logged in session
-  				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in');
+  				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in') || $this->session->has_userdata('admin_logged_in');
   				break;
   			case 4: // Check admin logged in session
   				$isLogin = $this->session->has_userdata('admin_logged_in');
