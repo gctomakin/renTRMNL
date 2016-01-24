@@ -3,13 +3,16 @@
 class ReservationDetail extends CI_Model{
 
 	private $table = 'reservation_details';
-	private $reserveDetailId = 'reserve_detail_id';
+	private $id = 'reserve_detail_id';
 	private $rentalAmt = 'rental_amt';
 	private $qty = 'qty';
 	private $itemId = 'item_id';
 	private $reserveId = 'reserve_id';
 
-	public $data = array(
+	private $rdAlias = 'rd';
+	private $iAlias = 'i';
+
+	private $data = array(
 		'reserve_detail_id' => '',
 		'rental_amt' => '',
 		'qty' => '',
@@ -42,14 +45,37 @@ class ReservationDetail extends CI_Model{
 		}
 	}
 
+	public function findByReservationId($id) {
+		$join = $this->_joinItem();
+		$query = $this->db
+			->select($this->joinSelect())
+			->from($this->table . ' as ' . $this->rdAlias)
+			->join($join['table'], $join['on'])
+			->where(array($this->rdAlias . '.' . $this->id => $id))
+			->get();
+		return $query->result();	
+	}
+
+	private function _joinItem() {
+		$this->load->model('Item');
+		$table = $this->Item->getTable() . ' as ' . $this->iAlias;
+		$on = $this->iAlias . '.' . $this->Item->getId();
+		$on .= ' = ' . $this->rdAlias . '.' . $this->itemId;
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function joinSelect() {
+		return $this->iAlias . '.*, ' . $this->rdAlias . '.*';
+	}
+
 	// GETTERS AND SETTERS
-	public function getReserveDetailId() { return $this->reserveDetailId; }
+	public function getId() { return $this->id; }
 	public function getRentalAmt() { return $this->rentalAmt; }
 	public function getQty() { return $this->qty; }
 	public function getItemId() { return $this->itemId; }
 	public function getReserveId() { return $this->reserveId; }
 
-	public function setReserveDetailId($value) { $this->data[$this->reserveDetailId] = $value; }
+	public function setId($value) { $this->data[$this->id] = $value; }
 	public function setRentalAmt($value) { $this->data[$this->rentalAmt] = $value; }
 	public function setQty($value) { $this->data[$this->qty] = $value; }
 	public function setItemId($value) { $this->data[$this->itemId] = $value; }
