@@ -303,7 +303,7 @@ class Lessees extends CI_Controller
     $this->Reservation->setLesseeId($lesseId);
     $content['reservations'] = $this->Reservation->find();
     $data['content'] = $this->load->view('pages/lessee/categories/reservations', $content, TRUE);
-    $data['style'] = array('libs/dataTables.min');
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');  
     $data['script'] = array(
       'libs/pnotify.core',
       'libs/pnotify.buttons',  
