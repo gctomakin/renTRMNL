@@ -108,6 +108,26 @@ class Subscription extends CI_Model{
 		return $query->result();
 	}
 
+
+
+	public function findPendings() {
+		$join = $this->_joinSubscriber();
+		$query = $this->db
+			->select('s.*, sub.*')
+			->from($this->table . ' as s')
+			->join($join['table'], $join['on'], $join['type'])
+			->where(array($this->status => 'pending'))
+			->get();
+		return $query->result();
+	}
+
+	private function _joinSubscriber() {
+		$this->load->model('Subscriber');
+		$table = $this->Subscriber->getTable() . ' as sub';
+		$on = 's.' . $this->subscriberId . ' = ' . 'sub.' . $this->Subscriber->getId();
+		return array('table' => $table, 'on' => $on, 'type' => 'INNER');
+	}
+
 	/** GETTERS **/
 	public function getId() { return $this->id; }
 	public function getStartDate() { return $this->startDate; }
