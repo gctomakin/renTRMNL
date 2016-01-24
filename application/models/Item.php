@@ -148,9 +148,11 @@ class Item extends CI_Model{
 	public function getPenalty() { return $this->penalty; }
 	public function getShopId() { return $this->shopId; }
 	public function getSubscriberId() { return $this->subscriberId; }
+	public function getTable() { return $this->table; }
 
 	public function getLimit() { return $this->limit; }
 	public function getOffset() { return $this->offset; }
+
 
 	public function setOffset($offset) {
 		$this->offset = $offset;
