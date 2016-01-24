@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Reservations extends CI_Controller {
 
 	public function __construct() {
-      parent::__construct(3);
+    parent::__construct(3);
+    $this->load->model('Reservation');
+    $this->load->model('ReservationDetail');
   }
 
   public function item($itemId = "") {
@@ -42,7 +44,6 @@ class Reservations extends CI_Controller {
   		$item = $res['item'];
   		unset($res['item']);
   		$total = $item['item_rate'] * $res['qty'];
-  		$this->load->model('Reservation');
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
 			$this->Reservation->setDateRented($res['dateFrom']);
 			$this->Reservation->setDateReturned($res['dateTo']);
@@ -55,7 +56,6 @@ class Reservations extends CI_Controller {
 			$id = $this->Reservation->create();
 			$res['result'] = FALSE;
 			if ($id > 0) {
-				$this->load->model('ReservationDetail');
 				$this->ReservationDetail->setRentalAmt($item['item_rate']);
 				$this->ReservationDetail->setQty($res['qty']);
 				$this->ReservationDetail->setItemId($item['item_id']);
@@ -69,6 +69,25 @@ class Reservations extends CI_Controller {
 			} else {
 				$res['message'] = 'Reservation: Internal Server Error';
 			}
+  	}
+  	echo json_encode($res);
+  }
+
+  public function cancel() {
+  	$this->isAjax();
+  	$post = $this->input->post();
+  	$res['result'] = FALSE;
+  	if (empty($post['id']) || !is_numeric($post['id'])) {
+  		$res['message'] = 'Invalid Parameter';
+  	} else {
+  		$this->Reservation->setId($post['id']);
+  		$this->Reservation->setStatus('cancel');
+  		if ($this->Reservation->update()) {
+  			$res['message'] = 'Reservation Deleted';
+  			$res['result'] = TRUE;
+  		} else {
+  			$res['message'] = 'Internal Server Error';
+  		}
   	}
   	echo json_encode($res);
   }

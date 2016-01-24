@@ -36,6 +36,7 @@ class Reservation extends CI_Model{
 	public function create() {
 		$data = array_filter($this->data);
 		$this->db->insert($this->table, $data);
+		$this->deleteCache();
 		return $this->db->insert_id();
 	}
 
@@ -45,19 +46,17 @@ class Reservation extends CI_Model{
 				$this->id => $data[$this->id]
 			)
 		);
+		$this->deleteCache();
 		return $this->db->affected_rows();
 	}
 
-	public function delete() {
-		if (empty($this->data[$this->id])) {
-			return 0;
-		} else {
-			$this->db->delete($this->table, array(
-					$this->id => $this->data[$this->id]
-				)
-			);
-			return $this->db->affected_rows();	
-		}
+	public function delete($id) {
+		$this->db->delete($this->table, array(
+				$this->id => $id
+			)
+		);
+		$this->deleteCache();
+		return $this->db->affected_rows();	
 	}
 
 	public function all() {
@@ -95,5 +94,7 @@ class Reservation extends CI_Model{
 	public function setStatus($value) { $this->data[$this->status] = $value; }
 	public function setLesseeId($value) { $this->data[$this->lesseeId] = $value; }
 
-
+	private function deleteCache() {
+		$this->db->cache_delete('lessee','reserved');
+	}
 }
