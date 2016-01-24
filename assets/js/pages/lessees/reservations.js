@@ -3,8 +3,16 @@ $(document).ready(function() {
 }); 
 
 $('.btn-cancel').on('click', function() {
+	var id = $(this).data('rev-id');
 	if (confirm('Are you sure to cancel this reservation?')) {
-		console.log('cancelled');
+		$.post(reservationCancelUrl, {id:id}, function(data) {
+			if (data['result']) {
+				$('[data-reservation="'+id+'"]').fadeOut('fast');
+				successMessage(data['message']);
+			} else {
+				errorMessage(data['message']);
+			}
+		}, 'JSON');
 	}
 });
 

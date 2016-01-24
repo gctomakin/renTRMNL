@@ -14,7 +14,7 @@
 			</thead>
 			<tbody>
 				<?php foreach($reservations as $rev) { ?>
-				<tr>
+				<tr data-reservation="<?php echo $rev->reserve_id; ?>">
 					<td><?php echo date('M d, Y', strtotime($rev->reserve_date)); ?></td>
 					<td>
 						<?php 
@@ -28,7 +28,7 @@
 					<td><?php echo $rev->status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
-							<button class="btn btn-primary btn-xs btn-cancel">cancel</button>
+							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
 							<button class="btn btn-default btn-xs">view details</button>
 						</div>
 					</td>
@@ -38,3 +38,6 @@
 		</table>
 	</div>
 </div>
+<script type="text/javascript">
+	var reservationCancelUrl = "<?php echo site_url('reservations/cancel'); ?>";
+</script>
