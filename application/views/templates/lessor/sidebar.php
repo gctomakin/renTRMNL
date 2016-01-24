@@ -32,9 +32,9 @@
                 <li>
                     <a href="#rent-nav"><i class="fa fa-tag fa-fw"></i> Rental<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#">Rented Items</a></li>
-                        <li><a href="#">Pending Rentals</a></li>
-                        <li><a href="#">History</a></li>
+                        <li><a href="<?php echo site_url('lessor/reservations/rented'); ?>">Rented Items</a></li>
+                        <li><a href="<?php echo site_url('lessor/reservations/pending'); ?>">Pending Reservations</a></li>
+                        <li><a href="<?php echo site_url('lessor/reservations/history'); ?>">History</a></li>
                     </ul>
                 </li>
                 <li>
