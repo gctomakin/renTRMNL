@@ -46,3 +46,17 @@ function formatNumber(number, decimalsLength, decimalSeparator, thousandSeparato
      i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousandSeparator) +
      (decimalsLength ? decimalSeparator + Math.abs(n - i).toFixed(decimalsLength).slice(2) : "");
 }
+
+function proccessAction(url, id) {
+  var d = $.Deferred();
+  $.post(url, {id:id}, function(data) {
+    if (data['result']) {
+      successMessage(data['message']);
+      d.resolve('success');
+    } else {
+      errorMessage(data['message']);
+      d.reject('failed');
+    }
+  }, 'JSON');
+  return d.promise();
+}
