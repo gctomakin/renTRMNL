@@ -58,6 +58,21 @@ class Admins extends CI_Controller {
     $this->load->view('common/admin', $data);
   }
 
+  public function rental_shopsPendingPage()
+  {
+    $data['title'] = 'PENDING RENTAL SHOPS';
+    $content['shops'] = $this->RentalShop->findByStatus('pending');
+    $data['content'] = $this->load->view('pages/admin/rental_shops/pendings', $content, TRUE);
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'pages/admins/shops/pendings'
+    );
+    $this->load->view('common/admin', $data);
+  }
+
   public function rental_shopsViewPage()
   {
     $data['title'] = 'RENTAL SHOPS LIST';
