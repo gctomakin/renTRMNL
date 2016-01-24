@@ -90,11 +90,44 @@ class RentalShops extends CI_Controller {
 		echo json_encode($data);
 	}
 	
+
+	public function approve() {
+		echo $this->_changeStatus('active');
+	}
+
+	public function disapprove() {
+		echo $this->_changeStatus('disapprove');
+	}
+
+	private function _changeStatus($status) {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+
+		if (empty($post['id']) || !is_numeric($post['id'])) {
+			$res['message'] = 'Invalid Parameter';
+		} else {
+			$data = array(
+				$this->RentalShop->getId() => $post['id'],
+				$this->RentalShop->getStatus() => $status 
+			);
+			if ($this->RentalShop->update($data)) {
+				$res['result'] = TRUE;
+				$res['message'] = 'Updated Shop Status';
+			} else {
+				$res['message'] = 'Internal Server Error';
+			}
+		}
+		return json_encode($res);
+	}
+
 	private function mapShops($data) {
 		return array(
 			'id' => $data->shop_id,
 			'text' => $data->shop_name . ' - ' . $data->shop_branch
 		);
 	}
+
+
 
 }
