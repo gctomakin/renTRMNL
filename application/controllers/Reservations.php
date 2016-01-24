@@ -92,6 +92,24 @@ class Reservations extends CI_Controller {
   	echo json_encode($res);
   }
 
+  public function detail() {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+    if (empty($post['id']) || !is_numeric($post['id'])) {
+      $res['message'] = 'Invalid Parameter';
+    } else {
+      $content['details'] = $this->ReservationDetail->findByReservationId($post['id']);
+      if (empty($content['details'])) {
+        $res['message'] = 'Reservation Detail not found';
+      } else {
+        $res['result'] = TRUE;
+        $res['view'] = $this->load->view('pages/reservations/detail', $content, TRUE);
+      }
+    }
+    echo json_encode($res);
+  }
+
   private function _validate() {
   	$this->isAjax();
   	$post = $this->input->post();

@@ -19,5 +19,13 @@ $('.btn-cancel').on('click', function() {
 });
 
 $('.btn-view').on('click', function() {
-	$('reservation-modal').modal('show');
+	var id = $(this).data('rev-id');
+	$.post(reservationDetailUrl, {id:id}, function(data) {
+		if (data['result']) {
+			$('#reservation-modal').find('.modal-body').html(data['view']);
+			$('#reservation-modal').modal('show');
+		} else {
+			errorMessage(data['message']);
+		}
+	}, 'JSON');
 });
