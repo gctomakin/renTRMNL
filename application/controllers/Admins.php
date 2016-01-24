@@ -69,7 +69,18 @@ class Admins extends CI_Controller {
   public function categoriesAddPage()
   {
     $data['title'] = 'CATEGORIES ADD';
-    $data['content'] = $this->load->view('pages/admin/categories/add', '', TRUE);
+    $content['action'] = 'admin/category/add';
+    $data['content'] = $this->load->view('pages/admin/categories/form', $content, TRUE);
+    $data['script'] = array('pages/admins/categories/form');
+    $this->load->view('common/admin', $data);
+  }
+
+  public function categoriesEditPage($id) {
+    $data['title'] = 'CATEGORIES EDIT';
+    $content['category'] = $this->Category->findById($id);
+    $content['action'] = 'admin/category/edit';
+    $data['content'] = $this->load->view('pages/admin/categories/form', $content, TRUE);
+    $data['script'] = array('pages/admins/categories/form');
     $this->load->view('common/admin', $data);
   }
 
@@ -78,6 +89,11 @@ class Admins extends CI_Controller {
     $data['title'] = 'CATEGORIES LIST';
     $content['categories'] = $this->Category->all($select = "*", $like = "");
     $data['content'] = $this->load->view('pages/admin/categories/view', $content, TRUE);
+    $data['script'] = array(
+      'libs/jquery.dataTables',
+      'pages/admins/categories/list'
+    );
+    $data['style'] = array('libs/dataTables.min');
     $this->load->view('common/admin', $data);
   }
 
@@ -229,14 +245,67 @@ class Admins extends CI_Controller {
       redirect('admin/categories/add','refresh');
 
     else:
+      $imageError = $this->_validateImage();
+      if (empty($imageError)) {
+        $picture = file_get_contents($_FILES['image']['tmp_name']);
+        $data = array(
+          'category_type' => $this->input->post('category'),
+          'category_image' => $picture
+        );
+        $this->Category->create($data);
 
-      $data = array('category_type' => $this->input->post('category'));
-      $this->Category->create($data);
-
-      $this->session->set_flashdata('success', TRUE);
-      redirect('admin/categories/add','refresh');
-
+        $this->session->set_flashdata('success', TRUE);
+        redirect('admin/categories/add','refresh');
+      } else {
+        $this->session->set_flashdata('error', $imageError);
+        redirect('admin/categories/add','refresh');
+      }
     endif;
+  }
+
+  public function editCategory() {
+    /*
+    | field name, error message, validation rules
+    */
+    $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[4]|xss_clean');
+    $id = $this->input->post('id');
+    if($this->form_validation->run() == FALSE):
+
+      $this->session->set_flashdata('error', validation_errors());
+      redirect("admin/categories/edit/$id",'refresh');
+
+    else:
+      $imageError = $this->_validateImage();
+      if (empty($imageError)) {
+        $picture = file_get_contents($_FILES['image']['tmp_name']);
+        $data = array(
+          'category_id' => $id,
+          'category_type' => $this->input->post('category'),
+          'category_image' => $picture
+        );
+        $this->Category->update($data);
+        
+        $this->session->set_flashdata('success', TRUE);
+        redirect("admin/categories/edit/$id",'refresh');
+      } else {
+        $this->session->set_flashdata('error', $imageError);
+        redirect("admin/categories/add/$id",'refresh');
+      }
+    endif; 
+  }
+
+  private function _validateImage() {
+    $message = '';
+    if (!empty($_FILES['image']) && $_FILES['image']['size'] != 0) { // check if image has been upload
+      $this->load->library('MyFile', $_FILES['image']); // Load My File Library
+      $validate = $this->myfile->validateImage(); // Validate Image
+      if (!$validate['result']) {
+        $message = implode(', ', $validate['message']); // Specify Image validate errors
+      }
+    } else {
+      $message = "Image is required";
+    }
+    return $message;
   }
 
   public function reportsSubscriptions() {
