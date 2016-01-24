@@ -4,10 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Reservations extends CI_Controller {
 
 	public function __construct() {
-    parent::__construct(3);
-    $this->load->model('Reservation');
-    $this->load->model('ReservationDetail');
-  }
+		parent::__construct(3);
+		$this->load->model('Reservation');
+		$this->load->model('ReservationDetail');
+	}
 
   public function item($itemId = "") {
   	$this->load->model('Item');
