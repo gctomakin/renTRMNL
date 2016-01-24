@@ -13,25 +13,24 @@
             </div>
           <?php else:?>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table id="shop-table" class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Shop Name</th>
-                            <th>Shop Branch</th>
-                            <th>Address</th>
-                            <th>Action</th>
+                            <th>SHOP NAME</th>
+                            <th>SHOP BRANCH</th>
+                            <th>ADDRESS</th>
+                            <th class="text-center">OPTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($shops as $shop): ?>
-                          <tr>
+                          <tr data-shop-row="<?php echo $shop->shop_id; ?>">
                               <td><?php echo $shop->shop_name; ?></td>
                               <td><?php echo $shop->shop_branch; ?></td>
                               <td><?php echo $shop->address; ?></td>
-                              <td>
+                              <td class="text-center">
                                 <div class="btn-group btn-group">
-                                  <a href="#" class="btn btn-primary btn-xs">Update</a>
-                                  <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                  <button class="btn btn-primary btn-xs btn-delete" data-shop-id="<?php echo $shop->shop_id; ?>">Delete</button>
                                 </div>
                               </td>
                           </tr>
@@ -47,3 +46,6 @@
     </div>
   </div>
 </div>
+<script>
+  var deleteUrl = "<?php echo site_url('rentalshops/delete'); ?>";
+</script>

@@ -78,6 +78,13 @@ class Admins extends CI_Controller {
     $data['title'] = 'RENTAL SHOPS LIST';
     $content['shops'] = $this->RentalShop->all($select = "*");
     $data['content'] = $this->load->view('pages/admin/rental_shops/view', $content, TRUE);
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'pages/admins/shops/list'
+    );
     $this->load->view('common/admin', $data);
   }
 
