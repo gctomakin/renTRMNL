@@ -3,33 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class RentalShop extends CI_Model{
 
-	private $table;
+	private $table = "rental_shops";
 
 	// Columns
 
-	private $id;
-	private $name;
-	private $branch;
-	private $address;
-	private $latitude;
-	private $longitude;
-	private $subscriberId;
+	private $id = "shop_id";
+	private $name = "shop_name";
+	private $branch = "shop_branch";
+	private $address = "address";
+	private $latitude = "latitude";
+	private $longitude = "longitude";
+	private $subscriberId = "subscriber_id";
+	private $status = "status";
 
 	private $limit = 10;
 	private $offset = 0;
 
 	public function __construct() {
-		$this->table = "rental_shops";
-		$this->id = "shop_id";
-		$this->name = "shop_name";
-		$this->branch = "shop_branch";
-		$this->address = "address";
-		$this->latitude = "latitude";
-		$this->longitude = "longitude";
-		$this->subscriberId = "subscriber_id";
+		parent::__construct();
 	}
 
 	public function create($data) {
+		$data[$this->status] = 'pending';
 		$this->db->insert($this->table, $data);
 		$this->deleteCache();
 		return $this->db->insert_id();
@@ -79,6 +74,14 @@ class RentalShop extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function findByStatus($status) {
+		$query = $this->db->get_where($this->table, array(
+				$this->status => $status
+			)
+		);
+		return $query->result();
+	}
+
 	public function getTable() { return $this->table; }
 
 	public function getId() { return $this->id; }
@@ -88,7 +91,7 @@ class RentalShop extends CI_Model{
 	public function getLatitude() { return $this->latitude; }
 	public function getLongitude() { return $this->longitude; }
 	public function getSubscriberId() { return $this->subscriberId; }
-
+	public function getStatus() { return $this->status; }
 
 	public function getLimit() { return $this->limit; }
 	public function getOffset() { return $this->offset; }
