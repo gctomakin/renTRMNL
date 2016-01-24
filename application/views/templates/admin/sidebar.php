@@ -33,7 +33,7 @@
                 <li>
                     <a href="#item-nav"><i class="fa fa-building fa-fw"></i> Rental Shops<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="<?php echo site_url('admin/rentalshops/add'); ?>">Add Rental Shop</a></li>
+                        <li><a href="<?php echo site_url('admin/rentalshops/pending'); ?>">Pendings Rental Shop</a></li>
                         <li><a href="<?php echo site_url('admin/rentalshops'); ?>">View Rental Shop</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
