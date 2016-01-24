@@ -8,11 +8,13 @@ class Category extends CI_Model {
 	// Columns
 	private $id;
 	private $type;
+	private $image;
 
 	public function __construct() {
 		$this->table = "categories";
 		$this->id = "category_id";
 		$this->type = "category_type";
+		$this->image = "category_image";
 		parent::__construct();
 	}
 
@@ -49,9 +51,16 @@ class Category extends CI_Model {
 		return $query->num_rows() > 0;
 	}
 
+	public function findById($id) {
+		$query = $this->db->get_where($this->table, array($this->id => $id));
+		return $query->row_array();
+	}
+
 	public function getId() { return $this->id; }
 	public function getType() { return $this->type; }
 	public function getTable() { return $this->table; }
+	public function getImage() { return $this->image; }
+
 
 	private function deleteCache() {
 		$this->db->cache_delete('categories','all');
