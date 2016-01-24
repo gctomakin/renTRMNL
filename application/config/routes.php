@@ -68,6 +68,7 @@ $route['admin/subscriptions']     = 'admins/subscription_plansViewPage';
 $route['admin/rentalshops/add']   = 'admins/rental_shopsAddPage';
 $route['admin/rentalshops']       = 'admins/rental_shopsViewPage';
 $route['admin/categories/add']    = 'admins/categoriesAddPage';
+$route['admin/categories/edit/(:num)']    = 'admins/categoriesEditPage/$1';
 $route['admin/categories']        = 'admins/categoriesViewPage';
 $route['admin/reports/subscriptions'] = 'admins/reportsSubscriptions';
 $route['admin/reports/rentals'] = 'admins/reportsRentals';
@@ -79,6 +80,7 @@ $route['admin/account/add']       = 'admins/addAccount';
 $route['admin/subscription/add']  = 'admins/addSubscriptionPlan';
 $route['admin/rentalshop/add']    = 'admins/addRentalShop';
 $route['admin/category/add']      = 'admins/addCategory';
+$route['admin/category/edit']      = 'admins/editCategory';
 
 /** Subscriber/Lessors */
 $route['lessor/signin-page']       = 'lessors/signinPage';
@@ -93,6 +95,7 @@ $route['lessor/subscriptions']     = 'lessors/subscriptions';
 $route['lessor']                   = 'lessors';
 $route['lessor/dashboard']         = 'lessors/dashboard';
 $route['lessor/reservations/pending'] = 'lessors/pendingReserves';
+$route['lessor/reservations/approve'] = 'lessors/approveReserves';
 
 /** Lessees Pages*/
 $route['lessee/dashboard']             = 'lessees';
