@@ -74,6 +74,7 @@ class ReservationDetail extends CI_Model{
 	public function getQty() { return $this->qty; }
 	public function getItemId() { return $this->itemId; }
 	public function getReserveId() { return $this->reserveId; }
+	public function getTable() { return $this->table; }
 
 	public function setId($value) { $this->data[$this->id] = $value; }
 	public function setRentalAmt($value) { $this->data[$this->rentalAmt] = $value; }
