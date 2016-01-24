@@ -108,7 +108,7 @@ class Subscriber extends CI_Model{
 		return $query->result();
 	}
 
-	public function findPendingReservation($id) {
+	public function findReservation($id, $status) {
 		$this->load->model('ReservationDetail');
 		$this->load->model('Reservation');
 		$this->load->model('Item');
@@ -117,7 +117,7 @@ class Subscriber extends CI_Model{
 		$joinRes = $this->_joinReservation();
 		$where = array(
 			's.'.$this->id => $id,
-			'r.'.$this->Reservation->getStatus() => 'pending'
+			'r.'.$this->Reservation->getStatus() => $status
 		);
 		$query = $this->db
 			->select('r.*')
