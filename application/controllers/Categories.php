@@ -22,4 +22,21 @@ class Categories extends CI_Controller {
 			'text' => $data->category_type
 		);
 	}
+
+	public function delete() {
+		$this->isAjax();
+		$res['result'] = FALSE;
+		$post = $this->input->post();
+		if (empty($post['id']) || !is_numeric($post['id'])) {
+			$res['message'] = 'Invalid Parameter';
+		} else {
+			if ($this->Category->delete($post['id'])) {
+				$res['message'] = 'Deleted category.';
+				$res['result'] = TRUE;
+			} else {
+				$res['message'] = 'Internal Server Error';
+			}
+		}
+		echo json_encode($res);
+	}
 }

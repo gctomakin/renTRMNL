@@ -128,9 +128,11 @@ class Admins extends CI_Controller {
     $data['content'] = $this->load->view('pages/admin/categories/view', $content, TRUE);
     $data['script'] = array(
       'libs/jquery.dataTables',
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
       'pages/admins/categories/list'
     );
-    $data['style'] = array('libs/dataTables.min');
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
     $this->load->view('common/admin', $data);
   }
 

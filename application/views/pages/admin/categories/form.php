@@ -2,7 +2,7 @@
   <div class="row no-gutter">
     <div class="col-md-offset-2 col-md-8 col-md-offset-2 well">
       <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger text-center">'.$this->session->flashdata('error').'</div>'; }?>
-      <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success text-center"><strong>Successfully</strong> Added Category!</div>';} ?>
+      <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success text-center"><strong>Successfully</strong> Saved Category!</div>';} ?>
       <?php echo form_open($action, array('enctype' => "multipart/form-data")); ?>
       <?php
         $type = empty($category['category_type']) ? '' : $category['category_type'];

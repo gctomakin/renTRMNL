@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row no-gutter">
-    <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+    <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">
             Categories
@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                         <?php foreach($categories as $category): ?>
-                          <tr>
+                          <tr data-category-row="<?php echo $category->category_id; ?>">
                               <td><?php echo $category->category_id;?></td>
                               <td>
                               <?php
@@ -38,7 +38,7 @@
                               <td>
                                 <div class="btn-group btn-group">
                                   <a href="<?php echo site_url('admin/categories/edit/' . $category->category_id); ?>" class="btn btn-primary btn-xs">Update</a>
-                                  <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                  <button class="btn btn-danger btn-xs btn-delete" data-category-id="<?php echo $category->category_id; ?>">Delete</button>
                                 </div>
                               </td>
                           </tr>
@@ -54,3 +54,6 @@
     </div>
   </div>
 </div>
+<script>
+  var deleteUrl = "<?php echo site_url('categories/delete'); ?>";
+</script>
