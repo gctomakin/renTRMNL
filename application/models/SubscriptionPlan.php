@@ -36,6 +36,9 @@ class SubscriptionPlan extends CI_Model{
 
   public function setStatus($status){ $this->status = $status; }
 
+  public function getTable() { return $this->subscription_plans_table; }
+
+  public function getIdCol() { return 'plan_id'; }
 
   public function insert()
   {
