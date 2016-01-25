@@ -64,6 +64,7 @@ class CI_Controller {
 	 * 2: lessor
 	 * 3: lessee or lessor
 	 * 4: admin
+	 * 21: lessor or admin
 	 * @var Int
 	 */
 	private static $auth;
@@ -114,20 +115,27 @@ class CI_Controller {
   	if (!empty($this->auth)) { // If empty no need to check authority
   		$isLogin = false;
   		$role = "lessees";
+  		$isLesseeLogin = $this->session->has_userdata('logged_in');
+  		$isLessorLogin = $this->session->has_userdata('lessor_logged_in');
+  		$isAdminLogin = $this->session->has_userdata('admin_logged_in');
   		switch ($this->auth) {
   			case 1: // Check Lessee logged in session
-  				$isLogin = $this->session->has_userdata('logged_in');
+  				$isLogin = $isLesseeLogin;
   				break;
   			case 2: // Check Lessor logged in session
-  				$isLogin = $this->session->has_userdata('lessor_logged_in');
+  				$isLogin = $isLessorLogin;
   				$role = "lessor";
   				break;
   			case 3: // Check Lessor or Lessee logged in session
-  				$isLogin = $this->session->has_userdata('lessor_logged_in') || $this->session->has_userdata('logged_in') || $this->session->has_userdata('admin_logged_in');
+  				$isLogin = $isLessorLogin || $isLesseeLogin || $isAdminLogin;
   				break;
   			case 4: // Check admin logged in session
-  				$isLogin = $this->session->has_userdata('admin_logged_in');
+  				$isLogin = $isAdminLogin;
   				$role = "admin";
+  				break;
+  			case 21: // Check admin or lessor in session
+  				$isLogin = $isAdminLogin || $isLessorLogin;
+  				$role = "lessor";
   				break;
   		}
 
@@ -141,12 +149,12 @@ class CI_Controller {
 	  		}
 	  	} else {
 	  		if (!$isLogin && $this->input->is_ajax_request()) {
-	  			echo json_encode(array('result' => '403')); // Returns Forbidden code if not signed in
+	  			echo json_encode(array('result' => FALSE, 'message' => '403 permission denied')); // Returns Forbidden code if not signed in
 	  			exit();
 	  		} else if (!$isLogin) { // Redirect to signin page if not signed in
 	  			redirect($role . "/signin-page");
 	  			exit();
-	  		} else if ($role == 'lessor' && $this->uri->segments[1] != 'subscriptions') {
+	  		} else if ($isLessorLogin && $role == 'lessor' && $this->uri->segments[1] != 'subscriptions') {
 	  			$this->_checkSubscription();
 	  		}
 	  	}
