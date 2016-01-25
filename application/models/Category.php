@@ -56,6 +56,11 @@ class Category extends CI_Model {
 		return $query->row_array();
 	}
 
+	public function random($limit = 6) {
+		$query = $this->db->from($this->table)->order_by($this->id, 'RANDOM')->limit($limit)->get();
+		return $query->result();
+	}
+
 	public function getId() { return $this->id; }
 	public function getType() { return $this->type; }
 	public function getTable() { return $this->table; }

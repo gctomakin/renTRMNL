@@ -72,27 +72,12 @@ class Main extends CI_Controller {
       $this->session->set_userdata('access_token', $client->getAccessToken());
       redirect('lessee/dashboard');
     endif;
-
+    $this->load->model('Category');
     $authUrl = $client->createAuthUrl();
-    $auth['authUrl'] = $authUrl;
+    $content['authUrl'] = $authUrl;
+    $content['categories'] = $this->Category->random();
+    $data['content'] = $this->load->view('pages/main', $content, TRUE);
 
-
-    /*
-    | $data['title'] = 'New Title';
-    */
-
-    $data['content'] = $this->load->view('pages/main', $auth, TRUE);
-
-    /* SAMPLE of Additional Styles and Scripts
-    | $data['style'] = array(
-    |   'folder/thestyle',
-    |   'folder/thestyle2'
-    | );
-    | $data['script'] = array(
-    |   'folder/script1',
-    |   'folder/script2'
-    | );
-    */
     $this->load->view('common/main', $data);
   }
 
