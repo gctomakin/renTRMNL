@@ -37,6 +37,7 @@ class Subscription extends CI_Model{
 				$this->id => $data[$this->id]
 			)
 		);
+		$this->db->cache_delete_all();
     return $this->db->affected_rows();
 	}
 
@@ -108,14 +109,27 @@ class Subscription extends CI_Model{
 		return $query->result();
 	}
 
-
+	public function findById($id) {
+		$joinPlan = $this->_joinPlan();
+		$joinSub = $this->_joinSubscriber();
+		$query = $this->db
+			->select('s.*, sub.*, sp.*')
+			->from($this->table . ' as s')
+			->join($joinSub['table'], $joinSub['on'], $joinSub['type'])
+			->join($joinPlan['table'], $joinPlan['on'], $joinPlan['type'])
+			->where(array($this->id => $id))
+			->get();
+		return $query->row_array();
+	}
 
 	public function findPendings() {
-		$join = $this->_joinSubscriber();
+		$joinSub = $this->_joinSubscriber();
+		$joinPlan = $this->_joinPlan();
 		$query = $this->db
-			->select('s.*, sub.*')
+			->select('s.*, sub.*, sp.*')
 			->from($this->table . ' as s')
-			->join($join['table'], $join['on'], $join['type'])
+			->join($joinSub['table'], $joinSub['on'], $joinSub['type'])
+			->join($joinPlan['table'], $joinPlan['on'], $joinPlan['type'])
 			->where(array($this->status => 'pending'))
 			->get();
 		return $query->result();
@@ -125,6 +139,13 @@ class Subscription extends CI_Model{
 		$this->load->model('Subscriber');
 		$table = $this->Subscriber->getTable() . ' as sub';
 		$on = 's.' . $this->subscriberId . ' = ' . 'sub.' . $this->Subscriber->getId();
+		return array('table' => $table, 'on' => $on, 'type' => 'INNER');
+	}
+
+	private function _joinPlan() {
+		$this->load->model('SubscriptionPlan');
+		$table = $this->SubscriptionPlan->getTable() . ' as sp';
+		$on = 's.' . $this->planId . ' = ' . 'sp.' . $this->SubscriptionPlan->getIdCol();
 		return array('table' => $table, 'on' => $on, 'type' => 'INNER');
 	}
 
