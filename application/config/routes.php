@@ -64,6 +64,7 @@ $route['admin/signin']            = 'admins/signin';
 $route['admin/accounts/add']      = 'admins/accountsAddPage';
 $route['admin/accounts']          = 'admins/accountsViewPage';
 $route['admin/subscriptions/add'] = 'admins/subscription_plansAddPage';
+$route['admin/subscriptions/pending'] = 'admins/subscription_pendingsPage';
 $route['admin/subscriptions']     = 'admins/subscription_plansViewPage';
 $route['admin/rentalshops/pending']   = 'admins/rental_shopsPendingPage';
 $route['admin/rentalshops']       = 'admins/rental_shopsViewPage';

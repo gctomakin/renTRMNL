@@ -43,6 +43,21 @@ class Admins extends CI_Controller {
     $this->load->view('common/admin', $data);
   }
 
+  public function subscription_pendingsPage() {
+    $this->load->model('Subscription');
+    $data['title'] = 'PENDING SUBSCRIPTIONS';
+    $content['subscriptions'] = $this->Subscription->findPendings();
+    $data['content'] = $this->load->view('pages/admin/subscriptions/pendings', $content, TRUE);
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'pages/admins/subscriptions/pendings'
+    );
+    $this->load->view('common/admin', $data);
+  }
+
   public function subscription_plansViewPage()
   {
     $data['title'] = 'SUBSCRIPTION PLANS LIST';
