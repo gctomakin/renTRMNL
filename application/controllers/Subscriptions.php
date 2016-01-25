@@ -6,8 +6,8 @@ class Subscriptions extends CI_Controller {
 	private $rentrmnlEmail = 'rentrmnl_seller@gmail.com';
 
 	public function __construct() {
-      parent::__construct(2);
-      $this->load->model('Subscription');
+		parent::__construct(21);
+   	$this->load->model('Subscription');
   }
 
   public function index() {
@@ -111,6 +111,49 @@ class Subscriptions extends CI_Controller {
 	public function cancel() {
 		$data['content'] = $this->load->view('pages/subscriptions/cancel', '', TRUE);
 		$this->load->view('common/plain', $data);
+	}
+
+	public function activate() {
+		echo $this->_changeStatus('active');
+	}
+
+	public function disapprove() {
+		echo $this->_changeStatus('disapprove');
+	}
+
+	private function _changeStatus($status) {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+
+		if (empty($post['id']) || !is_numeric($post['id'])) {
+			$res['message'] = 'Invalid Parameter';
+		} else {
+			$subs = $this->Subscription->findById($post['id']);
+			if (empty($subs)) {
+				$res['message'] = "Subscription not found";
+			} else {
+				$data = array(
+					$this->Subscription->getId() => $post['id'],
+					$this->Subscription->getStatus() => $status 
+				);
+				if ($status == 'active') {
+					$from = date('Y-m-d H:i:s');
+					$to = date('Y-m-d H:i:s', strtotime('+' . $subs['plan_duration'] . 'days'));
+					$data[$this->Subscription->getStartDate()] = $from;
+					$data[$this->Subscription->getEndDate()] = $to;
+				}
+
+				if ($this->Subscription->update($data)) {
+					$res['result'] = TRUE;
+					$status = $status == 'active' ? 'Activated' : ucfirst($status) . "d";
+					$res['message'] = "Subscription is " . $status;
+				} else {
+					$res['message'] = 'Internal Server Error';
+				}
+			}
+		}
+		return json_encode($res);
 	}
 
 	private function _isActive() {
