@@ -9,8 +9,10 @@
         <?php else: ?>
           <?php foreach($categories as $category):?>
             <div class="col-lg-4 col-sm-6 portfolio-item">
+              <?php $img = $category->category_image == NULL ? site_url('assets/img/portfolio/1.jpg') : 'data:image/jpeg;base64,'.base64_encode($category->category_image); ?>
+            
                 <a href="<?php echo site_url('lessee/shops'); ?>" class="portfolio-box">
-                  <img src="http://localhost/rentrmnl/assets/img/portfolio/1.jpg" class="img-responsive" alt="">
+                  <img src="<?php echo $img; ?>" class="img-responsive" alt="" style="width:430px; height: 230px;">
                   <h3>
                     <a href="<?php echo site_url('lessee/shops/'); ?>"></a><?php echo $category->category_type;?></a>
                   </h3>
