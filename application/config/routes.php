@@ -97,6 +97,7 @@ $route['lessor']                   = 'lessors';
 $route['lessor/dashboard']         = 'lessors/dashboard';
 $route['lessor/reservations/pending'] = 'lessors/pendingReserves';
 $route['lessor/reservations/approve'] = 'lessors/approveReserves';
+$route['lessor/account'] 						= 'lessors/account';
 
 /** Lessees Pages*/
 $route['lessee/dashboard']             = 'lessees';

@@ -40,6 +40,7 @@ class Subscriber extends CI_Model{
 
 	public function create($data) {
 		$this->db->insert($this->table, $data);
+		$this->_deleteCache();
 		return $this->db->insert_id();
 	}
 
@@ -48,17 +49,20 @@ class Subscriber extends CI_Model{
 				$this->id => $data[$this->id]
 			)
 		);
+		$this->_deleteCache();
     return $this->db->affected_rows();
 	}
 
 	public function updateStatus($id, $status) {
 		$this->db->where($this->id, $id);
 		$this->db->update($this->table, array($this->status => $status));
+		$this->_deleteCache();
 		return $this->db->affected_rows();
 	}
 
 	public function delete($id) {
 		$this->db->delete($this->table, array($this->id => $id));
+		$this->_deleteCache();
 		return $this->db->affected_rows();
 	}
 
@@ -130,6 +134,33 @@ class Subscriber extends CI_Model{
 		return $query->result();
 	}
 
+	public function isEmailExist($email, $id = "") {
+		if (!empty($id)) {
+			$where[$this->id . ' <>'] = $id;
+		}
+		$where[$this->email] = $email;
+		$query = $this->db->get_where($this->table, $where);
+		return $query->num_rows() > 0;
+	}
+
+	public function isUsernameExist($username, $id = "") {
+		if (!empty($id)) {
+			$where[$this->id . ' <>'] = $id;
+		}
+		$where[$this->username] = $username;
+		$query = $this->db->get_where($this->table, $where);
+		return $query->num_rows() > 0;
+	}
+
+	public function isPaypalExist($paypal, $id = "") {
+		if (!empty($id)) {
+			$where[$this->id . ' <>'] = $id;
+		}
+		$where[$this->paypal] = $paypal;
+		$query = $this->db->get_where($this->table, $where);
+		return $query->num_rows() > 0;
+	}
+
 	private function _joinItem() {
 		$table = $this->Item->getTable() . ' as i';
 		$on = 'i.' . $this->Item->getSubscriberId() . ' = ';
@@ -166,4 +197,10 @@ class Subscriber extends CI_Model{
 	public function getUsername() { return $this->username; }	
 	public function getPassword() { return $this->password; }	
 	public function getDate() { return $this->date; }
+
+	private function _deleteCache() {
+		$this->db->cache_delete('lessors','accountSave');
+		$this->db->cache_delete('lessor','account');
+		$this->db->cache_delete('lessors','signin');
+	}
 }

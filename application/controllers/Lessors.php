@@ -11,9 +11,11 @@ class Lessors extends CI_Controller {
   public function index() {
   	redirect('lessor/dashboard');
   }
+
   public function dashboard() {
-  	$data['title'] = "Lessor Dashboard";
-  	$data['content'] = "<h1>Testing</h1>";
+    $data['title'] = "Lessor Dashboard";
+  	$content['subscriber'] = $this->Subscriber->findId($this->session->userdata('lessor_id'));
+  	$data['content'] = $this->load->view('pages/lessor/dashboard', $content, TRUE);
   	$this->load->view('common/lessor', $data);
   }
 
@@ -45,7 +47,6 @@ class Lessors extends CI_Controller {
 	      redirect('lessors/signin-page','refresh');
 
 	    else:
-
 	      $this->session->set_flashdata('error', TRUE);
 	      redirect('lessors/signin-page','refresh');
 
@@ -271,6 +272,72 @@ class Lessors extends CI_Controller {
 
   public function historyReserves() {
 
+  }
+
+  public function account() {
+    $data['title'] = "Account Settings";
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['subscriber'] = $this->Subscriber->findId($lessorId);
+    $data['content'] = $this->load->view('pages/lessor/account', $content, TRUE);
+    $data['style'] = array('libs/pnotify');
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'pages/lessor/account'
+    );
+    $this->load->view('common/lessor', $data); 
+  }
+
+  public function accountSave() {
+    $this->isAjax();
+    
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[4]|valid_email|xss_clean');
+    $this->form_validation->set_rules('paypal', 'Paypal', 'trim|required|min_length[4]|valid_email|xss_clean');
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('password_old', 'Old Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]|xss_clean');
+    $this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'trim|required|matches[password]|xss_clean');
+    
+    $res['result'] = FALSE;
+
+    if ($this->form_validation->run() != FALSE) {
+      $post = $this->input->post();
+      
+      $lessorId = $this->session->userdata('lessor_id');
+      $isEmailExist = $this->Subscriber->isEmailExist($post['email'], $lessorId);
+      $isUsernameExist = $this->Subscriber->isUsernameExist($post['username'], $lessorId);
+      $isPaypalExist = $this->Subscriber->isPaypalExist($post['paypal'], $lessorId);
+      $error = array();
+
+      if ($isEmailExist) { $error[] = 'Email Already Exist'; }
+      if ($isUsernameExist) { $error[] = 'Username Already Exist'; }
+      if ($isPaypalExist) { $error[] = 'Paypal Already Exist'; }
+      if (empty($error)) {
+        $lessor = $this->Subscriber->findId($lessorId);
+        if ($this->encryption->decrypt($lessor[$this->Subscriber->getPassword()]) == $post['password_old']) {
+          $data = array(
+            $this->Subscriber->getEmail() => $post['email'],
+            $this->Subscriber->getPaypal() => $post['paypal'],
+            $this->Subscriber->getUsername() => $post['username'],
+            $this->Subscriber->getPassword() => $this->encryption->encrypt($post['password']),
+            $this->Subscriber->getId() => $lessorId
+          );
+          if ($this->Subscriber->update($data)) {
+            $res['message'] = 'Account Updated';  
+            $res['result'] = TRUE;
+          } else {
+            $res['message'] = 'Internal Server Error';
+          }
+        } else {
+          $res['message'] = 'Old password is incorrect';
+        }
+      } else {
+        $res['message'] = implode(', ', $error);
+      }
+    } else {
+      $res['message'] = validation_errors();
+    }
+    echo json_encode($res);
   }
 
 }
