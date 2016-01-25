@@ -20,6 +20,10 @@
           <label for="plan_rate">Plan Rate:</label>
           <input type="number" name="plan_rate" class="form-control" id="plan_rate">
         </div>
+        <div class="form-group">
+          <label for="plan_duration">Plan Duration: </label>
+          <input type="number" min="1" class="form-control" name="plan_duration" id="plan_duration">
+        </div>
         <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
       <?php echo form_close(); ?>
     </div>

@@ -222,6 +222,7 @@ class Admins extends CI_Controller {
     $this->form_validation->set_rules('plan_desc', 'Plan Desc', 'trim|required|xss_clean');
     $this->form_validation->set_rules('plan_type', 'Plan Type', 'trim|required|xss_clean');
     $this->form_validation->set_rules('plan_rate', 'Plan Rate', 'trim|required|xss_clean');
+    $this->form_validation->set_rules('plan_duration', 'Plan Duration', 'trim|required|numeric|xss_clean');
 
 
     if($this->form_validation->run() == FALSE):
