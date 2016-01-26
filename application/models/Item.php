@@ -137,6 +137,14 @@ class Item extends CI_Model{
 		return $query->num_rows() > 0;
 	}
 
+	public function findByShop($id) {
+		$query = $this->db
+			->from($this->table)
+			->where(array($this->shopId => $id))
+			->get();
+		return $query->result();
+	}
+
 	public function getId() { return $this->id; }
 	public function getRate() { return $this->rate; }
 	public function getPic() { return $this->pic; }

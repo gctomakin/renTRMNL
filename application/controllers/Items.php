@@ -137,6 +137,72 @@ class Items extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function shopItems() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+		$this->form_validation->set_rules('shopId', 'Shop ID', 'trim|required|numeric|xss_clean');
+		$this->form_validation->set_rules('start', 'Start Date', 'trim|required|date|xss_clean');
+		$this->form_validation->set_rules('to', 'End Date', 'trim|required|date|xss_clean');
+		
+		if ($this->form_validation->run() == FALSE) {
+			$res['message'] = validation_errors();
+		} else {
+			$shopItems = $this->Item->findByShop($post['shopId']);
+			if (empty($shopItems)) {
+				$res['message'] = 'No Item found';
+			} else {
+				$res['message'] = 'Here are the items';
+				$res['result'] = TRUE;
+				$res['items'] = array_map(array($this, '_processItem'), $shopItems);
+			}
+		}
+		echo json_encode($res);
+	}
+
+	private function _processItem($obj) {
+		if (is_array($obj)) {
+			$obj = json_decode(json_encode($obj), FALSE);
+		}
+		$img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+		return array(
+			$this->Item->getId() => $obj->item_id,
+			$this->Item->getRate() => $obj->item_rate,
+			$this->Item->getPic() => $img,
+			$this->Item->getStatus() => $obj->item_stats,
+			$this->Item->getQty() => $obj->item_qty,
+			$this->Item->getDesc() => $obj->item_desc,
+			$this->Item->getCashBond() => $obj->item_cash_bond,
+			$this->Item->getRentalMode() => $obj->item_rental_mode,
+			$this->Item->getPenalty() => $obj->item_penalty,
+			$this->Item->getShopId() => $obj->shop_id,
+			$this->Item->getSubscriberId() => $obj->subscriber_id
+		);
+	}
+
+	public function find() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+		$this->form_validation->set_rules('id', 'Item ID', 'trim|required|numeric|xss_clean');
+		$this->form_validation->set_rules('start', 'Start Date', 'trim|required|date|xss_clean');
+		$this->form_validation->set_rules('to', 'End Date', 'trim|required|date|xss_clean');
+		
+		if ($this->form_validation->run() == FALSE) {
+			$res['message'] = validation_errors();
+		} else {
+			$items = $this->Item->findById($post['id']);
+			if (empty($items)) {
+				$res['message'] = 'No Item found';
+			} else {
+				$res['message'] = 'Here are the items';
+				$res['result'] = TRUE;
+				$res['items'] = array_map(array($this, '_processItem'), $items);
+			}
+		}
+		echo json_encode($res);
+	}
+
 	private function _validate() {
 		$this->isAjax();
 		$this->form_validation->set_rules('shop', 'Shop', 'trim|numeric|xss_clean');
