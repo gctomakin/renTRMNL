@@ -14,7 +14,7 @@ class Reservations extends CI_Controller {
   	$content['item'] = $this->Item->findById($itemId);
 		$content['itemPic'] = $content['item']['item_pic'] == NULL ? 'http://placehold.it/150x100' : 'data:image/jpeg;base64,'.base64_encode($content['item']['item_pic']);
 		$content['action'] = site_url('reservations/save');
-	  $content['startDate'] = date('Y-m-d', strtotime('+1 days'));
+	  $content['startDate'] = date('m/d/Y');
 	  if (empty($content['item'])) {
   		redirect(site_url('lessee/items'));
   	} else {
@@ -26,7 +26,7 @@ class Reservations extends CI_Controller {
 	      'libs/moment.min2',
         'libs/underscore-min',
 	      'libs/daterangepicker',
-	      'libs/daterange',
+	      'pages/reservations/daterange',
 	      'pages/reservations/form'
 	    );
 	    $data['style'] = array(
@@ -39,33 +39,38 @@ class Reservations extends CI_Controller {
   }
 
   public function save() {
-  	$res = $this->_validate();
+    $res = $this->_validate();
+    $post = $this->input->post();
   	if ($res['result']) { 
-  		$item = $res['item'];
-  		unset($res['item']);
-  		$total = $item['item_rate'] * $res['qty'];
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
-			$this->Reservation->setDateRented($res['dateFrom']);
-			$this->Reservation->setDateReturned($res['dateTo']);
-			$this->Reservation->setTotalAmt($total);
-			$this->Reservation->setDownPayment($total/2);
-			$this->Reservation->setTotalBalance($total);
+			$this->Reservation->setDateRented($post['from']);
+			$this->Reservation->setDateReturned($post['to']);
+			$this->Reservation->setTotalAmt($post['total']);
+			$this->Reservation->setDownPayment($post['total']/2);
+			$this->Reservation->setTotalBalance($post['total']);
 			$this->Reservation->setPenalty(0);
 			$this->Reservation->setStatus('pending');
 			$this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
 			$id = $this->Reservation->create();
 			$res['result'] = FALSE;
 			if ($id > 0) {
-				$this->ReservationDetail->setRentalAmt($item['item_rate']);
-				$this->ReservationDetail->setQty($res['qty']);
-				$this->ReservationDetail->setItemId($item['item_id']);
-				$this->ReservationDetail->setReserveId($id);
-				if ($this->ReservationDetail->create() > 0) {
-					$res['result'] = TRUE;
-					$res['message'] = 'Reservation Created';
-				} else {
-					$res['message'] = 'Reservation Detail: Internal Server Error';
-				}
+        $error = array();
+        foreach ($post['details'] as $detail) {
+          $this->ReservationDetail->setRentalAmt($detail['rate']);
+          $this->ReservationDetail->setQty($detail['qty']);
+          $this->ReservationDetail->setItemId($detail['id']);
+          $this->ReservationDetail->setReserveId($id);
+          if ($this->ReservationDetail->create() <= 0) {
+           $error[] = 'Error on item # ' . $detail['id'];
+          } 
+        }
+        if (empty($error)) {
+          $res['result'] = TRUE;
+          $res['message'] = 'Reservation Added';
+        } else {
+          $this->Reservation->delete($id);
+          $res['message'] = "Reservation Detail: Internal Server Error : " . implode(', ', $error);
+        }
 			} else {
 				$res['message'] = 'Reservation: Internal Server Error';
 			}
@@ -111,10 +116,11 @@ class Reservations extends CI_Controller {
     if (empty($post['id']) || !is_numeric($post['id'])) {
       $res['message'] = 'Invalid Parameter';
     } else {
-      $content['details'] = $this->ReservationDetail->findByReservationId($post['id']);
-      if (empty($content['details'])) {
+      $details = $this->ReservationDetail->findByReservationId($post['id']);
+      if (empty($details)) {
         $res['message'] = 'Reservation Detail not found';
       } else {
+        $content['details'] = array_map(array($this, '_processItem'), $details);
         $res['result'] = TRUE;
         $res['view'] = $this->load->view('pages/reservations/detail', $content, TRUE);
       }
@@ -122,52 +128,35 @@ class Reservations extends CI_Controller {
     echo json_encode($res);
   }
 
+  private function _processItem($obj) {
+    $this->load->model('Item');
+    if (is_array($obj)) {
+      $obj = json_decode(json_encode($obj), FALSE);
+    }
+    $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+    return array(
+      $this->Item->getId() => $obj->item_id,
+      $this->Item->getRate() => $obj->item_rate,
+      $this->Item->getPic() => $img,
+      $this->Item->getStatus() => $obj->item_stats,
+      "qty" => $obj->qty,
+      $this->Item->getDesc() => $obj->item_desc,
+    );
+  }
+
   private function _validate() {
   	$this->isAjax();
-  	$post = $this->input->post();
   	$res['result'] = FALSE;
-
-  	if (empty($post['itemId'])) {
-  		$res['message'][] = "Item Id must not be empty";
-  	} else if (!is_numeric($post['itemId'])) {
-  		$res['message'][] = "Item ID must be numeric";
-  	}
-
-  	if (empty($post['quantity'])) {
-  		$res['message'][] = "Quantity must not be empty";
-  	} else if (!is_numeric($post['quantity'])) {
-  		$res['message'][] = "Quantity must be numeric";
-  	}
+    $this->form_validation->set_rules('from', 'Start Date', 'trim|required|date|xss_clean');
+    $this->form_validation->set_rules('to', 'End Date', 'trim|required|date|xss_clean');
+    $this->form_validation->set_rules('total', 'Total', 'trim|required|numeric|xss_clean');
+    
+    if ($this->form_validation->run() == FALSE) {
+      $res['message'] = validation_errors();
+    } else {
+      $res['result'] = TRUE;
+    }
   	
-  	if(empty($post['date'])) {
-  		$res['message'][] = 'Date must not be empty';
-  	}
-
-  	if (empty($res['message'])){
-  		$date = explode(' - ', $post['date']);
-  		if (
-  			empty($date) || count($date) <= 1 ||
-  			!$this->validateDate($date[0], 'Y-m-d') ||
-  			!$this->validateDate($date[1], 'Y-m-d')
-  		) {
-  			$res['message'] = 'Invalid Date Format';
-  		} else if (strtotime($date[0]) <= strtotime(date('Y-m-d'))) {
-  			$res['message'] = 'Date must be greater than today';
-  		} else {
-	  		$this->load->model('Item');
-  			$res['dateFrom'] = $date[0];
-  			$res['dateTo'] = $date[1];
-	  		$res['qty'] = $post['quantity'];
-	  		$res['item'] = $this->Item->findById($post['itemId']);
-	  		if (empty($res['item'])) {
-	  			$res['message'] = 'Item not exist.';
-	  		} else {
-	  			$res['result'] = TRUE;
-	  		}
-	  	}
-  	} else {
-  		$res['message'] = implode('. <br>', $res['message']) . '.';
-  	}
   	return $res;
   }
 }

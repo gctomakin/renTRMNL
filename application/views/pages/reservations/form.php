@@ -7,7 +7,7 @@
   		<div class="panel panel-default">
   			<div class="panel-heading">Reservation Form</div>
   			<div class="panel-body">
-  				<form action="" class="form-horizontal">
+  				<form action="<?php echo $action; ?>" id="reservation-form" class="form-horizontal">
 	  				<div class="form-group">
 	  					<div class="col-lg-6">
 	  						<label for="date">Date Duration : </label>
@@ -25,7 +25,7 @@
 	  				</div>
 	  				<div class="form-group">
 	  					<div class="col-lg-12">
-	  						<div class="well">
+	  						<div class="well" id="item-detail-container">
 	  							<table id="item-detail-table" class="table table-bordered">
 	  								<thead>
 	  									<th width="20"></th>
@@ -34,15 +34,7 @@
 	  									<th class="text-right">RATE</th>
 	  									<th class="text-right">SUBTOTAL</th>
 	  								</thead>
-	  								<tbody>
-	  									<!-- <tr>
-	  										<td></td>
-	  										<td><?php echo $item['item_desc']; ?></td>
-	  										<td><?php echo $item['item_qty']; ?> <a href="#"><i class="fa fa-caret-down"></i></a></td>
-	  										<td class="text-right"><?php echo number_format($item['item_rate'], 2); ?></td>
-	  										<td class="text-right"><?php echo number_format($item['item_rate'] * $item['item_qty'], 2); ?></td>
-	  									</tr> -->
-	  								</tbody>
+	  								<tbody></tbody>
 	  								<tfoot>
 	  									<tr>
 	  										<th class="text-right" colspan="4">TOTAL</th>
@@ -61,13 +53,14 @@
 	  						<button class="btn btn-primary pull-right" type="submit">Submit Reservation</button>
 	  					</div>
 	  					<div class="col-lg-1">
-	  						<button class="btn btn-default pull-right" type="reset">Reset</button>
+	  						<button class="btn btn-default pull-right" id="btn-reset" type="reset">Reset</button>
 	  					</div>
 	  				</div>
 	  				<div class="form-group">
 	  					<hr>
 	  					<input type="hidden" id="shop-id" value="<?php echo $item['shop_id']; ?>">
 	  					<input type="hidden" id="item-id" value="<?php echo $item['item_id']; ?>">
+	  					<input type="hidden" id="min-date" value="<?php echo $startDate; ?>">
 	  				</div>
 	  			</form>
 	  			<div class="col-lg-12" id="item-list">
@@ -77,18 +70,44 @@
   	</div>
   </div>
 </div>
+<div class="modal modal-fullscreen fade" id="reservation-modal" tabindex='-1'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="reservation-modal-title" >Reservation Confirmation</i></h4>
+      </div>
+      <div class="modal-body">
+      	<h2><i class="fa fa-info"></i> Are you sure about this reservation?</h2>
+      	<div class="details"></div>
+      	<div class="other-details">
+      		<p>From : <span id="from-date"></span></p>
+      		<p>Until : <span id="to-date"></span></p>
+      	</div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default" id="btn-cancel-modal" data-dismiss="modal">Cancel</button>
+      	<button type="button" class="btn btn-primary" id="btn-confirm-modal">Submit Reservation</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script type="text/javascript">
 	var reservationListUrl = "<?php echo site_url('lessee/reserved'); ?>";
 	var shopItemsUrl = "<?php echo site_url('items/shopItems'); ?>";
 	var itemUrl = "<?php echo site_url('items/find'); ?>";
 </script>
 <script type="text/template" id="item-detail-template">
-	<tr>
-		<td><a href="javascript:;"><i class="fa fa-times"></i></a></td>
+	<tr data-item-detail-row="<%-id%>">
+		<td><a href="javascript:;" class="item-remove"><i class="fa fa-times"></i></a></td>
 		<td><%-desc%></td>
-		<td><%-qty%> <a href="#"><i class="fa fa-caret-down"></i></a></td>
-		<td class="text-right"><%-rate%></td>
-		<td class="text-right"><%-total%></td>
+		<td><span class="label-qty"><%-qty%></span> <a href="javascript:;" class="change-qty"><i class="fa fa-caret-down"></i></a></td>
+		<td class="text-right"><%-rate_format%></td>
+		<td class="text-right"><span class="label-subtotal"><%-total_format%></span></td>
 	</tr>
 </script>
 <script type="text/template" id="item-list-template">
