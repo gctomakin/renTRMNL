@@ -1,0 +1,28 @@
+
+.item-panel .menu {
+	display: none;
+	/*background: rgba(50, 50, 50, 0.5);*/
+	/*border-radius: 2px;*/
+	/*border: 1px solid rgb(136, 136, 136);*/
+	padding: 1rem;
+	margin-top: -4rem;
+	position: absolute;
+	width: 83%;
+	text-align: right;
+}
+
+.item-panel:hover .menu{
+	display: block;
+}
+.item-panel:hover .caption {
+	background: rgba(50, 50, 50, 0.8);
+	border-radius: 0px 0px 2px 2px;
+	color: #333;
+}
+.item-panel:hover .caption h4 {
+	color: #fff;
+}
+
+.item-panel {
+	margin-top: 2px;
+}
