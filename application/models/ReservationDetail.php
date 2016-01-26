@@ -51,7 +51,7 @@ class ReservationDetail extends CI_Model{
 			->select($this->joinSelect())
 			->from($this->table . ' as ' . $this->rdAlias)
 			->join($join['table'], $join['on'])
-			->where(array($this->rdAlias . '.' . $this->id => $id))
+			->where(array($this->rdAlias . '.' . $this->reserveId => $id))
 			->get();
 		return $query->result();	
 	}
