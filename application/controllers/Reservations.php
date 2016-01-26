@@ -23,8 +23,8 @@ class Reservations extends CI_Controller {
 	  	$data['script'] = array(
 	  		'libs/pnotify.core',
 	      'libs/pnotify.buttons',
-	      'libs/select2.min',
 	      'libs/moment.min2',
+        'libs/underscore-min',
 	      'libs/daterangepicker',
 	      'libs/daterange',
 	      'pages/reservations/form'
@@ -32,8 +32,8 @@ class Reservations extends CI_Controller {
 	    $data['style'] = array(
 	    	'libs/pnotify',
 	    	'libs/datepicker',
-	    	'libs/select2.min'
-	    );
+        'pages/reservations/item'
+      );
 	    $this->load->view('common/lessee', $data);
 	  }
   }
