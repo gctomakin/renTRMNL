@@ -130,6 +130,7 @@ class Subscriber extends CI_Model{
 			->join($joinResDetail['table'], $joinResDetail['on'])
 			->join($joinRes['table'], $joinRes['on'])
 			->where($where)
+			->group_by('r.'. $this->Reservation->getId())
 			->get();
 		return $query->result();
 	}
