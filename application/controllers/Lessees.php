@@ -295,7 +295,7 @@ class Lessees extends CI_Controller
       $this->pagination->initialize($config);
 
       $content['pagination'] = $this->pagination->create_links();
-      $content['items'] = $items['data'];
+      $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
@@ -306,6 +306,46 @@ class Lessees extends CI_Controller
         'pages/lessees/items'
       );
       $this->load->view('common/lessee', $data);
+  }
+
+
+  public function itemsCategoryPage($categoryId, $page = 1) {
+      $this->load->library('pagination');
+      $this->load->model('Category');
+
+      $category = $this->Category->findById($categoryId);
+
+      if (empty($category)) {
+        redirect(site_url('/lessees'));
+        exit();
+      }
+
+      $data['title'] = 'ITEMS BY CATEGORY : ' . $category[$this->Category->getType()];
+      $offset = ($page - 1) * $this->Item->getLimit();
+      $this->Item->setOffset($offset); // Setting Rentalshop offset rows
+      $this->Item->setLimit(8); // Setting Rentalshop offset rows
+      $items = $this->Item->findByCategory($categoryId);
+      
+      // Configuring Pagination
+      $config['base_url'] = site_url("lessee/items/category/$categoryId/");
+      $config['total_rows'] = $items['count']-1;
+      $config['per_page'] = $this->Item->getLimit();
+      $this->pagination->initialize($config);
+
+      if (!empty($items['count'])) {
+        $content['pagination'] = $this->pagination->create_links();
+      }
+      $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
+      $content['myinterests'] = $this->MyInterest->getMyInterestId();
+      $content['action'] = site_url('lessee/add-myinterest');
+      $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
+      $data['style'] = array('libs/pnotify');
+      $data['script'] = array(
+        'libs/pnotify.core',
+        'libs/pnotify.buttons',
+        'pages/lessees/items'
+      );
+      $this->load->view('common/lessee', $data); 
   }
 
   public function reservedPage() {
@@ -392,4 +432,11 @@ class Lessees extends CI_Controller
     endif;
   }
 
+  private function _mapItems($data) {
+    $this->load->model('ItemCategory');
+    return array(
+      'info' => $data,
+      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
+    );
+  }
 }
