@@ -21,7 +21,11 @@
                     <a href="<?php echo site_url("lessee/myinterests");?>"><i class="fa fa-archive fa-fw"></i> My Interests</a>
                 </li>
                 <li>
-                    <a href="<?php echo site_url("lessee/myshops");?>"><i class="fa fa-building-o fa-fw"></i> My Shops</a>
+                    <a href="#"><i class="fa fa-building-o fa-fw"></i> Shops<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="<?php echo site_url("lessee/shops");?>">All</a></li>
+                        <li><a href="<?php echo site_url("lessee/myshops");?>">My Shops</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-cart-plus fa-fw"></i> Items<span class="fa arrow"></span></a>
