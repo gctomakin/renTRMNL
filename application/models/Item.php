@@ -25,6 +25,7 @@ class Item extends CI_Model{
 	private $itemAlias = 'i';
 	private $shopAlias = 's';
 	private $subscriberAlias = 'sub';
+	private $categoryAlias = 'c';
 
 	public function __construct() {
 		parent::__construct();
@@ -66,7 +67,9 @@ class Item extends CI_Model{
 		}
 
 		if (!empty($like)) {
-			$where[] = $this->itemAlias.".".$this->desc ." LIKE '%$like%'";
+			$where[] = $this->itemAlias.".".$this->desc ." LIKE '%$like%' " . " OR ".
+			 						$this->shopAlias . "." . $this->RentalShop->getName() . " LIKE '%$like%'" . " OR ".
+			 						$this->shopAlias . "." . $this->RentalShop->getBranch() . " LIKE '%$like%'";
 		}
 
 		if (!empty($where)) {
@@ -79,7 +82,10 @@ class Item extends CI_Model{
 
 		$joinShop = $this->_joinShop();
 		$joinSubs = $this->_joinSubscriber();
-		$data['count'] = $this->db->from($this->table ." as i")->count_all_results();
+		$data['count'] = $this->db
+			->from($this->table ." as i")
+			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
+			->count_all_results();
 		if (!empty($where)) {
 			$this->db->where(implode('AND ', $where));
 		}
@@ -151,6 +157,34 @@ class Item extends CI_Model{
 		return $query->result();
 	}
 
+	public function findByCategory($categoryId) {
+		$joinShop = $this->_joinShop();
+		$joinSubs = $this->_joinSubscriber();
+		$joinCat 	= $this->_joinItemCategory();
+
+		$where = array(
+			//$this->itemAlias . '.'. $this->status => 'active',
+			$this->categoryAlias . '.' . $this->ItemCategory->getCategoryId() => $categoryId
+		);
+
+		$data['count'] = $this->db
+			->from($this->table ." as i")
+			->join($joinCat['table'], $joinCat['on'], 'INNER')
+			->where($where)
+			->count_all_results();
+		$data['data'] = $query = $this->db
+			->select($this->_joinSelect())
+			->from($this->table ." as ". $this->itemAlias)
+			->join($joinCat['table'], $joinCat['on'], 'INNER')
+			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
+			->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type'])
+			->where($where)
+			->limit($this->limit, $this->offset)
+			->get()
+			->result();
+		return $data;
+	}
+
 	public function getId() { return $this->id; }
 	public function getRate() { return $this->rate; }
 	public function getPic() { return $this->pic; }
@@ -197,5 +231,13 @@ class Item extends CI_Model{
 		$on = $this->subscriberAlias. "." . $this->Subscriber->getId();
 		$on .= " = " . $this->itemAlias. "." . $this->subscriberId;
 		return array('table' => $table, 'on' => $on, 'type' => 'left');
+	}
+
+	private function _joinItemCategory() {
+		$this->load->model('ItemCategory');
+		$table = $this->ItemCategory->getTable() . " as " . $this->categoryAlias;
+		$on = $this->itemAlias . "." . $this->id;
+		$on .= " = " . $this->categoryAlias . "." . $this->ItemCategory->getItemId();
+		return array('table' => $table, 'on' => $on);
 	}
 }
