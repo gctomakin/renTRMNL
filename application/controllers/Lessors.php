@@ -181,19 +181,21 @@ class Lessors extends CI_Controller {
 
     $data['title'] = "List All Items";
     $lessorId = $this->session->userdata('lessor_id');
-
+    $keyword = $this->input->get('item');
+      
     $offset = ($page - 1) * $this->Item->getLimit();
-
     $this->Item->setOffset($offset); // Setting Rentalshop offset rows
-    $items = $this->Item->findBySubscriberId($lessorId);
+    
+    $items = $this->Item->findBySubscriberId($lessorId, $keyword);
     $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
-    // Configuring Pagination
-    $config['base_url'] = site_url('lessor/items/list/');
-    $config['total_rows'] = $items['count']-1;
-    $config['per_page'] = $this->Item->getLimit();
-    $this->pagination->initialize($config);
-
-    $content['pagination'] = $this->pagination->create_links();
+    if (!empty($items['count'])) {
+      // Configuring Pagination
+      $config['base_url'] = site_url('lessor/items/list/');
+      $config['total_rows'] = $items['count']-1;
+      $config['per_page'] = $this->Item->getLimit();
+      $this->pagination->initialize($config);
+      $content['pagination'] = $this->pagination->create_links();
+    }
     $content['rental_modes'] = $this->rentalmodes->getModes();
 
     $data['content'] = $this->load->view('pages/items/list', $content, true);
