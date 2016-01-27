@@ -115,6 +115,8 @@ class Item extends CI_Model{
 			->join($this->RentalShop->getTable() . " as s", $joinCondition, 'left')
 			->where($where)
 			->like($itemAlias.'.'.$this->desc, $key)
+			->or_like($shopAlias.'.'.$this->RentalShop->getName(), $key)
+			->or_like($shopAlias.'.'.$this->RentalShop->getBranch(), $key)
 			->limit($this->limit, $this->offset)
 			->get()->result();
 		return $data;
