@@ -104,6 +104,7 @@ $route['lessee/dashboard']             = 'lessees';
 $route['lessees/signin-page']          = 'lessees/signinPage';
 $route['lessee/profile']               = 'lessees/profilePage';
 $route['lessee/myshops']               = 'lessees/myShopsPage';
+$route['lessee/myshops/(:num)']               = 'lessees/myShopsPage/$1';
 $route['lessee/myinterests']           = 'lessees/myInterestsPage';
 $route['lessee/items']                 = 'lessees/itemsPage';
 $route['lessee/items/(:num)']          = 'lessees/itemsPage/$1';
@@ -114,6 +115,7 @@ $route['lessee/reserved']        			 = 'lessees/reservedPage';
 /** Lessees Actions*/
 $route['lessee/inbox']                 = 'lessees/inboxPage';
 $route['lessee/shops']                 = 'lessees/shopsPage';
+$route['lessee/shops/(:num)']          = 'lessees/shopsPage/$1';
 $route['lessee/send']                  = 'lessees/sendMessage';
 $route['lessee/update-info']           = 'lessees/updateInfo';
 $route['lessee/update-account']        = 'lessees/updateAccount';
