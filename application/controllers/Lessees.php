@@ -227,16 +227,27 @@ class Lessees extends CI_Controller
       endif;
   }
 
-  public function myShopsPage()
-  {
-      $data['title']      = 'MY SHOPS';
-      $content['myshops'] = $this->MyShop->all();
-      $content['getShopsJson']  = site_url('lessee/getshops');
-      $data['content']    = $this->load->view('pages/lessee/myshops', $content, TRUE);
-      $data['script']     = array(
-          'pages/lessees/shops'
-      );
-      $this->load->view('common/lessee', $data);
+  public function myShopsPage($page = 1) {
+    $this->load->library('pagination');
+
+    $offset = ($page - 1) * $this->MyShop->getLimit();
+    $this->MyShop->setOffset($offset); // Setting Rentalshop offset rows
+    
+    // Configuring Pagination
+    $config['base_url'] = site_url('lessee/myshops/');
+    $config['total_rows'] = $this->MyShop->allCount() - 1;
+    $config['per_page'] = $this->Item->getLimit();
+    $this->pagination->initialize($config);
+
+    $data['title']      = 'MY SHOPS';
+    $content['pagination'] = $this->pagination->create_links();
+    $content['myshops'] = $this->MyShop->all();
+    $content['getShopsJson']  = site_url('lessee/getshops');
+    $data['content']    = $this->load->view('pages/lessee/myshops', $content, TRUE);
+    $data['script']     = array(
+        'pages/lessees/shops'
+    );
+    $this->load->view('common/lessee', $data);
   }
 
   public function myInterestsPage()
@@ -258,18 +269,30 @@ class Lessees extends CI_Controller
       $this->load->view('common/lessee', $data);
   }
 
-  public function shopsPage()
-  {
-      $data['title']            = 'SHOPS';
-      $content['shops']         = $this->RentalShop->all($select = "*");
-      $content['myshops']       = $this->MyShop->getMyShopsId();
-      $content['action']        = site_url('lessee/add-myshop');
-      $content['getShopsJson']  = site_url('lessee/getshops');
-      $data['content']          = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
-      $data['script']           = array(
-          'pages/lessees/shops'
-      );
-      $this->load->view('common/lessee', $data);
+  public function shopsPage($page = 1) {
+    $this->load->library('pagination');
+
+    $offset = ($page - 1) * $this->RentalShop->getLimit();
+    $this->RentalShop->setOffset($offset); // Setting Rentalshop offset rows
+     
+    // Configuring Pagination
+    $config['base_url'] = site_url('lessee/shops/');
+    $config['total_rows'] = $this->RentalShop->allCount() - 1;
+    $config['per_page'] = $this->Item->getLimit();
+    $this->pagination->initialize($config);
+
+      
+    $data['title']            = 'SHOPS';
+    $content['pagination']    = $this->pagination->create_links();
+    $content['shops']         = $this->RentalShop->all($select = "*");
+    $content['myshops']       = $this->MyShop->getMyShopsId();
+    $content['action']        = site_url('lessee/add-myshop');
+    $content['getShopsJson']  = site_url('lessee/getshops');
+    $data['content']          = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
+    $data['script']           = array(
+        'pages/lessees/shops'
+    );
+    $this->load->view('common/lessee', $data);
   }
 
   public function shopsJson()
