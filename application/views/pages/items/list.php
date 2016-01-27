@@ -24,13 +24,17 @@
   				</div>
   				<div class="col-md-12">
   					<p>
-  						CATEGORY :
-  						<?php 
-  							$categoryType = array();
-  							foreach ($item['categories'] as $category) {
-  								$categoryType[] = $category->category_type;
-  							}
-  							echo implode(', ', $categoryType);
+  						<?php
+                if (!empty($item['categories'])) { 
+    							$label = "<span class='label label-default'>";
+                  echo $label;
+                  $categoryType = array();
+    							foreach ($item['categories'] as $category) {
+    								$categoryType[] = $category->category_type;
+    							}
+    							echo implode("</span> $label", $categoryType);
+                  echo "</span>";
+                }
   						?>
   					</p>
   				</div>
