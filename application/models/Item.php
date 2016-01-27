@@ -79,13 +79,19 @@ class Item extends CI_Model{
 
 		$joinShop = $this->_joinShop();
 		$joinSubs = $this->_joinSubscriber();
-		$query = $this->db
+		$data['count'] = $this->db->from($this->table ." as i")->count_all_results();
+		if (!empty($where)) {
+			$this->db->where(implode('AND ', $where));
+		}
+		$data['data'] = $query = $this->db
 			->select($select)
 			->from($this->table ." as ". $this->itemAlias)
 			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
 			->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type'])
-			->get();
-		return $query->result();
+			->limit($this->limit, $this->offset)
+			->get()
+			->result();
+		return $data;
 	}
 
 	public function findBySubscriberId($lessorId, $key = "") {
@@ -164,6 +170,9 @@ class Item extends CI_Model{
 
 	public function setOffset($offset) {
 		$this->offset = $offset;
+	}
+	public function setLimit($limit) {
+		$this->limit = $limit;
 	}
 
 	public function clearCache() {

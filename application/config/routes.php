@@ -106,6 +106,7 @@ $route['lessee/profile']               = 'lessees/profilePage';
 $route['lessee/myshops']               = 'lessees/myShopsPage';
 $route['lessee/myinterests']           = 'lessees/myInterestsPage';
 $route['lessee/items']                 = 'lessees/itemsPage';
+$route['lessee/items/(:num)']          = 'lessees/itemsPage/$1';
 $route['lessee/reserved']        			 = 'lessees/reservedPage';
 /** Lessees Actions*/
 $route['lessee/inbox']                 = 'lessees/inboxPage';

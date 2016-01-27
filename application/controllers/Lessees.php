@@ -278,11 +278,24 @@ class Lessees extends CI_Controller
     echo json_encode($result);
   }
 
-  public function itemsPage()
-  {
+  public function itemsPage($page = 1) {
+      $this->load->library('pagination');
+
       $data['title'] = 'ITEMS';
       $keyword = $this->input->get('item');
-      $content['items'] = $this->Item->all($select = "*", '', $keyword);
+      $offset = ($page - 1) * $this->Item->getLimit();
+      $this->Item->setOffset($offset); // Setting Rentalshop offset rows
+      $this->Item->setLimit(8); // Setting Rentalshop offset rows
+      $items = $this->Item->all($select = "*", '', $keyword);
+      
+      // Configuring Pagination
+      $config['base_url'] = site_url('lessee/items/');
+      $config['total_rows'] = $items['count']-1;
+      $config['per_page'] = $this->Item->getLimit();
+      $this->pagination->initialize($config);
+
+      $content['pagination'] = $this->pagination->create_links();
+      $content['items'] = $items['data'];
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
@@ -292,7 +305,6 @@ class Lessees extends CI_Controller
         'libs/pnotify.buttons',
         'pages/lessees/items'
       );
-      // $this->output->cache(0);
       $this->load->view('common/lessee', $data);
   }
 

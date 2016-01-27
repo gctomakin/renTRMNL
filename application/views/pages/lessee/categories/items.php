@@ -13,7 +13,12 @@
       <?php foreach($items as $item):?>
         <div class="col-sm-3 col-lg-3 col-md-3">
             <div class="thumbnail">
-                <img src="http://placehold.it/320x150" alt="">
+            <?php
+              $itemPic = $item->item_pic == NULL ? 
+                        'http://placehold.it/320x150' :
+                        'data:image/jpeg;base64,'.base64_encode($item->item_pic);
+            ?>
+                <img src="<?php echo $itemPic; ?>" alt="" style="width:320px; height:150px;">
                 <div class="caption">
                     <h4><a href="#"><?php echo $item->item_desc; ?></a></h4>
                     <dl>
@@ -36,34 +41,10 @@
         </div>
       <?php endforeach; ?>
       <!--pagination-->
-      <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">«</a>
-                </li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">»</a>
-                </li>
-            </ul>
-        </div>
-      </div>
     <?php endif;?>
+    <div class="text-center col-lg-12">
+      <?php echo empty($pagination) ? '' : $pagination; ?>
+    </div>
   </div>
 </div>
 <form id='paypal-form' class="standard" action="https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">
