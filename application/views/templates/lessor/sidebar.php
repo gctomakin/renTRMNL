@@ -2,14 +2,16 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="sidebar-search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                    </div>
+                    <form class="form-inline" action="<?php echo site_url('lessor/items/list'); ?>">
+                        <div class="input-group custom-search-form">
+                            <input type="text" name="item" class="form-control" placeholder="Search..." value="<?php echo isset($_GET['item']) ? $_GET['item'] : ''; ?>">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
                     <!-- /input-group -->
                 </li>
                 <li>
