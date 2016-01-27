@@ -8,7 +8,7 @@ class MyInterest extends CI_Model
   private $lessee_id;
   private $item_id;
   private $my_interests_table = 'my_interests';
-  private $limit = 20;
+  private $limit = 10;
   private $offset = 0;
 
   private function getId()
@@ -81,10 +81,17 @@ class MyInterest extends CI_Model
     $this->db->select('*');
     $this->db->from('items');
     $this->db->join($this->my_interests_table, 'my_interests.item_id = items.item_id');
+    $this->db->limit($this->limit, $this->offset);
     $query  = $this->db->get();
     $result = $query->result();
 
     return $result;
+  }
+
+  public function getAllCount() {
+    $this->db->from('items');
+    $this->db->join($this->my_interests_table, 'my_interests.item_id = items.item_id');
+    return $this->db->count_all_results();
   }
 
   public function getMyInterestId()
@@ -120,4 +127,6 @@ class MyInterest extends CI_Model
     return TRUE;
   }
 
+  public function getLimit() { return $this->limit; }
+  public function setOffset($offset) { $this->offset = $offset; }
 }

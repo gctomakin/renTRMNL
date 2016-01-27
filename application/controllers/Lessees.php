@@ -250,15 +250,26 @@ class Lessees extends CI_Controller
     $this->load->view('common/lessee', $data);
   }
 
-  public function myInterestsPage()
-  {
-      $data['title']      = 'MY INTERESTS';
-      $content['myinterests'] = $this->MyInterest->all();
-      $data['content']    = $this->load->view('pages/lessee/myinterests', $content, TRUE);
-      $data['script']           = array(
-          'pages/lessees/items'
-      );
-      $this->load->view('common/lessee', $data);
+  public function myInterestsPage($page = 1) {
+    $this->load->library('pagination');
+
+    $offset = ($page - 1) * $this->MyInterest->getLimit();
+    $this->MyInterest->setOffset($offset);
+    
+    // Configuring Pagination
+    $config['base_url'] = site_url('lessee/myinterests/');
+    $config['total_rows'] = $this->MyInterest->getAllCount() - 1;
+    $config['per_page'] = $this->Item->getLimit();
+    $this->pagination->initialize($config);
+
+    $data['title'] = 'MY INTERESTS';
+    $content['pagination'] = $this->pagination->create_links();
+    $content['myinterests'] = $this->MyInterest->all();
+    $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
+    $data['script'] = array(
+        'pages/lessees/items'
+    );
+    $this->load->view('common/lessee', $data);
   }
 
   public function inboxPage()
