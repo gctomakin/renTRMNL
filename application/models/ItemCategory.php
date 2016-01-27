@@ -69,6 +69,7 @@ class ItemCategory extends CI_Model {
 	public function getId() { return $this->id; }
 	public function getItemId() { return $this->itemId; }
 	public function getCategoryId() { return $this->categoryId; }
+	public function getTable() { return $this->table; }
 
 	private function deleteCache() {
 		$this->db->cache_delete('itemCategories','all');
