@@ -137,6 +137,7 @@ class Reservations extends CI_Controller {
     return array(
       $this->Item->getId() => $obj->item_id,
       $this->Item->getRate() => $obj->item_rate,
+      $this->ReservationDetail->getRentalAmt() => $obj->rental_amt,
       $this->Item->getPic() => $img,
       $this->Item->getStatus() => $obj->item_stats,
       "qty" => $obj->qty,

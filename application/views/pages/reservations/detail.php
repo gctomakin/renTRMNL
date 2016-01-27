@@ -7,8 +7,8 @@
           <div class="caption">
               <h4><a href="#"><?php echo $detail['item_desc']; ?></a></h4>
               <dl>
-                <dt>Item Rate</dt>
-                <dd><?php echo number_format($detail['item_rate'], 2); ?></dd>
+                <dt>Rental Amount</dt>
+                <dd><?php echo number_format($detail['rental_amt'], 2); ?></dd>
                 <dt>Quantity</dt>
                 <dd><?php echo $detail['qty']; ?></dd>
                 <dt>TOTAL</dt>
