@@ -48,8 +48,12 @@ class RentalShop extends CI_Model{
 
 	public function all($select = "*") {
 		$this->db->select($select);
-		$query = $this->db->get($this->table);
+		$query = $this->db->from($this->table)->limit($this->limit, $this->offset)->get();
 		return $query->result();
+	}
+
+	public function allCount() {
+		return $this->db->from($this->table)->count_all_results();
 	}
 
 	public function findBySubscriberId($lessorId, $key = "") {
