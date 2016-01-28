@@ -11,6 +11,7 @@ class ReservationDetail extends CI_Model{
 
 	private $rdAlias = 'rd';
 	private $iAlias = 'i';
+	private $subAlias = 'sub';
 
 	private $data = array(
 		'reserve_detail_id' => '',
@@ -56,11 +57,33 @@ class ReservationDetail extends CI_Model{
 		return $query->result();	
 	}
 
+	public function findSubscriberByReservationId($id) {
+		$joinItem = $this->_joinItem();
+		$joinSubs = $this->_joinSubscriber();
+
+		$query = $this->db
+			->select($this->subAlias.'.*')
+			->from($this->table . ' as ' . $this->rdAlias)
+			->join($joinItem['table'], $joinItem['on'], 'INNER')
+			->join($joinSubs['table'], $joinSubs['on'], 'INNER')
+			->where(array($this->rdAlias . '.' . $this->reserveId => $id))
+			->get();
+		return $query->row_array();
+	}
+
 	private function _joinItem() {
 		$this->load->model('Item');
 		$table = $this->Item->getTable() . ' as ' . $this->iAlias;
 		$on = $this->iAlias . '.' . $this->Item->getId();
 		$on .= ' = ' . $this->rdAlias . '.' . $this->itemId;
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinSubscriber() {
+		$this->load->model('Subscriber');
+		$table = $this->Subscriber->getTable() . ' as ' . $this->subAlias;
+		$on = $this->subAlias . '.' . $this->Subscriber->getId();
+		$on .= ' = ' . $this->iAlias . '.' . $this->Item->getSubscriberId();
 		return array('table' => $table, 'on' => $on);
 	}
 
