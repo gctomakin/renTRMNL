@@ -29,3 +29,26 @@ $('.btn-view').on('click', function() {
 		}
 	}, 'JSON');
 });
+
+$('.btn-rent').on('click', function() {
+	var id = $(this).data('rev-id');
+	successMessage('Please wait while connecting to paypal');
+	$.post(rentUrl, {id:id}, function(data) {
+		if (data['result']) {
+			if (data['paypal']['result']) {
+				$('#paykey').val(data['paypal']['packet']['payKey']);
+				$('#btn-pay').click();
+			} else {
+				errorMessage(data['paypal']['message']);
+			}
+		} else {
+			errorMessage(data['message']);
+		}
+	}, 'JSON');
+});
+
+function closePaypal()  {
+	dgFlow.closeFlow();
+	top.close();
+	window.reload
+}
