@@ -23,7 +23,42 @@ class Paypal {
 			);
 			return $this->_paypalSend($createPacket, 'Pay');
 		}
-		return false;
+		return FALSE;
+	}
+
+	public function createPacketDetail(
+		$amount,
+		$email,
+		$details,
+		$return = 'subscriptions/add',
+		$cancel = 'subscriptions/cancel'
+	) {
+		$packet = $this->createPacket($amount, $email, $return, $cancel);
+		$res['result'] = FALSE;
+		if ($packet == FALSE) {
+			$res['message'] = 'Fail to create packet';
+		} else if (isset($packet['error'])) {
+			$res['message'] = $packet['error']['message'];
+		} else {
+			$packetDetails = array(
+				'requestEnvelope' => $this->_envelops(),
+				'payKey' => $packet['payKey'],
+				'receiverOptions' => array(
+					array(
+						'receiver' => array('email' => $email),
+						'invoiceData' => array('item' => $details)
+					)
+				)
+			);
+			$response = $this->_paypalSend($packetDetails, "SetPaymentOptions");
+			if (isset($response['error'])) {
+				$res['message'] = $response['error'][0]['message'];//['message'];
+			} else {
+				$res['result'] = TRUE;
+				$res['packet'] = $packet;
+			}
+		}
+		return $res;
 	}
 
 	public function getDetails($payKey) {
