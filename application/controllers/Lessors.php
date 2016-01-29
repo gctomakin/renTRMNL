@@ -65,22 +65,19 @@ class Lessors extends CI_Controller {
   }
 
   public function shopCreate() {
+    $data = $this->_commonAsset();
     $data['title'] = "Creating New Shop";
     $content['action'] = "create";
     $data['content'] = $this->load->view('pages/shops/form', $content, true);
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'libs/map',
-      'pages/create-form',
-      'pages/shops/form'
-    );
-    $data['style'] = array('libs/pnotify');
+    $data['script'][] = 'libs/map';
+    $data['script'][] = 'pages/create-form';
+    $data['script'][] = 'pages/shops/form';
     $this->load->view('common/lessor', $data);
   }
 
   public function shopEdit($id) {
     $this->load->model('RentalShop');
+    $data = $this->_commonAsset();
     $data['title'] = "Edit Shop";
     $content['action'] = "update";
     $lessorId = $this->session->userdata('lessor_id');
@@ -88,14 +85,9 @@ class Lessors extends CI_Controller {
     if ($rentalShop) {
       $content['shop'] = $rentalShop;
       $data['content'] = $this->load->view('pages/shops/form', $content, true);
-      $data['script'] = array(
-        'libs/pnotify.core',
-        'libs/pnotify.buttons',
-        'libs/map',
-        'pages/create-form',
-        'pages/shops/form'
-      );
-      $data['style'] = array('libs/pnotify');
+      $data['script'][] = 'libs/map';
+      $data['script'][] = 'pages/create-form';
+      $data['script'][] = 'pages/shops/form';
       $this->load->view('common/lessor', $data);
     } else {
       redirect('lessor/shops/list');
@@ -128,21 +120,12 @@ class Lessors extends CI_Controller {
 
   public function itemCreate() {
     $this->load->library('rentalmodes');
-  	$data['title'] = "Creating New Item";
+  	$data = $this->_formAsset();
+    $data['title'] = "Creating New Item";
     $content['action'] = "create";
     $content['rental_modes'] = $this->rentalmodes->getModes();
     $data['content'] = $this->load->view('pages/items/form', $content, true);
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'libs/select2.min',
-      'pages/create-form',
-      'pages/items/form'
-    );
-    $data['style'] = array(
-      'libs/pnotify',
-      'libs/select2.min'
-    );
+    
     $this->load->view('common/lessor', $data);
   }
 
@@ -154,12 +137,18 @@ class Lessors extends CI_Controller {
     $this->load->model('Item');
     $this->load->model('ItemCategory');
     $this->load->library('rentalmodes');
+    $data = $this->_formAsset();
     $data['title'] = "Edit Item";
     $content['action'] = "update";
     $content['item'] = $this->Item->findByIdComplete($id);
     $content['categories'] = $this->ItemCategory->findCategoryByItem($id);
     $content['rental_modes'] = $this->rentalmodes->getModes();
     $data['content'] = $this->load->view('pages/items/form', $content, true);
+    
+    $this->load->view('common/lessor', $data);
+  }
+
+  private function _formAsset() {
     $data['script'] = array(
       'libs/pnotify.core',
       'libs/pnotify.buttons',
@@ -171,14 +160,15 @@ class Lessors extends CI_Controller {
       'libs/pnotify',
       'libs/select2.min'
     );
-    $this->load->view('common/lessor', $data);
+    return $data;
   }
 
   public function itemList($page = 1) {
     $this->load->model('Item');
     $this->load->library('pagination');
-  	$this->load->library('rentalmodes');
+    $this->load->library('rentalmodes');
 
+    $data = $this->_commonAsset();
     $data['title'] = "List All Items";
     $lessorId = $this->session->userdata('lessor_id');
     $keyword = $this->input->get('item');
@@ -199,12 +189,7 @@ class Lessors extends CI_Controller {
     $content['rental_modes'] = $this->rentalmodes->getModes();
 
     $data['content'] = $this->load->view('pages/items/list', $content, true);
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'pages/items/list'
-    );
-    $data['style'] = array('libs/pnotify');
+    $data['script'][] = 'pages/items/list';
     $this->load->view('common/lessor', $data);
   }
 
@@ -243,33 +228,32 @@ class Lessors extends CI_Controller {
   }
 
   public function pendingReserves() {
+    $data = $this->_commonAsset();
     $data['title'] = "Pending Reservations";
     $lessorId = $this->session->userdata('lessor_id');
     $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending');
     $data['content'] = $this->load->view('pages/lessor/reservations/pending', $content, TRUE);
-    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'libs/jquery.dataTables',
-      'pages/lessor/reservations/list'
-    );
+    $data['style'][] = 'libs/dataTables.min';
+    $data['script'][] = 'libs/jquery.dataTables';
+    $data['script'][] = 'pages/lessor/reservations/list';
     $this->load->view('common/lessor', $data);
   }
 
   public function approveReserves() {
+    $data = $this->_commonAsset();
     $data['title'] = "Approved Reservations";
     $lessorId = $this->session->userdata('lessor_id');
     $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'approve');
     $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
-    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'libs/jquery.dataTables',
-      'pages/lessor/reservations/list'
-    );
+    $data['style'][] = 'libs/dataTables.min';
+    $data['script'][] = 'libs/jquery.dataTables';
+    $data['script'][] = 'pages/lessor/reservations/list';
+
     $this->load->view('common/lessor', $data);    
+  }
+
+  public function pendingPayments() {
+
   }
 
   public function historyReserves() {
@@ -277,17 +261,20 @@ class Lessors extends CI_Controller {
   }
 
   public function account() {
+    $data = $this->_commonAsset();
     $data['title'] = "Account Settings";
     $lessorId = $this->session->userdata('lessor_id');
     $content['subscriber'] = $this->Subscriber->findId($lessorId);
     $data['content'] = $this->load->view('pages/lessor/account', $content, TRUE);
-    $data['style'] = array('libs/pnotify');
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'pages/lessor/account'
-    );
+    $data['script'][] = 'pages/lessor/account';
+
     $this->load->view('common/lessor', $data); 
+  }
+
+  private function _commonAsset() {
+    $data['script'] = array('libs/pnotify.core', 'libs/pnotify.buttons');
+    $data['style'] = array('libs/pnotify');
+    return $data;
   }
 
   public function accountSave() {
