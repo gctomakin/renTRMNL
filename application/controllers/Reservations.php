@@ -103,9 +103,9 @@ class Reservations extends CI_Controller {
       } else {
         if (
           $status == 'cancel' &&
-          $reservation[$this->Reservation->getStatus()] == 'paypal pending'
+          $reservation[$this->Reservation->getStatus()] == 'payment pending'
         ) {
-          $status = 'paypal cancel';
+          $status = 'payment cancel';
         }
         $this->Reservation->setId($post['id']);
         $this->Reservation->setStatus($status);
@@ -199,7 +199,7 @@ class Reservations extends CI_Controller {
       $balance = $reservation[$this->Reservation->getTotalBalance()] - $paypal['reservation_payment'];
       $this->Reservation->setId($paypal['reservation_id']);
       $this->Reservation->setTotalBalance($balance);
-      $this->Reservation->setStatus('paypal pending');
+      $this->Reservation->setStatus('payment pending');
       if ($this->Reservation->update()) {
         $content['message'] = 'Please wait.. while reservation payment for rental is on process..';
       } else {
