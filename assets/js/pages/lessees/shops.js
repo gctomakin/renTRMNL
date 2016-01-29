@@ -245,7 +245,7 @@ $('.my-shop-trigger').click(function(e) {
 
       if (data) {
         el.attr("disabled", true);
-        $(".fa-plus-circle").text(" Added");
+        el.find('.fa-plus-circle').text(" Added");
         message.fadeIn(2000, function() {
           scrollTop();
           message.delay(2000).fadeOut();

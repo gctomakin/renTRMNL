@@ -18,7 +18,7 @@ $(document).ready(function(){
 
         if (data) {
           el.attr("disabled", true);
-          $(".fa-plus-circle").text(" Added");
+          el.find('.fa-plus-circle').text(" Added");
           message.fadeIn(2000, function() {
             $("html, body").animate({
               scrollTop: $('body').offset().top
