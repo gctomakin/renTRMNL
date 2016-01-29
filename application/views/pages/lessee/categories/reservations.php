@@ -30,7 +30,7 @@
 						<div class="btn-group" role="group" aria-label="reservation-options">
 							<?php if ($rev->status == 'approve') { ?>
 							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev->reserve_id?>">pay for rent</button>
-							<?php } else if ($rev->status != 'cancel') { ?>
+							<?php } else if ($rev->status != 'cancel' && $rev->status != 'paypal cancel') { ?>
 							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
 							<?php }?>
 							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">view details</button>

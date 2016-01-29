@@ -9,7 +9,7 @@ $('.btn-cancel').on('click', function() {
 		$.post(reservationCancelUrl, {id:id}, function(data) {
 			if (data['result']) {
 				button.hide();
-				$('[data-reservation="'+id+'"]').find('.status').text('cancel');
+				$('[data-reservation="'+id+'"]').find('.status').text(data['status']);
 				successMessage(data['message']);
 			} else {
 				errorMessage(data['message']);

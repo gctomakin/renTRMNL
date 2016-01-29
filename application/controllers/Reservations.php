@@ -97,13 +97,25 @@ class Reservations extends CI_Controller {
     if (empty($post['id']) || !is_numeric($post['id'])) {
       $res['message'] = 'Invalid Parameter';
     } else {
-      $this->Reservation->setId($post['id']);
-      $this->Reservation->setStatus($status);
-      if ($this->Reservation->update()) {
-        $res['message'] = 'Reservation ' . ucfirst($status);
-        $res['result'] = TRUE;
+      $reservation = $this->Reservation->findById($post['id']);
+      if (empty($reservation)) {
+        $res['message'] = 'Reservation not found';
       } else {
-        $res['message'] = 'Internal Server Error';
+        if (
+          $status == 'cancel' &&
+          $reservation[$this->Reservation->getStatus()] == 'paypal pending'
+        ) {
+          $status = 'paypal cancel';
+        }
+        $this->Reservation->setId($post['id']);
+        $this->Reservation->setStatus($status);
+        if ($this->Reservation->update()) {
+          $res['message'] = 'Reservation ' . ucfirst($status);
+          $res['result'] = TRUE;
+          $res['status'] = $status;
+        } else {
+          $res['message'] = 'Internal Server Error';
+        }
       }
     }
     return json_encode($res);
