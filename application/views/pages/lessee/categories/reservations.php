@@ -68,5 +68,5 @@
   var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'btn-pay'});
 	var reservationCancelUrl = "<?php echo site_url('reservations/cancel'); ?>";
 	var reservationDetailUrl = "<?php echo site_url('reservations/detail'); ?>";
-	var rentUrl = "<?php echo site_url('reservations/pay'); ?>";
+	var rentUrl = "<?php echo site_url('rental/pay'); ?>";
 </script>
