@@ -46,7 +46,8 @@ class Paypal {
 				'receiverOptions' => array(
 					array(
 						'receiver' => array('email' => $email),
-						'invoiceData' => array('item' => $details)
+						'invoiceData' => array('item' => $details),
+						'description' => "(FULL/HALF)"
 					)
 				)
 			);
