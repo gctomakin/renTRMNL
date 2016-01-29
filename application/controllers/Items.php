@@ -38,6 +38,7 @@ class Items extends CI_Controller {
 				$this->Item->update($data);
 				$this->_categoryProcess($itemId);
 				$res['message'] = "Item Updated";
+				unset($res['post']);
 			}
 		}
 		echo json_encode($res);
