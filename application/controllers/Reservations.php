@@ -18,7 +18,7 @@ class Reservations extends CI_Controller {
 	  if (empty($content['item'])) {
   		redirect(site_url('lessee/items'));
   	} else {
-	  	$data['title'] = "ITEM RESERVATION";
+      $data['title'] = "ITEM RESERVATION";
 	  	$data['content'] = $this->load->view('pages/reservations/form', $content, TRUE);
 	  	$data['script'] = array(
 	  		'libs/pnotify.core',
@@ -50,7 +50,8 @@ class Reservations extends CI_Controller {
 			$this->Reservation->setTotalBalance($post['total']);
 			$this->Reservation->setPenalty(0);
 			$this->Reservation->setStatus('pending');
-			$this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
+      $this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
+			$this->Reservation->setSubscriberId($post['subscriber']);
 			$id = $this->Reservation->create();
 			$res['result'] = FALSE;
 			if ($id > 0) {
