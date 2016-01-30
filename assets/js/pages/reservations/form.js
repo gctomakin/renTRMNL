@@ -1,6 +1,7 @@
 var items;
 var formItems = [];
 var total;
+var subId = $('#sub-id').val();
 $(document).ready(function() {
 	var itemsTemplate = _.template($('#item-list-template').html());
 	processItem().then(function() {
@@ -41,7 +42,8 @@ $(document).ready(function() {
 			details: formItems,
 			from: startDate,
 			to: endDate,
-			total: total
+			total: total,
+			subscriber: subId
 		};
 		$('#reservation-modal').modal('hide');
 

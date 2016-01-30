@@ -60,6 +60,7 @@
 	  					<hr>
 	  					<input type="hidden" id="shop-id" value="<?php echo $item['shop_id']; ?>">
 	  					<input type="hidden" id="item-id" value="<?php echo $item['item_id']; ?>">
+	  					<input type="hidden" id="sub-id" value="<?php echo $item['subscriber_id']; ?>">
 	  					<input type="hidden" id="min-date" value="<?php echo $startDate; ?>">
 	  				</div>
 	  			</form>
