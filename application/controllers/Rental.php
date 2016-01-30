@@ -68,7 +68,16 @@ class Rental extends CI_Controller {
       $this->Reservation->setId($paypal['reservation_id']);
       $this->Reservation->setTotalBalance($balance);
       if ($this->Reservation->update()) {
-        $content['message'] = 'Please wait.. while reservation payment for rental is on process..';
+        $this->load->model('RentalPayment');
+        $this->RentalPayment->setAmount($paypal['reservation_payment']);
+        $this->RentalPayment->setDate(date('Y-m-d H:i:s'));
+        $this->RentalPayment->setReserveId($paypal['reservation_id']);
+        $this->RentalPayment->setStatus('pending');
+        if ($this->RentalPayment->create() > 0) {
+          $content['message'] = 'Please wait.. while reservation payment for rental is on process..';
+        } else {
+          $content['message'] = 'Internal Server Error: Reservation Payment';
+        } 
       } else {
         $content['message'] = 'Internal Server Error: Reservation Update';
       }
