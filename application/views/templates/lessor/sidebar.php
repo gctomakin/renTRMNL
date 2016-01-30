@@ -37,7 +37,7 @@
                         <li><a href="<?php echo site_url('lessor/reservations/rented'); ?>">Rented Items</a></li>
                         <li><a href="<?php echo site_url('lessor/reservations/approve'); ?>">Approved Reservations</a></li>
                         <li><a href="<?php echo site_url('lessor/reservations/pending'); ?>">Pending Reservations</a></li>
-                        <li><a href="<?php echo site_url('lessor/reservations/pending/payments'); ?>">Pending Payments</a></li>
+                        <li><a href="<?php echo site_url('lessor/payments/pending'); ?>">Pending Payments</a></li>
                         <li><a href="<?php echo site_url('lessor/reservations/history'); ?>">History</a></li>
                     </ul>
                 </li>
