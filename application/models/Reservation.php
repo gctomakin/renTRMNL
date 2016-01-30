@@ -13,6 +13,7 @@ class Reservation extends CI_Model{
 	private $penalty = "penalty";
 	private $status = "status";
 	private $lesseeId = "lessee_id";
+	private $subscriberId = "subscriber_id";
 
 	private $data = array(
 		"reserve_id" => "",
@@ -24,7 +25,8 @@ class Reservation extends CI_Model{
 		"total_balance" => "",
 		"penalty" => "",
 		"status" => "",
-		"lessee_id"=> ""
+		"lessee_id"=> "",
+		"subscriber_id" => ""
 	);
 
 	public function clean() {
@@ -87,6 +89,7 @@ class Reservation extends CI_Model{
 	public function getPenalty() { return $this->penalty; }
 	public function getStatus() { return $this->status; }
 	public function getLesseeId() { return $this->lesseeId; }
+	public function getSubscriberId() { return $this->subscriberId; }
 	public function getTable() { return $this->table; }
 
 	public function setId($value) { $this->data[$this->id] = $value; }
@@ -99,6 +102,7 @@ class Reservation extends CI_Model{
 	public function setPenalty($value) { $this->data[$this->penalty] = $value; }
 	public function setStatus($value) { $this->data[$this->status] = $value; }
 	public function setLesseeId($value) { $this->data[$this->lesseeId] = $value; }
+	public function setSubscriberId($value) { $this->data[$this->subscriberId] = $value; }
 
 	private function deleteCache() {
 		$this->db->cache_delete('lessee','reserved');
