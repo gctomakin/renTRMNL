@@ -98,22 +98,14 @@ class Lessors extends CI_Controller {
     $this->load->model('RentalShop');
     $this->load->library('pagination');
 
+    $data = $this->_commonListAsset();
     $data['title'] = "My Shops";
     $lessorId = $this->session->userdata('lessor_id');
 
     $content['shops'] = $this->RentalShop->findAllBySubscriberId($lessorId);
 
     $data['content'] = $this->load->view('pages/shops/list', $content, true);
-    $data['style'] = array(
-      'libs/pnotify',
-      'libs/dataTables.min'
-    );
-    $data['script'] = array(
-      'libs/pnotify.core',
-      'libs/pnotify.buttons',
-      'libs/jquery.dataTables',
-      'pages/shops/list'
-    );
+    $data['script'][] = 'pages/shops/list';
 
     $this->load->view('common/lessor', $data);
   }
@@ -202,6 +194,7 @@ class Lessors extends CI_Controller {
   }
 
   public function subscriptions() {
+    $data = $this->_commonListAsset();
     $this->load->model('Subscription');
     $lessorId = $this->session->userdata('lessor_id');
     $content['subscriptions'] = $this->Subscription->findBySubscriberId($lessorId);
@@ -209,15 +202,8 @@ class Lessors extends CI_Controller {
     $data['title'] = 'Subscription Informations';
     $data['content'] = $this->load->view('pages/lessor/subscriptions/informations', $content, TRUE);
     
-    $data['style'] = array(
-      'libs/price-table',
-      'libs/dataTables.min'
-    );
-
-    $data['script'] = array(
-      'libs/jquery.dataTables',
-      'pages/lessor/subscription'
-    );
+    $data['style'][] = 'libs/price-table';
+    $data['script'][] = 'pages/lessor/subscription';
 
     $this->load->view('common/lessor', $data);
   }
@@ -228,32 +214,35 @@ class Lessors extends CI_Controller {
   }
 
   public function pendingReserves() {
-    $data = $this->_commonAsset();
+    $data = $this->_commonListAsset();
     $data['title'] = "Pending Reservations";
     $lessorId = $this->session->userdata('lessor_id');
     $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending');
     $data['content'] = $this->load->view('pages/lessor/reservations/pending', $content, TRUE);
-    $data['style'][] = 'libs/dataTables.min';
-    $data['script'][] = 'libs/jquery.dataTables';
     $data['script'][] = 'pages/lessor/reservations/list';
     $this->load->view('common/lessor', $data);
   }
 
   public function approveReserves() {
-    $data = $this->_commonAsset();
+    $data = $this->_commonListAsset();
     $data['title'] = "Approved Reservations";
     $lessorId = $this->session->userdata('lessor_id');
     $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'approve');
     $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
-    $data['style'][] = 'libs/dataTables.min';
-    $data['script'][] = 'libs/jquery.dataTables';
     $data['script'][] = 'pages/lessor/reservations/list';
 
     $this->load->view('common/lessor', $data);    
   }
 
   public function pendingPayments() {
-
+    $this->load->model('RentalPayment');
+    $data = $this->_commonListAsset();
+    $data['title'] = "Pending Payment";
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['reservations'] = $this->RentalPayment->findPendingByLessorId($lessorId);
+    $data['content'] = $this->load->view('pages/lessor/reservations/pendingPayment', $content, TRUE);
+    $data['script'][] = 'pages/lessor/reservations/list';
+    $this->load->view('common/lessor', $data);
   }
 
   public function historyReserves() {
@@ -274,6 +263,12 @@ class Lessors extends CI_Controller {
   private function _commonAsset() {
     $data['script'] = array('libs/pnotify.core', 'libs/pnotify.buttons');
     $data['style'] = array('libs/pnotify');
+    return $data;
+  }
+
+  private function _commonListAsset() {
+    $data['script'] = array('libs/pnotify.core', 'libs/pnotify.buttons', 'libs/jquery.dataTables');
+    $data['style'] = array('libs/pnotify', 'libs/dataTables.min');
     return $data;
   }
 
