@@ -30,6 +30,7 @@ class Paypal {
 		$amount,
 		$email,
 		$details,
+		$type,
 		$return = 'subscriptions/add',
 		$cancel = 'subscriptions/cancel'
 	) {
@@ -47,7 +48,7 @@ class Paypal {
 					array(
 						'receiver' => array('email' => $email),
 						'invoiceData' => array('item' => $details),
-						'description' => "(FULL/HALF)"
+						'description' => ucfirst($type) . " Payment"
 					)
 				)
 			);
