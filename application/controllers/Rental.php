@@ -42,16 +42,16 @@ class Rental extends CI_Controller {
           $this->RentalPayment->deleteCache();       
           $rDetails = $this->ReservationDetail->findByReservationId($post['id']);
           $payments = $this->RentalPayment->findByReservationId($post['id']);
-          $type = '';
+          $type = ucfirst($post['type']);
           $cashbond = 0;
           $total = $reservation[$this->Reservation->getTotalAmt()];
-          if ($post['type'] != 'full') {
-            $type = 'Half';
+          if ($post['type'] != 'Full') {
             $total = $total / 2;
           }
           if (empty($payments)) {
             $pDetails = array_map(array($this, '_proPaypalWithCashBond' . $type), $rDetails);
             $cashbond = $this->_calTotalCashBond($rDetails);
+            $type .= " With Cashbonds";
           } else {
             $pDetails = array_map(array($this, '_proPaypal' . $type), $rDetails);
           }
@@ -59,14 +59,14 @@ class Rental extends CI_Controller {
             $total + $cashbond,
             $email,
             $pDetails,
-            $post['type'],
+            $type,
             'rental/returnPaypal', // Return
             'rental/cancelPaypal' // Cancel
           );
           $this->session->set_flashdata('is_paypal', TRUE);
           $this->session->set_flashdata('reservation_id', $post['id']);
           $this->session->set_flashdata('reservation_payment', $total);
-          
+          $this->session->set_flashdata('reservation_type', $type);
           $res['email'] = $email;
           $res['result'] = TRUE;
         }
@@ -95,6 +95,7 @@ class Rental extends CI_Controller {
         $this->RentalPayment->setAmount($paypal['reservation_payment']);
         $this->RentalPayment->setDate(date('Y-m-d H:i:s'));
         $this->RentalPayment->setReserveId($paypal['reservation_id']);
+        $this->RentalPayment->setDescription($paypal['reservation_type']);
         $this->RentalPayment->setStatus('pending');
         if ($this->RentalPayment->create() > 0) {
           $content['message'] = 'Please wait.. while reservation payment for rental is on process..';
