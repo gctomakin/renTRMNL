@@ -77,6 +77,32 @@ class Reservation extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function findSubscriberById($id, $select = "") {
+		$joinSub = $this->_joinSubscriber();
+		if (empty($select)) {
+			$this->db->select($this->subAlias .".*");
+		} else if (is_array($select)) {
+			$this->db->select($this->subAlias . "." . implode(" {$this->subAlias}.", $select));
+		}
+		$query = $this->db
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($joinSub['table'], $joinSub['on'], 'INNER')
+			->where($this->rAlias . '.'. $this->id, $id)
+			->get();
+		return $query->row_array();
+	}
+
+	private $rAlias = "r";
+	private $subAlias = "sub";
+
+	private function _joinSubscriber($id = "") {
+		$this->load->model('Subscriber');
+		$table = $this->Subscriber->getTable() . ' as ' . $this->subAlias;
+		$on = $this->rAlias . '.' . $this->subscriberId . ' = ';
+		$on .= empty($id) ? $this->subAlias . '.' . $this->Subscriber->getId() : $id;
+		return array('table' => $table, 'on' => $on);
+	}
+
 	// GETTERS AND SETTERS
 
 	public function getId() { return $this->id; }
