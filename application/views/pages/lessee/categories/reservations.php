@@ -22,13 +22,13 @@
 							echo date('M d, Y', strtotime($rev->date_returned)); 
 						?>
 					</td>
-					<td class="text-right"><?php echo $rev->total_amt; ?></td>
+					<td class="text-right total-amount"><?php echo $rev->total_amt; ?></td>
 					<td class="text-right"><?php echo $rev->penalty; ?></td>
-					<td class="text-right"><?php echo $rev->total_balance; ?></td>
+					<td class="text-right total-balance"><?php echo $rev->total_balance; ?></td>
 					<td class="status"><?php echo $rev->status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
-							<?php if ($rev->status == 'approve') { ?>
+							<?php if ($rev->status == 'approve' && $rev->total_balance > 0) { ?>
 							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev->reserve_id?>">pay for rent</button>
 							<?php } else if ($rev->status != 'cancel' && $rev->status != 'payment cancel') { ?>
 							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
@@ -42,12 +42,30 @@
 		</table>
 	</div>
 </div>
-<div class="modal modal-fullscreen fade" id="reservation-modal">
+<div id="confirm-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+    	<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Pay Rental Confirmation</h4>
+      </div>
+      <div class="modal-body">
+      	<h3>Choose payment type</h3>
+      	<p><small>(There will be an additional cash bond for the first payment)</small></p>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default btn-confirm" data-payment-type="full" data-dismiss="modal">Full Payment</button>
+      	<button type="button" class="btn btn-default btn-confirm" data-payment-type="half" data-dismiss="modal">Half Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal modal-fullscreen fade" tabindex="-1" id="reservation-modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="reservation-modal-title" >Rerservation's Details</i></h4>
+				<h4 class="modal-title" id="reservation-modal-title" >Rerservation's Details</h4>
       </div>
       <div class="modal-body"></div>
 			<div class="modal-footer">
