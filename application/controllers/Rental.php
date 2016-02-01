@@ -13,6 +13,7 @@ class Rental extends CI_Controller {
     $post = $this->input->post();
     
     $this->form_validation->set_rules('id', 'Reservation ID', 'trim|required|numeric|xss_clean');
+    $this->form_validation->set_rules('type', 'Payment Type', 'trim|required|xss_clean');
     
     if ($this->form_validation->run() == FALSE) {
       $res['message'] = validation_errors();
@@ -22,21 +23,43 @@ class Rental extends CI_Controller {
       if (empty($reservation)) {
         $res['message'] = 'Reservation not found';
       } else {
-        $this->load->library('Paypal');
-        $this->load->Model('Subscriber');
-        $this->load->Model('ReservationDetail');
-        $rDetails = $this->ReservationDetail->findByReservationId($post['id']);
-        $subscriber = $this->ReservationDetail->findSubscriberByReservationId($post['id']);
-        $email = $subscriber[$this->Subscriber->getPaypal()];
-        $total = $reservation[$this->Reservation->getTotalAmt()];
-        $pDetails = array_map(array($this, '_proccessForPaypal'), $rDetails);
+        $this->load->model('Subscriber');
+        
+        $paypalCol = $this->Subscriber->getPaypal();
+        
+        $subscriber = $this->Reservation->findSubscriberById(
+          $post['id'], array($paypalCol)
+        );
+        
+        $email = $subscriber[$paypalCol];
+
         if (empty($email)) {
           $res['message'] = 'Lessor does not have paypal account, please contact him for reservation';
         } else {
+          $this->load->library('Paypal');
+          $this->load->model('ReservationDetail');
+          $this->load->model('RentalPayment');
+          $this->RentalPayment->deleteCache();       
+          $rDetails = $this->ReservationDetail->findByReservationId($post['id']);
+          $payments = $this->RentalPayment->findByReservationId($post['id']);
+          $type = '';
+          $cashbond = 0;
+          $total = $reservation[$this->Reservation->getTotalAmt()];
+          if ($post['type'] != 'full') {
+            $type = 'Half';
+            $total = $total / 2;
+          }
+          if (empty($payments)) {
+            $pDetails = array_map(array($this, '_proPaypalWithCashBond' . $type), $rDetails);
+            $cashbond = $this->_calTotalCashBond($rDetails);
+          } else {
+            $pDetails = array_map(array($this, '_proPaypal' . $type), $rDetails);
+          }
           $res['paypal'] = $this->paypal->createPacketDetail(
-            $total,
+            $total + $cashbond,
             $email,
             $pDetails,
+            $post['type'],
             'rental/returnPaypal', // Return
             'rental/cancelPaypal' // Cancel
           );
@@ -98,7 +121,7 @@ class Rental extends CI_Controller {
   }
 
 
-  private function _proccessForPaypal($detail) {
+  private function _proPaypal($detail) {
     if (is_array($detail)) {
       $detail = json_decode(json_encode($detail), FALSE);
     }
@@ -107,5 +130,46 @@ class Rental extends CI_Controller {
       'price' => $detail->rental_amt * $detail->qty,
       'identifier' => 'p' . $detail->item_id,
     );
+  }
+
+  private function _proPaypalHalf($detail) {
+    if (is_array($detail)) {
+      $detail = json_decode(json_encode($detail), FALSE);
+    }
+    return array(
+      'name' => $detail->item_desc . ' ('. $detail->rental_amt . ' x ' . $detail->qty . ') / 2',
+      'price' => ($detail->rental_amt * $detail->qty)/ 2,
+      'identifier' => 'p' . $detail->item_id,
+    ); 
+  }
+
+  private function _proPaypalWithCashBond($detail) {
+    if (is_array($detail)) {
+      $detail = json_decode(json_encode($detail), FALSE);
+    }
+    return array(
+      'name' => $detail->item_desc . ' ('. $detail->rental_amt . ' x ' . $detail->qty . ') + ' . $detail->item_cash_bond,
+      'price' => ($detail->rental_amt * $detail->qty) + $detail->item_cash_bond,
+      'identifier' => 'p' . $detail->item_id,
+    ); 
+  }
+
+  private function _proPaypalWithCashBondHalf($detail) {
+    if (is_array($detail)) {
+      $detail = json_decode(json_encode($detail), FALSE);
+    }
+    return array(
+      'name' => $detail->item_desc . ' (('. $detail->rental_amt . ' x ' . $detail->qty . ')/ 2) + ' . $detail->item_cash_bond,
+      'price' => (($detail->rental_amt * $detail->qty) / 2) + $detail->item_cash_bond,
+      'identifier' => 'p' . $detail->item_id,
+    );
+  }
+
+  private function _calTotalCashBond($details) {
+    $total = 0;
+    foreach ($details as $detail) {
+      $total += $detail->item_cash_bond;
+    }
+    return $total;
   }
 }
