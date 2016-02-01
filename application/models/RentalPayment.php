@@ -7,6 +7,7 @@ class RentalPayment extends CI_Model{
 	private $id = "payment_id";
 	private $amount = "payment_amt";
 	private $date = "payment_date";
+	private $description = "payment_description";
 	private $reserveId = "reserve_id";
 	private $status = "payment_status";
 
@@ -14,6 +15,7 @@ class RentalPayment extends CI_Model{
 		"payment_id" => "",
 		"payment_amt" => "",
 		"payment_date" => "",
+		"payment_description" => "",
 		"reserve_id" => "",
 		"payment_status" => ""
 	);
@@ -83,7 +85,7 @@ class RentalPayment extends CI_Model{
 	}
 
 	public function findByReservationId($id) {
-		$query = $this->db->get_where($this->table, array($this->id => $id));
+		$query = $this->db->get_where($this->table, array($this->reserveId => $id));
 		return $query->result();
 	}
 
@@ -106,13 +108,15 @@ class RentalPayment extends CI_Model{
 	public function getReserveId() { $this->reserveId; }
 	public function getTable() { $this->table; }
 	public function getStatus() { $this->status; }
+	public function getDescription() { $this->description; }
 
 	public function setId($value) { $this->data[$this->id] = $value; }
 	public function setAmount($value) { $this->data[$this->amount] = $value; }
 	public function setDate($value) { $this->data[$this->date] = $value; }
 	public function setReserveId($value) { $this->data[$this->reserveId] = $value; }
 	public function setStatus($value) { $this->data[$this->status] = $value; }
-	
+	public function setDescription($value) { $this->data[$this->description] = $value; }
+
 	public function deleteCache() {
 		$this->db->cache_delete('rental','pay');
 		$this->db->cache_delete('rental', 'returnPaypal');
