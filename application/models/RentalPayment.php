@@ -73,12 +73,18 @@ class RentalPayment extends CI_Model{
 			$this->db->where($this->status, $status);
 		}
 		$query = $this->db
+			->select($this->rpAlias . '.*')
 			->from($this->table . ' as ' . $this->rpAlias)
 			->join($joinRes['table'], $joinRes['on'] . $joinCon, 'INNER')
 			->get();
 
 		return $query->result();
 		
+	}
+
+	public function findByReservationId($id) {
+		$query = $this->db->get_where($this->table, array($this->id => $id));
+		return $query->result();
 	}
 
 	private function _joinReservation() {
@@ -101,13 +107,15 @@ class RentalPayment extends CI_Model{
 	public function getTable() { $this->table; }
 	public function getStatus() { $this->status; }
 
-	public function setId($value) { $data[$this->id] = $value; }
-	public function setAmount($value) { $data[$this->amount] = $value; }
-	public function setDate($value) { $data[$this->date] = $value; }
-	public function setReserveId($value) { $data[$this->reserveId] = $value; }
-	public function setStatus($value) { $data[$this->status] = $value; }
+	public function setId($value) { $this->data[$this->id] = $value; }
+	public function setAmount($value) { $this->data[$this->amount] = $value; }
+	public function setDate($value) { $this->data[$this->date] = $value; }
+	public function setReserveId($value) { $this->data[$this->reserveId] = $value; }
+	public function setStatus($value) { $this->data[$this->status] = $value; }
 	
-	private function deleteCache() {
-	
+	public function deleteCache() {
+		$this->db->cache_delete('rental','pay');
+		$this->db->cache_delete('rental', 'returnPaypal');
+		$this->db->cache_delete('lessor', 'payments');
 	}
 }
