@@ -30,10 +30,31 @@ $('.btn-view').on('click', function() {
 	}, 'JSON');
 });
 
+var resId = 0;
+
 $('.btn-rent').on('click', function() {
-	var id = $(this).data('rev-id');
+	resId = $(this).data('rev-id');
+	var balance = $('[data-reservation="'+resId+'"]').find('.total-balance').html();
+	var amount = $('[data-reservation="'+resId+'"]').find('.total-amount').html();
+	if (parseFloat(balance) < parseFloat(amount)) {
+		proceedPay('half');
+	} else {
+		$('#confirm-modal').modal('show');
+	}
+});
+
+$('.btn-confirm').on('click', function() {
+	var type = $(this).data('payment-type');
+	if (type == 'full' || type == 'half') {
+		proceedPay(type);		
+	} else {
+		errorMessage('Invalid payment type');
+	}
+});
+
+function proceedPay(type) {
 	successMessage('Please wait while connecting to paypal');
-	$.post(rentUrl, {id:id}, function(data) {
+	$.post(rentUrl, {id: resId, type: type}, function(data) {
 		if (data['result']) {
 			if (data['paypal']['result']) {
 				$('#paykey').val(data['paypal']['packet']['payKey']);
@@ -45,7 +66,7 @@ $('.btn-rent').on('click', function() {
 			errorMessage(data['message']);
 		}
 	}, 'JSON');
-});
+}
 
 function closePaypal()  {
 	dgFlow.closeFlow();
