@@ -43,7 +43,9 @@ class Reservation extends CI_Model{
 	}
 
 	public function update() {
-		$data = array_filter($this->data);
+		$data = array_filter($this->data, function($value) {
+    	return ($value !== null && $value !== false && $value !== ''); 
+		});
 		$this->db->update($this->table, $data, array(
 				$this->id => $data[$this->id]
 			)
