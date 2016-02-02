@@ -396,8 +396,77 @@ class Admins extends CI_Controller {
       'style',
       'libs/datepicker',
       'libs/dataTables.min'
-
     );
+    return $data;
+  }
+
+  public function monitorLessee() {
+    $this->load->model('Lessee');
+    $data = $this->_commonListAsset();
+    $data['title'] = 'MONITOR LESSEE';
+    $content['lessees'] = array_map(array($this, '_mapLessee'), $this->Lessee->allForMonitor());
+    $data['content'] = $this->load->view('pages/admin/monitor/lessee', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function monitorLessor() {
+    $this->load->model('Subscriber');
+    $data = $this->_commonListAsset();
+    $data['title'] = 'MONITOR LESSOR';
+    $content['lessors'] = $this->Subscriber->allForMonitor();
+    $data['content'] = $this->load->view('pages/admin/monitor/lessor', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function monitorItem() {
+    $this->load->model('Item');
+    $data = $this->_commonListAsset();
+    $data['title'] = 'MONITOR ITEM';
+    $content['items'] = array_map(array($this, '_mapItems'), $this->Item->allForMonitor());
+    $data['content'] = $this->load->view('pages/admin/monitor/item', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  private function _commonListAsset() {
+    $data['script'] = array(
+      'libs/jquery.dataTables',
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'pages/admins/monitors/list'
+    );
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    return $data;
+  }
+
+  private function _mapLessee($lessee) {
+    $data = array(
+      'image' => $lessee->image == NULL ?'http://placehold.it/100x50' : 'data:image/jpeg;base64,' . base64_encode($lessee->image),
+      'id' => $lessee->lessee_id,
+      'fullname' => $lessee->lessee_fname . ' ' . $lessee->lessee_lname,
+      'contact' => $lessee->lessee_phoneno,
+      'email' => $lessee->lessee_email
+    );
+    if (isset($lessee->total_reservation)) {
+      $data['total_reservation'] = $lessee->total_reservation;
+    }
+    if (isset($lessee->total_penalty)) {
+      $data['total_penalty'] = $lessee->total_penalty;
+    }
+    return $data;
+  }
+
+  private function _mapItems($item) {
+    $data = array(
+      'item_id' => $item->item_id,
+      'item_rate' => $item->item_rate,
+      'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/100x50' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
+      'item_stats' => $item->item_stats,
+      'item_qty' => $item->item_qty,
+      'item_desc' => $item->item_desc,
+    );
+    if (isset($item->total_rented)) {
+      $data['total_rented'] = $item->total_rented;
+    }
     return $data;
   }
 }
