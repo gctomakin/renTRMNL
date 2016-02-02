@@ -74,6 +74,9 @@ $route['admin/categories']        = 'admins/categoriesViewPage';
 $route['admin/reports/subscriptions'] = 'admins/reportsSubscriptions';
 $route['admin/reports/rentals'] = 'admins/reportsRentals';
 $route['admin/reports/users'] = 'admins/reportsUsers';
+$route['admin/monitor/lessee'] = 'admins/monitorLessee';
+$route['admin/monitor/lessor'] = 'admins/monitorLessor';
+$route['admin/monitor/items'] = 'admins/monitorItem';
 
 
 /** Admin Actions*/
