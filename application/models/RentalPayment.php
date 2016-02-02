@@ -88,8 +88,12 @@ class RentalPayment extends CI_Model{
 		
 	}
 
-	public function findByReservationId($id) {
-		$query = $this->db->get_where($this->table, array($this->reserveId => $id));
+	public function findByReservationId($id, $status = "") {
+		$where = array($this->reserveId => $id);
+		if (!empty($status)) {
+			$where[$this->status] = $status;
+		}
+		$query = $this->db->get_where($this->table, $where);
 		return $query->result();
 	}
 
