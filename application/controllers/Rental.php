@@ -163,6 +163,10 @@ class Rental extends CI_Controller {
     } else {
       $content['payments'] = $this->RentalPayment->findByReservationId($post['id']);
       $content['cancelUrl'] = site_url('rental/changeStatus/cancel');
+      $content['receiveUrl'] = site_url('rental/changeStatus/receive');
+      if ($this->session->has_userdata('lessor_logged_in')) {
+        $content['isLessor'] = TRUE;
+      }
       if (empty($content['payments'])) {
         $res['message'] = 'No payment history yet';
       } else {
