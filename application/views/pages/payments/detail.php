@@ -18,9 +18,9 @@
 			<td>
 				<?php if ($payment->payment_status == 'pending') { ?>
 					<?php if (isset($isLessor)) { ?>
-				<button class="btn btn-xs btn-primary btn-pay-receive">receive</button>	
+				<button class="btn btn-xs btn-success btn-payment-detail btn-pay-receive">receive</button>	
 					<?php }?>
-				<button class="btn btn-xs btn-primary btn-pay-cancel">cancel</button>
+				<button class="btn btn-xs btn-primary btn-payment-detail btn-pay-cancel">cancel</button>
 				<?php } ?>
 				<input type="hidden" class="pay-id" value="<?php echo $payment->payment_id ?>">
 			</td>
@@ -30,15 +30,25 @@
 </table>
 <script type="text/javascript">
 	var cancelUrl = "<?php echo $cancelUrl; ?>";
+	var receiveUrl = "<?php echo $receiveUrl; ?>"
 	$(document).ready(function() {
 		$('.btn-pay-cancel').click(function() {
-			var button = $(this);
-			var id = button.siblings('.pay-id').val();
-			
-			proccessAction(cancelUrl, {id: id}).then(function() {
-				$('[data-pay-id="'+id+'"]').find('.status').text('cancel');
-				button.hide();
-			});
+			if (confirm('Are you sure to cancel this payment?')) {
+				var id = $(this).siblings('.pay-id').val();
+				proccessAction(cancelUrl, {id: id}).then(function() {
+					$('[data-pay-id="'+id+'"]').find('.status').text('cancel');
+					$('.btn-payment-detail').hide();
+				});
+			}
+		});
+		$('.btn-pay-receive').click(function() {
+			if (confirm('Are you sure that you receive this payment?')) {
+				var id = $(this).siblings('.pay-id').val();
+				proccessAction(receiveUrl, {id: id}).then(function() {
+					$('[data-pay-id="'+id+'"]').find('.status').text('receive');
+					$('.btn-payment-detail').hide();
+				});
+			}
 		});
 	}); 
 </script>
