@@ -52,6 +52,18 @@ $('.btn-confirm').on('click', function() {
 	}
 });
 
+$('.btn-payment').on('click', function() {
+	resId = $(this).data('rev-id');
+	$.post(paymentUrl, {id: resId}, function(data) {
+		if (data['result']) {
+			$('#payments-modal').find('.modal-body').html(data['view']);
+			$('#payments-modal').modal('show');
+		} else {
+			errorMessage(data['message']);
+		}
+	}, 'JSON');
+});
+
 function proceedPay(type) {
 	successMessage('Please wait while connecting to paypal');
 	$.post(rentUrl, {id: resId, type: type}, function(data) {
