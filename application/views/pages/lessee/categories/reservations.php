@@ -29,11 +29,12 @@
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
 							<?php if ($rev->status == 'approve' && $rev->total_balance > 0) { ?>
-							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev->reserve_id?>">pay for rent</button>
+							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev->reserve_id?>">pay</button>
 							<?php } else if ($rev->status == 'pending') { ?>
 							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
 							<?php }?>
-							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">view details</button>
+							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">view</button>
+							<button class="btn btn-danger btn-xs btn-payment" data-rev-id="<?php echo $rev->reserve_id?>">payments</button>
 						</div>
 					</td>
 				</tr>
@@ -76,6 +77,22 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+<div class="modal modal-fullscreen fade" tabindex="-1" id="payments-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" >Payment's Details</h4>
+      </div>
+      <div class="modal-body"></div>
+			<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 <form id='paypal-form' class="standard" action="https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">
   <input id="type" type="hidden" name="expType" value="light">
   <input id="paykey" type="hidden" name="paykey" value="">
@@ -87,4 +104,5 @@
 	var reservationCancelUrl = "<?php echo site_url('reservations/cancel'); ?>";
 	var reservationDetailUrl = "<?php echo site_url('reservations/detail'); ?>";
 	var rentUrl = "<?php echo site_url('rental/pay'); ?>";
+	var paymentUrl = "<?php echo site_url('rental/details'); ?>"
 </script>
