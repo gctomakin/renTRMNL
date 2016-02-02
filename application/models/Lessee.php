@@ -139,6 +139,53 @@ class Lessee extends CI_Model
     return $query;
   }
 
+  public function allForMonitor() {
+    $select = $this->_lesseeSelect();
+    $countReservation = $this->_subCountReservation();
+    $countPenalty = $this->_subCountPenalty();
+    $query = $this->db
+      ->select($select . ", $countReservation, $countPenalty")
+      ->from($this->lessees_table . ' as ' . $this->lesseeAlias)
+      ->get();
+    return $query->result();
+  }
+
+  public function _subCountReservation() {
+    $this->load->model('Reservation');
+    $table = $this->Reservation->getTable() . ' as ' . $this->rAlias;
+    $where = $this->lesseeAlias . '.lessee_id = ';
+    $where .= $this->rAlias . '.' . $this->Reservation->getLesseeId();
+    $select = "(SELECT count(1) FROM $table WHERE $where) as total_reservation";
+    return $select;
+  }
+
+  public function _subCountPenalty() {
+    $this->load->model('Penalty');
+    $this->load->model('Reservation');
+    $table = $this->Penalty->getTable() . ' as ' . $this->pAlias;
+    $join = $this->Reservation->getTable() . ' as ' . $this->rAlias;
+    $on = $this->rAlias . '.' . $this->Reservation->getId() . ' = ';
+    $on .= $this->pAlias . '.' . $this->Penalty->getReserveId();
+    $where = $this->rAlias . '.' . $this->Reservation->getId() . ' = ';
+    $where .= $this->pAlias . '.' . $this->Penalty->getReserveId();
+    $select = "(SELECT count(1) FROM $table LEFT JOIN $join ON $on WHERE $where) as total_penalty";
+    return $select;
+  }
+
+  private function _lesseeSelect() {
+    $select = array(
+      'lessee_id', 'image',
+      'lessee_fname', 'lessee_lname',
+      'lessee_email', 'lessee_phoneno'
+    );
+    return $this->lesseeAlias . '.' . implode(', ' . $this->lesseeAlias . '.', $select);
+  }
+
+  private $lesseeAlias = 'l';
+  private $rdAlias = 'rd';
+  private $rAlias = 'r';
+  private $pAlias = 'p';
+
   public function insert()
   {
     $data['lessee_fname']   = $this->getFname();
