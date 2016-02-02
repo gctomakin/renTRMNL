@@ -239,9 +239,9 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Pending Payment";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->RentalPayment->findPendingByLessorId($lessorId);
+    $content['payments'] = $this->RentalPayment->findPendingByLessorId($lessorId, 'pending');
     $data['content'] = $this->load->view('pages/lessor/reservations/pendingPayment', $content, TRUE);
-    $data['script'][] = 'pages/lessor/reservations/list';
+    $data['script'][] = 'pages/lessor/payments/list';
     $this->load->view('common/lessor', $data);
   }
 
