@@ -5,6 +5,7 @@ class Rental extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct(3);
+    $this->load->model('RentalPayment');
 	}
 
 	public function pay() {
@@ -38,7 +39,6 @@ class Rental extends CI_Controller {
         } else {
           $this->load->library('Paypal');
           $this->load->model('ReservationDetail');
-          $this->load->model('RentalPayment');
           $this->RentalPayment->deleteCache();       
           $rDetails = $this->ReservationDetail->findByReservationId($post['id']);
           $payments = $this->RentalPayment->findByReservationId($post['id']);
@@ -91,7 +91,6 @@ class Rental extends CI_Controller {
       $this->Reservation->setId($paypal['reservation_id']);
       $this->Reservation->setTotalBalance($balance);
       if ($this->Reservation->update()) {
-        $this->load->model('RentalPayment');
         $this->RentalPayment->setAmount($paypal['reservation_payment']);
         $this->RentalPayment->setDate(date('Y-m-d H:i:s'));
         $this->RentalPayment->setReserveId($paypal['reservation_id']);
@@ -128,7 +127,6 @@ class Rental extends CI_Controller {
     if (empty($post['id']) || !is_numeric($post['id'])) {
       $res['message'] = "Invalid Parameter";
     } else {
-      $this->load->model('RentalPayment');
       $payment = $this->RentalPayment->findById($post['id'], 'pending');
       if (empty($payment)) {
         $res['message'] = 'Payment not found';
@@ -150,6 +148,26 @@ class Rental extends CI_Controller {
             $res['message'] = 'Internal Server Error';
           }
         }
+      }
+    }
+    echo json_encode($res);
+  }
+
+  public function details() {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+
+    if (empty($post['id']) || !is_numeric($post['id'])) {
+      $res['message'] = 'Invalid Parameter';
+    } else {
+      $content['payments'] = $this->RentalPayment->findByReservationId($post['id']);
+      $content['cancelUrl'] = site_url('rental/changeStatus/cancel');
+      if (empty($content['payments'])) {
+        $res['message'] = 'No payment history yet';
+      } else {
+        $res['view'] = $this->load->view('/pages/payments/detail', $content, TRUE);
+        $res['result'] = TRUE;
       }
     }
     echo json_encode($res);
