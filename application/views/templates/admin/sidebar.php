@@ -23,7 +23,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#item-nav"><i class="fa fa-pencil fa-fw"></i> Subscriptions<span class="fa arrow"></span></a>
+                    <a href="#item-nav"><i class="fa fa-credit-card fa-fw"></i> Subscriptions<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('admin/subscriptions/pending'); ?>">Pending Subscriptions</a></li>
                         <li><a href="<?php echo site_url('admin/subscriptions/add'); ?>">Add Subscription Plan</a></li>
@@ -44,6 +44,15 @@
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('admin/categories/add'); ?>">Add Category</a></li>
                         <li><a href="<?php echo site_url('admin/categories'); ?>">View Category</a></li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#monitor-nav"><i class="fa fa-bullseye fa-fw"></i> Monitor<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="<?php echo site_url('admin/monitor/lessee'); ?>">Lessees</a></li>
+                        <li><a href="<?php echo site_url('admin/monitor/lessor'); ?>">Lessors</a></li>
+                        <li><a href="<?php echo site_url('admin/monitor/items'); ?>">Items</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
