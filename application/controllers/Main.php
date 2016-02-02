@@ -139,5 +139,24 @@ class Main extends CI_Controller {
     redirect('/', 'refresh');
   }
 
+  public function lessorPending() {
+    if (!$this->session->has_userdata('lessor_id')) {
+      redirect('/', 'refresh');
+      exit();  
+    }
+    
+    $this->load->model('Subscriber');
+    $lessorId = $this->session->userdata('lessor_id');
+    $lessor = $this->Subscriber->findId($lessorId);
+
+    if ($lessor[$this->Subscriber->getStatus()] == 'active') {
+      redirect('/lessor/dashboard', 'refresh');
+      exit(); 
+    }
+
+    $data['title'] = 'Lessee Pending Subscription';
+    $data['content'] = $this->load->view('pages/lessor/pending', '', TRUE);
+    $this->load->view('common/plain', $data);
+  }
 
 }
