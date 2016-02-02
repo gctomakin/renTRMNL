@@ -31,3 +31,24 @@ $('.btn-disapprove').on('click', function() {
 		});
 	}
 });
+
+$('.btn-payment').on('click', function() {
+	var resId = $(this).data('rev-id');
+	$.post(paymentUrl, {id: resId}, function(data) {
+		if (data['result']) {
+			$('#payments-modal').find('.modal-body').html(data['view']);
+			$('#payments-modal').modal('show');
+		} else {
+			errorMessage(data['message']);
+		}
+	}, 'JSON');
+});
+
+$('.btn-close').on('click', function() {
+	var resId = $(this).data('rev-id');
+	if (confirm('Close this reservation?')) {
+		proccessAction(closeUrl, {id: resId}).then(function(status) {
+			location.reload();
+		}); 
+	}
+});
