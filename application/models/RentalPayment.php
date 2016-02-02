@@ -125,5 +125,6 @@ class RentalPayment extends CI_Model{
 		$this->db->cache_delete('rental','pay');
 		$this->db->cache_delete('rental', 'returnPaypal');
 		$this->db->cache_delete('lessor', 'payments');
+		$this->db->cache_delete('rental', 'details');
 	}
 }
