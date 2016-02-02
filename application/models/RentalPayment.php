@@ -63,8 +63,12 @@ class RentalPayment extends CI_Model{
 		return $query->result();
 	}
 
-	public function findById($id) {
-		$query = $this->db->get_where($this->table, array($this->id => $id));
+	public function findById($id, $status = "") {
+		$where =  array($this->id => $id);
+		if (!empty($status)) {
+			$where[$this->status] = $status;
+		}
+		$query = $this->db->get_where($this->table, $where);
 		return $query->row_array();
 	}
 
@@ -102,13 +106,13 @@ class RentalPayment extends CI_Model{
 	private $rpAlias ="rp";
 
 	// GETTERS AND SETTERS
-	public function getId() { $this->id; }
-	public function getAmount() { $this->amount; }
-	public function getDate() { $this->date; }
-	public function getReserveId() { $this->reserveId; }
-	public function getTable() { $this->table; }
-	public function getStatus() { $this->status; }
-	public function getDescription() { $this->description; }
+	public function getId() { return $this->id; }
+	public function getAmount() { return $this->amount; }
+	public function getDate() { return $this->date; }
+	public function getReserveId() { return $this->reserveId; }
+	public function getTable() { return $this->table; }
+	public function getStatus() { return $this->status; }
+	public function getDescription() { return $this->description; }
 
 	public function setId($value) { $this->data[$this->id] = $value; }
 	public function setAmount($value) { $this->data[$this->amount] = $value; }
