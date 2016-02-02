@@ -176,11 +176,16 @@ class CI_Controller {
 
 	private function _checkSubscription() {
     $this->load->model('Subscription');
+    $this->load->model('Subscriber');
     $lessorId = $this->session->userdata('lessor_id');
     $subs = $this->Subscription->findActiveBySubscriberId($lessorId);
+    $lessor = $this->Subscriber->findId($lessorId);
     if (empty($subs)) {
       redirect('subscriptions/entry');
       exit();
+    } else if ($lessor[$this->Subscriber->getStatus()] == 'pending') {
+    	redirect('main/lessorPending');
+    	exit();
     }
   }
 }
