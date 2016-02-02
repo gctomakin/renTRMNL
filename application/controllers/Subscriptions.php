@@ -79,7 +79,7 @@ class Subscriptions extends CI_Controller {
 						$this->Subscription->getStartDate() => $from,
 						$this->Subscription->getEndDate() => $to,
 						$this->Subscription->getAmount() => $plan['plan_rate'],
-						$this->Subscription->getStatus() => 'active',
+						$this->Subscription->getStatus() => 'pending',
 						$this->Subscription->getQty() => '1',
 						$this->Subscription->getSubscriberId() => $this->session->userdata('lessor_id'),
 						$this->Subscription->getPlanId() => $plan['plan_id']
@@ -142,6 +142,13 @@ class Subscriptions extends CI_Controller {
 					$to = date('Y-m-d H:i:s', strtotime('+' . $subs['plan_duration'] . 'days'));
 					$data[$this->Subscription->getStartDate()] = $from;
 					$data[$this->Subscription->getEndDate()] = $to;
+
+					$this->load->model('Subscriber');
+					$subData = array(
+						$this->Subscriber->getId() => $subs[$this->Subscription->getSubscriberId()],
+						$this->Subscriber->getStatus() => $status
+					);
+					$this->Subscriber->update($subData);
 				}
 
 				if ($this->Subscription->update($data)) {
