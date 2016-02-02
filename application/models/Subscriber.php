@@ -2,40 +2,26 @@
 
 class Subscriber extends CI_Model{
 
-	private $table;
+	private $table = "subscribers";
 
 	/** @var String Columns */
-	private $id;
-	private $fname;
-	private $mi;
-	private $lname;
-	private $email;
-	private $addr;
-	private $telno;
-	private $type;
-	private $paypal;
-	private $status;
-	private $username;
-	private $password;
-	private $date;
+	private $id = "subscriber_id";
+	private $fname = "subscriber_fname";
+	private $mi = "subscriber_midint";
+	private $lname = "subscriber_lname";
+	private $email = "subscriber_email";
+	private $addr = "subscriber_addr";
+	private $telno = "subscriber_telno";
+	private $type = "subscriber_type";
+	private $paypal = "subscriber_paypal_account";
+	private $status = "subscriber_status";
+	private $username = "username";
+	private $password = "password";
+	private $date = "date_registered";
+
 
 	public function __construct() {
 		parent::__construct();
-		$this->id = "subscriber_id";
-		$this->fname = "subscriber_fname";
-		$this->mi = "subscriber_midint";
-		$this->lname = "subscriber_lname";
-		$this->email = "subscriber_email";
-		$this->addr = "subscriber_addr";
-		$this->telno = "subscriber_telno";
-		$this->type = "subscriber_type";
-		$this->paypal = "subscriber_paypal_account";
-		$this->status = "subscriber_status";
-		$this->username = "username";
-		$this->password = "password";
-		$this->date = "date_registered";
-		$this->table = "subscribers";
-
 	}
 
 	public function create($data) {
@@ -74,6 +60,49 @@ class Subscriber extends CI_Model{
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
+
+	public function allForMonitor() {
+		$countShop = $this->_subCountShops();
+		$countSubscription = $this->_subCountSubscription();
+		$select = $this->_selectSub();
+		$query = $this->db
+			->select($select . ", $countShop, $countSubscription")
+			->from($this->table . ' as ' . $this->subAlias)
+			->get();
+		return $query->result();
+	}
+
+	private function _selectSub() {
+		$select = array(
+			$this->id,
+			$this->fname, $this->lname,
+			$this->telno, $this->email,
+			$this->status, $this->date
+		);
+		return $this->subAlias . '.' . implode(', ' . $this->subAlias . '.', $select);
+	}
+
+	private function _subCountShops() {
+		$this->load->model('RentalShop');
+		$table = $this->RentalShop->getTable() . ' as ' . $this->shopAlias;
+		$where = $this->subAlias . '.' . $this->id . ' = ';
+		$where .= $this->shopAlias . '.' . $this->RentalShop->getSubscriberId();
+		$select = "(SELECT count(1) FROM $table WHERE $where) as total_shops";
+		return $select;
+	}
+
+	private function _subCountSubscription() {
+		$this->load->model('Subscription');
+		$table = $this->Subscription->getTable() . ' as '. $this->ssAlias;
+		$where = $this->subAlias . '.' . $this->id . ' = ';
+		$where .= $this->ssAlias . '.' . $this->Subscription->getSubscriberId();
+		$select = "(SELECT count(1) FROM $table WHERE $where) as total_subscriptions";
+		return $select;
+ 	}
+
+	private $subAlias = 'sub';
+	private $shopAlias = 'shop';
+	private $ssAlias = 'ss';
 
 	public function findId($id) {
 		$query = $this->db->get_where($this->table, array($this->id => $id));
