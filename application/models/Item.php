@@ -26,6 +26,7 @@ class Item extends CI_Model{
 	private $shopAlias = 's';
 	private $subscriberAlias = 'sub';
 	private $categoryAlias = 'c';
+	private $rdAlias = 'rd';
 
 	public function __construct() {
 		parent::__construct();
@@ -98,6 +99,34 @@ class Item extends CI_Model{
 			->get()
 			->result();
 		return $data;
+	}
+
+	public function allForMonitor() {
+		$select = $this->_selectItem();
+		$countRented = $this->_subCountRented();
+		$query = $this->db
+			->select($select . ", $countRented")
+			->from($this->table . ' as ' . $this->itemAlias)
+			->get();
+		return $query->result();
+	}
+
+	private function _selectItem() {
+		$select = array(
+			$this->id, $this->rate,
+			$this->pic, $this->status,
+			$this->qty, $this->desc
+		);
+		return $this->itemAlias . '.' . implode(', ' . $this->itemAlias . '.', $select);
+	}
+
+	private function _subCountRented() {
+		$this->load->model('ReservationDetail');
+		$table = $this->ReservationDetail->getTable() . ' as ' . $this->rdAlias;
+		$where = $this->itemAlias . '.' . $this->id . ' = ';
+		$where .= $this->rdAlias . '.' . $this->ReservationDetail->getItemId();
+		$select = "(SELECT count(1) FROM $table WHERE $where) as total_rented";
+		return $select;
 	}
 
 	public function findBySubscriberId($lessorId, $key = "") {
