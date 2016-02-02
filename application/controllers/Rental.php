@@ -121,7 +121,60 @@ class Rental extends CI_Controller {
     $this->load->view('common/plain', $data);
   }
 
+  public function changeStatus($status) {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+    if (empty($post['id']) || !is_numeric($post['id'])) {
+      $res['message'] = "Invalid Parameter";
+    } else {
+      $this->load->model('RentalPayment');
+      $payment = $this->RentalPayment->findById($post['id'], 'pending');
+      if (empty($payment)) {
+        $res['message'] = 'Payment not found';
+      } else {
+        if ($status == 'cancel') {
+          // UPDATE Reservation return balance from payment
+          $resId = $payment[$this->RentalPayment->getReserveId()];
+          $amt = $payment[$this->RentalPayment->getAmount()];
+          $res['message'] = $this->_addToResBalance($resId, $amt);       
+        }
 
+        if (empty($res['message'])) {
+          $this->RentalPayment->setId($post['id']);
+          $this->RentalPayment->setStatus($status);
+          if ($this->RentalPayment->update()) {
+            $res['result'] = TRUE;
+            $res['message'] = 'Payment has been ' . ucfirst($status);
+          } else {
+            $res['message'] = 'Internal Server Error';
+          }
+        }
+      }
+    }
+    echo json_encode($res);
+  }
+
+  // PRIVATE METHODS
+  
+  private function _addToResBalance($resId, $payment) {
+    $this->load->model('Reservation');
+          
+    $reservation = $this->Reservation->findById($resId);
+    $resBalance = $reservation[$this->Reservation->getTotalBalance()];
+
+    $balance = $resBalance + $payment; 
+
+    $this->Reservation->setId($resId);
+    $this->Reservation->setTotalBalance($balance);
+    return $this->Reservation->update() ? '' : 'Internal Server Error: Reservation Update';
+  }
+
+  /**
+   * Process the details for paypal
+   * @param  Object $detail Object of details of reservations
+   * @return Array         
+   */
   private function _proPaypal($detail) {
     if (is_array($detail)) {
       $detail = json_decode(json_encode($detail), FALSE);
