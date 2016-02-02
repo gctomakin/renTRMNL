@@ -3,6 +3,7 @@
 		<table id="reservation-table" class="table">
 			<thead>
 				<tr>
+					<th>ID</th>
 					<th>DATE</th>
 					<th>DURATION</th>
 					<th class="text-right">TOTAL</th>
@@ -15,6 +16,7 @@
 			<tbody>
 				<?php foreach($reservations as $rev) { ?>
 				<tr data-reservation="<?php echo $rev->reserve_id; ?>">
+					<td><?php echo $rev->reserve_id; ?></td>
 					<td><?php echo date('M d, Y', strtotime($rev->reserve_date)); ?></td>
 					<td>
 						<?php 
@@ -28,7 +30,18 @@
 					<td class="status"><?php echo $rev->status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
+							<?php
+								if (
+									$rev->total_balance <= 0 &&
+									strtotime($rev->date_returned) <= strtotime(date('Y-m-d H:i:s'))
+								) {
+							?>
+							<button class="btn btn-primary btn-xs btn-close" data-rev-id="<?php echo $rev->reserve_id?>">close</button>
+							<?php
+								}
+							?>
 							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">view details</button>
+							<button class="btn btn-danger btn-xs btn-payment" data-rev-id="<?php echo $rev->reserve_id?>">payments</button>
 						</div>
 					</td>
 				</tr>
@@ -53,7 +66,25 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-
+<div class="modal modal-fullscreen fade" tabindex="-1" id="payments-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" >Payment's Details</h4>
+      </div>
+      <div class="modal-body"></div>
+			<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 <script type="text/javascript">
 	var reservationDetailUrl = "<?php echo site_url('reservations/detail'); ?>";
+	var paymentUrl = "<?php echo site_url('rental/details'); ?>";
+	var closeUrl = "<?php echo site_url('reservations/close'); ?>"
+
 </script>
