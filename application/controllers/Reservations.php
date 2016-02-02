@@ -91,6 +91,21 @@ class Reservations extends CI_Controller {
     echo $this->_changeStatus('disapprove');
   }
 
+  public function close() {
+    $this->load->model('RentalPayment');
+    $payments = $this->RentalPayment->findByReservationId($this->input->post('id'), 'pending');
+    if (!empty($payments)) {
+      echo json_encode(
+        array(
+          'result' => FALSE, 
+          'message' => 'There are some pending payments, Please confirm it before closing this reservations'
+        )
+      );
+    } else {
+      echo $this->_changeStatus('close');
+    }
+  }
+
   private function _changeStatus($status) {
     $this->isAjax();
     $post = $this->input->post();
