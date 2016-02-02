@@ -158,4 +158,5 @@ class Subscription extends CI_Model{
 	public function getQty() { return $this->qty; }
 	public function getSubscriberId() { return $this->subscriberId; }
 	public function getPlanId() { return $this->planId; }
+	public function getTable() { return $this->table; }
 }
