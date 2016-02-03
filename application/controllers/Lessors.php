@@ -209,8 +209,51 @@ class Lessors extends CI_Controller {
   }
 
   // RENTALS
-  public function rentedItems() {
+  public function rentedItems($page = 1) {
+    $this->load->library('pagination');
+    $this->load->model('Reservation');
 
+    $data = $this->_commonListAsset();
+    $data['title'] = "ITEM CURRENTLY RENTED";
+    
+    $lessorId = $this->session->userdata('lessor_id');
+    
+    // $this->Reservation->setLimit(1);
+    $offset = ($page - 1) * $this->Reservation->getLimit();
+    $this->Reservation->setOffset($offset); // Setting Reservation offset rows
+
+    $reservations = $this->Reservation->findActiveItemBySubscriberId($lessorId);
+    
+    $config['base_url'] = site_url('lessor/items/rented');
+    $config['total_rows'] = $reservations['count'];
+    $config['per_page'] = $this->Reservation->getLimit();
+    $this->pagination->initialize($config);
+
+    // echo '<pre>';
+    // print_r($reservations['result']);
+    // echo '</pre>';
+    // exit();
+    $content['pagination'] = $this->pagination->create_links();
+    $content['items'] = array_map(array($this, '_mapItemRented'), $reservations['result']);    
+    
+    $data['content'] = $this->load->view('pages/lessor/reservations/activeItems', $content, TRUE);
+    $this->load->view('common/lessor', $data);
+  }
+
+  private function _mapItemRented($item) {
+    return array (
+      'rental_amt' => $item->rental_amt,
+      'item_rate' => $item->item_rate,
+      'qty' => $item->qty,
+      'item_id' => $item->item_id,
+      'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
+      'item_desc' => $item->item_desc,
+      'shop_id' => $item->shop_id,
+      'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
+      'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
+      'reserve_id' => $item->reserve_id,
+      'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
+    );
   }
 
   public function pendingReserves() {
@@ -246,7 +289,14 @@ class Lessors extends CI_Controller {
   }
 
   public function historyReserves() {
-
+    $this->load->model('Reservation');
+    $data = $this->_commonListAsset();
+    $data['title'] = "RENTAL HISTORY";
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['reservations'] = $this->Reservation->findBySubscriberId($lessorId, 'close');
+    $data['content'] = $this->load->view('pages/lessor/reservations/history', $content, TRUE);
+    $data['script'][] = 'pages/lessor/reservations/list';
+    $this->load->view('common/lessor', $data);
   }
 
   public function account() {
