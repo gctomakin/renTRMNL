@@ -165,28 +165,28 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_open = '';
+	protected $first_tag_open = '<li>';
 
 	/**
 	 * First tag close
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_close = '';
+	protected $first_tag_close = '</li>';
 
 	/**
 	 * Last tag open
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_open = '';
+	protected $last_tag_open = '<li>';
 
 	/**
 	 * Last tag close
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_close = '';
+	protected $last_tag_close = '</li>';
 
 	/**
 	 * First URL
