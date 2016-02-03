@@ -5,22 +5,30 @@
 //   }
 // };
 
-var pusher = new Pusher('b3c7fc474d668cd4563e', {
-  encrypted: true
-});
-var msg_channel = pusher.subscribe('msg_channel');
+var pusher = new Pusher('b3c7fc474d668cd4563e', {encrypted: true});
+var msg_channel = pusher.subscribe('msg-channel');
+var notify_channel = pusher.subscribe('notify-channel');
 var session_id = $('#sessionId').val();
-//var notify_channel = pusher.subscribe('notify_channel');
+var template = _.template($("#notify-template").html());
 
-msg_channel.bind('onMessage', function(data) {
+msg_channel.bind('msg-event', function(data) {
   if(data.receiver == session_id){
-    var template = _.template($("#notify-template").html());
     var tmpl = template({receiver: data.receiver, subject: data.subject, message: data.message, date: data.date});
     $("#notify-list").append(tmpl);
     console.log(data);
   }
   return false;
 });
+
+notify_channel.bind('notify-event', function(data) {
+  if(data.receiver == session_id){
+    var tmpl = template({receiver: data.receiver, subject: data.subject, message: data.message, date: data.date});
+    $("#notify-list").append(tmpl);
+    console.log(data);
+  }
+  return false;
+});
+
 
 $(".modal-transparent").on('show.bs.modal', function () {
   setTimeout( function() {
