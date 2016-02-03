@@ -317,14 +317,14 @@ class Lessees extends CI_Controller
 
       $data['title'] = 'ITEMS';
       $keyword = $this->input->get('item');
+      $this->Item->setLimit(8); // Setting Rentalshop offset rows
       $offset = ($page - 1) * $this->Item->getLimit();
       $this->Item->setOffset($offset); // Setting Rentalshop offset rows
-      $this->Item->setLimit(8); // Setting Rentalshop offset rows
       $items = $this->Item->all($select = "*", '', $keyword);
       
       // Configuring Pagination
       $config['base_url'] = site_url('lessee/items/');
-      $config['total_rows'] = $items['count']-1;
+      $config['total_rows'] = $items['count'];
       $config['per_page'] = $this->Item->getLimit();
       $this->pagination->initialize($config);
 
@@ -333,10 +333,13 @@ class Lessees extends CI_Controller
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
-      $data['style'] = array('libs/pnotify');
+      $data['style'] = array('libs/pnotify', 'libs/datepicker');
       $data['script'] = array(
         'libs/pnotify.core',
         'libs/pnotify.buttons',
+        'libs/moment.min2',
+        'libs/daterangepicker',
+        'pages/reservations/daterange',
         'pages/lessees/items'
       );
       $this->load->view('common/lessee', $data);
