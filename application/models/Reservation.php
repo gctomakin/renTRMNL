@@ -79,6 +79,47 @@ class Reservation extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function findBySubscriberId($id, $status = "") {
+		$where = array($this->subscriberId => $id);
+		if (!empty($status)) {
+			$where[$this->status] = $status;
+		}
+		$query = $this->db->get_where($this->table, $where);
+		return $query->result();
+	}
+
+	public function findActiveItemBySubscriberId($id) {
+		$join = $this->_joinReservationDetail();
+		$joinItem = $this->_joinItem();
+		$joinLessee = $this->_joinLessee();
+		$joinShop = $this->_joinShop();
+
+		$where = $this->rAlias . '.'. $this->subscriberId . ' = ' . $id;
+		$where .= " AND '" . date('Y-m-d H:i:s') . "'";
+		$where .= " BETWEEN " . $this->rAlias . '.' . $this->getDateRented();
+		$where .= " AND " . $this->rAlias . '.' . $this->getDateReturned();
+		
+		$data['count'] = $this->db
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($join['table'], $join['on'])
+			->join($joinLessee['table'], $joinLessee['on'], 'LEFT')
+			->join($joinItem['table'], $joinItem['on'], 'LEFT')
+			->where($where)
+			->count_all_results();
+		
+		$data['result'] = $this->db
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($join['table'], $join['on'])
+			->join($joinLessee['table'], $joinLessee['on'], 'LEFT')
+			->join($joinItem['table'], $joinItem['on'], 'LEFT')
+			->join($joinShop['table'], $joinShop['on'], 'LEFT')
+			->where($where)
+			->limit($this->limit, $this->offset)
+			->get()
+			->result();
+		return $data;
+	}
+
 	public function findSubscriberById($id, $select = "") {
 		$joinSub = $this->_joinSubscriber();
 		if (empty($select)) {
@@ -94,14 +135,53 @@ class Reservation extends CI_Model{
 		return $query->row_array();
 	}
 
+	private $limit = 5;
+	private $offset = 0;
+
 	private $rAlias = "r";
 	private $subAlias = "sub";
+	private $rdAlias = 'rd';
+	private $iAlias = 'i';
+	private $lAlias = 'l';
+	private $rsAlias = 'rs';
 
 	private function _joinSubscriber($id = "") {
 		$this->load->model('Subscriber');
 		$table = $this->Subscriber->getTable() . ' as ' . $this->subAlias;
 		$on = $this->rAlias . '.' . $this->subscriberId . ' = ';
 		$on .= empty($id) ? $this->subAlias . '.' . $this->Subscriber->getId() : $id;
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinReservationDetail() {
+		$this->load->model('ReservationDetail');
+		$table = $this->ReservationDetail->getTable() . ' as '. $this->rdAlias;
+		$on = $this->rdAlias . '.' . $this->ReservationDetail->getReserveId() . ' = ';
+		$on .= $this->rAlias . '.' . $this->id;
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinItem() {
+		$this->load->model('Item');
+		$table = $this->Item->getTable() . ' as ' . $this->iAlias;
+		$on = $this->iAlias . '.' . $this->Item->getId() . ' = ';
+		$on .= $this->rdAlias . '.' . $this->ReservationDetail->getItemId();
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinLessee() {
+		$this->load->model('Lessee');
+		$table = $this->Lessee->getTable() . ' as ' . $this->lAlias;
+		$on = $this->lAlias . '.lessee_id = ';
+		$on .= $this->rAlias . '.' . $this->lesseeId;
+		return array('table' => $table, 'on' => $on); 
+	}
+
+	private function _joinShop() {
+		$this->load->model('RentalShop');
+		$table = $this->RentalShop->getTable() . ' as ' . $this->rsAlias;
+		$on = $this->rsAlias . '.' . $this->RentalShop->getId() . ' = ';
+		$on .= $this->iAlias . '.' . $this->Item->getShopId();
 		return array('table' => $table, 'on' => $on);
 	}
 
@@ -131,6 +211,17 @@ class Reservation extends CI_Model{
 	public function setStatus($value) { $this->data[$this->status] = $value; }
 	public function setLesseeId($value) { $this->data[$this->lesseeId] = $value; }
 	public function setSubscriberId($value) { $this->data[$this->subscriberId] = $value; }
+
+	public function getLimit() { return $this->limit; }
+	public function getOffset() { return $this->offset; }
+
+
+	public function setOffset($offset) {
+		$this->offset = $offset;
+	}
+	public function setLimit($limit) {
+		$this->limit = $limit;
+	}
 
 	private function deleteCache() {
 		$this->db->cache_delete('lessee','reserved');
