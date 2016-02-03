@@ -3,10 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Lessees extends CI_Controller
 {
+  private $app_id     = '163140';
+  private $app_key    = 'b3c7fc474d668cd4563e';
+  private $app_secret = '221d49143b9fcdd747ef';
+  private $pusher;
 
   public function __construct()
   {
       parent::__construct(1);
+      LibsLoader();
       $this->load->model('Lessee');
       $this->load->model('RentalShop');
       $this->load->model('Item');
@@ -16,7 +21,7 @@ class Lessees extends CI_Controller
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
       $this->MyInterest->setLesseeId($this->session->userdata('lessee_id'));
-      LibsLoader();
+      $this->pusher = new Pusher($this->app_key, $this->app_secret, $this->app_id);
   }
 
   public function index()
@@ -404,24 +409,14 @@ class Lessees extends CI_Controller
 
   public function sendMessage()
   {
-      $app_id     = '163140';
-      $app_key    = 'b3c7fc474d668cd4563e';
-      $app_secret = '221d49143b9fcdd747ef';
-
-      $pusher = new Pusher($app_key, $app_secret, $app_id, array(
-          'encrypted' => true
-      ));
-
       if ($_POST) {
           $data['subject']  = $this->input->post('subject');
           $data['message']  = $this->input->post('message');
           $data['receiver'] = $this->input->post('receiver');
           $data['date']     = date("Y/m/d");
-          $pusher->trigger('msg_channel', 'onMessage', $data);
+          $this->pusher ->trigger('msg_channel', 'onMessage', $data);
+          echo TRUE;
       }
-
-      echo TRUE;
-      //redirect('lessee/inbox', 'refresh');
   }
 
   public function addMyShop()
