@@ -101,6 +101,9 @@ $route['lessor/dashboard']         = 'lessors/dashboard';
 $route['lessor/reservations/pending'] = 'lessors/pendingReserves';
 $route['lessor/payments/pending'] = 'lessors/pendingPayments';
 $route['lessor/reservations/approve'] = 'lessors/approveReserves';
+$route['lessor/reservations/history'] = 'lessors/historyReserves';
+$route['lessor/items/rented'] 			= 'lessors/rentedItems';
+$route['lessor/items/rented/(:num)']	= 'lessors/rentedItems/$1';
 $route['lessor/account'] 						= 'lessors/account';
 
 /** Lessees Pages*/
