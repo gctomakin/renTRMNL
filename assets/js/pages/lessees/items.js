@@ -1,5 +1,8 @@
+var itemId = 0;
+var qtyRent = 0;
+var itemRate = 0;  
+var subscriber = 0;
 $(document).ready(function(){
-
   $('.my-interest-trigger').click(function(e) {
     e.preventDefault();
     var item_id = $(this).data('item-id');
@@ -47,15 +50,54 @@ $(document).ready(function(){
   });
 
   $('.btn-rent').click(function() {
-    var itemId = $(this).data('item-id');
-    $.post(rentalPayUrl, {id: itemId}, function(data) {
-      if (data['result']) {
-        $('#paykey').val(data['split_pay']['payKey']);
-        $('#btn-pay').trigger('click');
-      } else {
-        errorMessage(data['message']);
-      }
-    }, 'JSON');
+    var message = '';
+    var qty = parseFloat($(this).siblings('.item-qty').val());
+    var desc = $(this).siblings('.item-desc').val();
+    itemId = $(this).data('item-id');
+    itemRate = parseFloat($(this).siblings('.item-rate').val());
+    qtyRent = parseFloat(prompt('How many items you want to rent?', qty));
+    subscriber = $(this).siblings('.subscriber').val();
+    if (isNaN(qtyRent)) {
+      message = 'Quantity is not numeric';
+    } else if (qtyRent <= 0) {
+      message = 'Quantity must exceeds 0';
+    } else if (qtyRent > qty) {
+      message = 'Quantity must not exceeds ' + qty;
+    }
+
+    if (message != '') {
+      errorMessage(message);
+      itemId = 0;
+      qtyRent = 0; 
+    } else {
+      $('#confirm-item-desc').text(desc);
+      $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + itemRate + ' = ₱ ' + formatNumber(qtyRent * itemRate));
+      $('#reservation-modal').modal('show');
+    }
   });
 
+  $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+    console.log(startDate, endDate);
+  });
+  $('.daterangepicker').css('z-index', 9999);
+
+  $('#btn-confirm-modal').click(function() {
+    // Check for item and rented qty
+    var detail = [];
+    if (itemId != 0 && qtyRent != 0) {
+      detail.push({rate : itemRate, id: itemId, qty: qtyRent});
+      proccessAction(rentUrl, {
+        from: startDate,
+        to: endDate,
+        total: (itemRate*qtyRent),
+        details: detail,
+        subscriber: subscriber
+      }).then(function() {
+        successMessage('Your rental needs to be confirm by the lessor');
+        $('#reservation-modal').modal('hide');
+      });
+    } else {
+      errorMessage('No Item SELECTED OR specified quantity to rent');
+    }
+  });
 });
