@@ -371,4 +371,5 @@ class Lessee extends CI_Model
     return $query->result();
   }
 
+  public function getTable() { return $this->lessees_table; }
 }
