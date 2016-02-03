@@ -43,6 +43,10 @@
                       <a href="<?php echo site_url('reservations/item/' . $item['info']->item_id); ?>" class="btn btn-info btn-xs">Reserve</a>
                       <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item['info']->item_id; ?>">Rent</button>
                       <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item['info']->item_id; ?>" data-interest-name="<?php echo $item['info']->item_desc; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item['info']->item_id,$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item['info']->item_id,$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
+                      <input type="hidden" value="<?php echo $item['info']->item_qty; ?>" class="item-qty">
+                      <input type="hidden" value="<?php echo $item['info']->item_rate; ?>" class="item-rate">
+                      <input type="hidden" value="<?php echo $item['info']->item_desc; ?>" class="item-desc">
+                      <input type="hidden" value="<?php echo $item['info']->subscriber_id; ?>" class="subscriber">
                     </div>
                 </div>
             </div>
@@ -55,13 +59,37 @@
     </div>
   </div>
 </div>
-<form id='paypal-form' class="standard" action="https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">
-  <input id="type" type="hidden" name="expType" value="light">
-  <input id="paykey" type="hidden" name="paykey" value="">
-  <input class="hidden" type="submit" id="btn-pay"> 
-</form>
-<script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+<div class="modal modal-medium fade" id="reservation-modal" tabindex='-1'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="reservation-modal-title" >Reservation Confirmation</i></h4>
+      </div>
+      <div class="modal-body">
+        <h2><i class="fa fa-info"></i> Are you sure about this reservation?</h2>
+        <div class="details">
+          <h3>ITEM <span id="confirm-item-desc"></span></h3>
+          <p id="confirm-item-details"></p>
+        </div>
+        <div class="other-details">
+          <div id="reportrange" style="z-index: 99999; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+          </div>
+          <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btn-cancel-modal" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-confirm-modal">Submit Reservation</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script>
-  var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'btn-pay'});
-  var rentalPayUrl = "<?php echo site_url('rental/pay'); ?>";
+  var rentUrl = "<?php echo site_url('reservations/save'); ?>";
 </script>
