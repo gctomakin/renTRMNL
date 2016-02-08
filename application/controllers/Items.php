@@ -21,6 +21,7 @@ class Items extends CI_Controller {
 				$res['message'] = 'Internal Server Error.';
 				$res['result'] = FALSE;
 			}
+			unset($res['post']);
 		}
 		echo json_encode($res);
 	}
@@ -202,6 +203,13 @@ class Items extends CI_Controller {
 			}
 		}
 		echo json_encode($res);
+	}
+
+	public function getMode() {
+		$this->isAjax();
+		$this->load->library('RentalModes');
+		$modes = $this->rentalmode->getModes();
+		echo json_encode($modes);
 	}
 
 	private function _validate() {
