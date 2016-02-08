@@ -13,9 +13,28 @@ class Lessors extends CI_Controller {
   }
 
   public function dashboard() {
+    $this->load->model('Reservation');
+    $this->load->model('RentalShop');
+    $this->load->model('Item');
+    
     $data['title'] = "Lessor Dashboard";
-  	$content['subscriber'] = $this->Subscriber->findId($this->session->userdata('lessor_id'));
-  	$data['content'] = $this->load->view('pages/lessor/dashboard', $content, TRUE);
+    $lessorId = $this->session->userdata('lessor_id');
+  	
+    $content['subscriber'] = $this->Subscriber->findId($lessorId);
+    
+    $content['subscription'] = $this->Subscription->findActiveBySubscriberId($lessorId);
+    
+    $this->RentalShop->setLimit(5);
+    $content['shops'] = $this->RentalShop->findBySubscriberId($lessorId, '', "DESC");
+    
+    $reservations = $this->Reservation->findActiveItemBySubscriberId($lessorId);
+    $content['rentedItems'] = array_map(array($this, '_mapItemRented'), $reservations['result']);
+  	
+    $this->Item->setLimit(5);
+    $items = $this->Item->findBySubscriberId($lessorId, '', "DESC");
+    $content['items'] = $items['data'];
+
+    $data['content'] = $this->load->view('pages/lessor/dashboard', $content, TRUE);
   	$this->load->view('common/lessor', $data);
   }
 
@@ -173,7 +192,7 @@ class Lessors extends CI_Controller {
     if (!empty($items['count'])) {
       // Configuring Pagination
       $config['base_url'] = site_url('lessor/items/list/');
-      $config['total_rows'] = $items['count']-1;
+      $config['total_rows'] = $items['count'];
       $config['per_page'] = $this->Item->getLimit();
       $this->pagination->initialize($config);
       $content['pagination'] = $this->pagination->create_links();
@@ -218,7 +237,6 @@ class Lessors extends CI_Controller {
     
     $lessorId = $this->session->userdata('lessor_id');
     
-    // $this->Reservation->setLimit(1);
     $offset = ($page - 1) * $this->Reservation->getLimit();
     $this->Reservation->setOffset($offset); // Setting Reservation offset rows
 
@@ -229,10 +247,6 @@ class Lessors extends CI_Controller {
     $config['per_page'] = $this->Reservation->getLimit();
     $this->pagination->initialize($config);
 
-    // echo '<pre>';
-    // print_r($reservations['result']);
-    // echo '</pre>';
-    // exit();
     $content['pagination'] = $this->pagination->create_links();
     $content['items'] = array_map(array($this, '_mapItemRented'), $reservations['result']);    
     
@@ -241,19 +255,23 @@ class Lessors extends CI_Controller {
   }
 
   private function _mapItemRented($item) {
-    return array (
-      'rental_amt' => $item->rental_amt,
-      'item_rate' => $item->item_rate,
-      'qty' => $item->qty,
-      'item_id' => $item->item_id,
-      'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
-      'item_desc' => $item->item_desc,
-      'shop_id' => $item->shop_id,
-      'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
-      'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
-      'reserve_id' => $item->reserve_id,
-      'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
-    );
+    if (!empty($item)) {
+      return array (
+        'rental_amt' => $item->rental_amt,
+        'item_rate' => $item->item_rate,
+        'qty' => $item->qty,
+        'item_id' => $item->item_id,
+        'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
+        'item_desc' => $item->item_desc,
+        'shop_id' => $item->shop_id,
+        'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
+        'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
+        'reserve_id' => $item->reserve_id,
+        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
+      );
+    } else {
+      return NULL;
+    }
   }
 
   public function pendingReserves() {
