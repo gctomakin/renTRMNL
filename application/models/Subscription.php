@@ -56,11 +56,15 @@ class Subscription extends CI_Model{
 	}
 
 	public function findActiveBySubscriberId($id) {
-		$query = $this->db->get_where($this->table, array(
+		$query = $this->db
+			->from($this->table . ' as s')
+			->join('subscription_plans as sp', 's.' . $this->planId . ' = sp.plan_id')
+			->where(array(
 				$this->subscriberId => $id,
 				$this->status => 'active'
-			)
-		);
+			))
+			->get();
+	
 		return $query->row_array();
 	}
 
