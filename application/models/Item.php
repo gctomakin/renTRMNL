@@ -129,7 +129,7 @@ class Item extends CI_Model{
 		return $select;
 	}
 
-	public function findBySubscriberId($lessorId, $key = "") {
+	public function findBySubscriberId($lessorId, $key = "", $order = "ASC") {
 		$this->load->model('RentalShop');
 		$itemAlias = 'i';
 		$shopAlias = 's';
@@ -147,6 +147,7 @@ class Item extends CI_Model{
 			->or_like($shopAlias.'.'.$this->RentalShop->getName(), $key)
 			->or_like($shopAlias.'.'.$this->RentalShop->getBranch(), $key)
 			->limit($this->limit, $this->offset)
+			->order_by($this->id, $order)
 			->get()->result();
 		return $data;
 	}

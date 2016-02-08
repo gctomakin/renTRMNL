@@ -56,10 +56,16 @@ class RentalShop extends CI_Model{
 		return $this->db->from($this->table)->count_all_results();
 	}
 
-	public function findBySubscriberId($lessorId, $key = "") {
+	public function findBySubscriberId($lessorId, $key = "", $order = "ASC") {
 		$where = array($this->subscriberId => $lessorId);
 		$data['count'] = $this->db->from($this->table)->where($where)->like($this->name, $key)->count_all_results();
-		$data['data'] = $this->db->from($this->table)->where($where)->like($this->name, $key)->limit($this->limit, $this->offset)->get()->result();
+		$data['data'] = $this->db
+			->from($this->table)
+			->where($where)
+			->like($this->name, $key)
+			->limit($this->limit, $this->offset)
+			->order_by($this->id, $order)
+			->get()->result();
 		return $data;
 	}
 
@@ -102,6 +108,10 @@ class RentalShop extends CI_Model{
 
 	public function setOffset($offset) {
 		$this->offset = $offset;
+	}
+
+	public function setLimit($limit) {
+		$this->limit = $limit;
 	}
 
 	private function deleteCache() {
