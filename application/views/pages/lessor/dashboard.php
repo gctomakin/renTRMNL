@@ -27,6 +27,9 @@
 			<div class="panel panel-red">
 				<div class="panel-heading">ITEM CURRENTLY RENTED</div>
 				<div class="panel-body">
+				<?php if (empty($rentedItems)) { ?>
+					<p>No item rented as of now.</p>
+				<?php } else { ?>
 					<table class="table">
 						<thead>
 							<tr>
@@ -48,6 +51,7 @@
 							<?php } ?>
 						</tbody>
 					</table>
+				<?php } ?>
 				</div>
 			</div>
 		</div>
@@ -56,6 +60,9 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">RECENTLY ADDED SHOP</div>
 				<div class="panel-body">
+				<?php if (empty($shops['data'])) { ?>
+					<p>No Shop added as of now.</p>
+				<?php } else { ?>
 					<table class="table">
 						<thead>
 							<tr>
@@ -65,11 +72,6 @@
 							</tr>
 						</thead>
 						<tbody>
-						<?php if (empty($shops['data'])) { ?>
-						<tr>
-							<td colspan="3"> No Shop created</td>
-						</tr>
-						<?php } else { ?>
 							<?php foreach($shops['data'] as $shop) { ?>
 							<tr>
 								<td><?php echo $shop->shop_name . ' ' . $shop->shop_branch ?></td>
@@ -77,11 +79,10 @@
 								<td><?php echo $shop->status ?></td>
 							</tr>
 							<?php } ?>
-						<?php } ?>
 						</tbody>
 					</table>
-					
 					<a class="pull-right" href="<?php echo site_url('lessor/shops/list') ?>">Shops</a>
+				<?php } ?>
 				</div>
 			</div>
 		</div>
@@ -89,6 +90,9 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">RECENTLY ADDED ITEM</div>
 				<div class="panel-body">
+				<?php if (empty($items)) { ?>
+				<p>No Items added as of now.</p>
+				<?php } else { ?>
 					<table class="table">
 						<thead>
 							<tr>
@@ -110,6 +114,7 @@
 						</tbody>
 					</table>
 					<a class="pull-right" href="<?php echo site_url('lessor/items/list') ?>">Items</a>
+				<?php } ?>
 				</div>
 			</div>
 		</div>
