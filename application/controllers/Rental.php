@@ -219,7 +219,7 @@ class Rental extends CI_Controller {
     ); 
   }
 
-  private function _proPaypalWithCashBond($detail) {
+  private function _proPaypalWithCashBondFull($detail) {
     if (is_array($detail)) {
       $detail = json_decode(json_encode($detail), FALSE);
     }
