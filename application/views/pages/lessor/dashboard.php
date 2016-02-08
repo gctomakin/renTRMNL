@@ -103,7 +103,7 @@
 								<tr>
 									<td><?php echo $item->item_desc; ?></td>
 									<td><?php echo $item->item_rate; ?></td>
-									<td><?php echo $item->item_rental_mode; ?></td>
+									<td><?php echo $modes[$item->item_rental_mode]; ?></td>
 									<td><?php echo $item->item_qty; ?></td>
 								</tr>
 							<?php } ?>

@@ -34,6 +34,9 @@ class Lessors extends CI_Controller {
     $items = $this->Item->findBySubscriberId($lessorId, '', "DESC");
     $content['items'] = $items['data'];
 
+    $this->load->library('RentalModes');
+    $content['modes'] = $this->rentalmodes->getModes();
+
     $data['content'] = $this->load->view('pages/lessor/dashboard', $content, TRUE);
   	$this->load->view('common/lessor', $data);
   }
