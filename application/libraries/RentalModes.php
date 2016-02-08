@@ -4,9 +4,9 @@ class RentalModes {
 
 	private $modes = array(
 		1 => "Daily",
-		2 => "Weekly",
-		3 => "Monthly",
-		4 => "Yearly"
+		7 => "Weekly",
+		30 => "Monthly",
+		365 => "Yearly"
 	);
 
 	public function getMode($mode) {
