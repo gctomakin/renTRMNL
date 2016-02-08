@@ -136,16 +136,22 @@ class Item extends CI_Model{
 		$select = "$itemAlias.*, $shopAlias.{$this->RentalShop->getName()}, $shopAlias.{$this->RentalShop->getBranch()}";
 		$joinCondition = "$shopAlias." .  $this->RentalShop->getId() .  
 										" = $itemAlias." . $this->shopId;
-		$where = array($itemAlias.'.'.$this->subscriberId => $lessorId);
-		$data['count'] = $this->db->from($this->table ." as i")->where($where)->like($itemAlias.'.'.$this->desc, $key)->count_all_results();
+		$where = "(" . $itemAlias.'.'.$this->subscriberId .' = '. $lessorId . ") ";
+		if (!empty($key)) {
+			$where .= "AND (" . $itemAlias . '.' . $this->desc . " like '%" . $key . "%' ";
+			$where .= "OR " . $shopAlias . '.' . $this->RentalShop->getName() . " like '%" . $key . "%' ";
+			$where .= "OR " . $shopAlias . '.' . $this->RentalShop->getBranch() . " like '%" . $key . "%' )";
+		}
+		$data['count'] = $this->db
+			->from($this->table ." as i")
+			->join($this->RentalShop->getTable() . " as s", $joinCondition, 'left')
+			->where($where)
+			->count_all_results();
 		$data['data'] = $this->db
 			->select($select)
 			->from($this->table ." as i")
 			->join($this->RentalShop->getTable() . " as s", $joinCondition, 'left')
 			->where($where)
-			->like($itemAlias.'.'.$this->desc, $key)
-			->or_like($shopAlias.'.'.$this->RentalShop->getName(), $key)
-			->or_like($shopAlias.'.'.$this->RentalShop->getBranch(), $key)
 			->limit($this->limit, $this->offset)
 			->order_by($this->id, $order)
 			->get()->result();
