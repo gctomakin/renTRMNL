@@ -148,6 +148,7 @@
                         <div class="col-sm-10"><input type="email" name="receiver" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
                       </div> -->
                       <input type="hidden" id="subscriber_id" name="receiver" />
+                      <input type="hidden" id="user_type" name="user-type" value="lessor" />
                       <div class="form-group">
                         <label class="col-sm-2" for="inputSubject">Subject</label>
                         <div class="col-sm-10"><input type="text" name="subject" class="form-control" id="inputSubject" placeholder="subject"></div>
