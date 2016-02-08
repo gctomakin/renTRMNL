@@ -413,18 +413,20 @@ class Lessees extends CI_Controller
           $data['subject']  = $this->input->post('subject');
           $data['message']  = $this->input->post('message');
           $data['receiver'] = $this->input->post('receiver');
+          $data['usertype'] = $this->input->post('user-type');
           $data['date']     = date("Y/m/d");
           $this->pusher ->trigger('msg-channel', 'msg-event', $data);
           echo TRUE;
       }
   }
 
-  private function notify($subject,$message)
+  private function notify($subject,$message,$type)
   {
     $data['subject']  = $subject;
     $data['message']  = $message;
-    $data['receiver'] = ($this->session->has_userdata('lessee_id')) ? $this->session->has_userdata('lessee_id') : $this->session->has_userdata('lessor_id') ;
+    $data['receiver'] = ($this->session->has_userdata('lessee_id')) ? $this->session->userdata('lessee_id') : $this->session->userdata('lessor_id') ;
     $data['date']     = date("Y/m/d");
+    $data['usertype'] = $type;
     $this->pusher ->trigger('notify-channel', 'notify-event', $data);
   }
 
@@ -433,7 +435,7 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyShop->setMyShopName($post['shop_name']);
       $this->MyShop->setShopId($post['shop_id']);
-      $this->notify('Shop has been added','Your shop has been added');
+      $this->notify('Shop has been added','Your shop has been added','lessor');
       echo $this->MyShop->insert();
   }
 
@@ -457,6 +459,7 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyInterest->setMyInterestName($post['interest_name']);
       $this->MyInterest->setItemId($post['item_id']);
+      $this->notify('Item has been added','Your item has been added','lessor');
       echo $this->MyInterest->insert();
   }
 

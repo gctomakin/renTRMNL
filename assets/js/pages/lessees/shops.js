@@ -274,6 +274,7 @@ $('.delete-trigger').click(function(e) {
 $('.message-trigger').click(function(e) {
   e.preventDefault();
   var subscriber_id = $(this).data('subscriber-id');
+  var user_type = $('#userType').val();
   $('#subscriber_id').val(subscriber_id);
   $('#compose-message-modal').modal('show');
 });
