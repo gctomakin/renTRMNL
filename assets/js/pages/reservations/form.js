@@ -1,15 +1,36 @@
 var items;
 var formItems = [];
 var total;
+var modes;
 var subId = $('#sub-id').val();
+var daysDiff = 1;
 $(document).ready(function() {
+
+	// Getting mode
+	$.post(modeUrl, {}, function(data) {
+		modes = data;
+	}, 'JSON');
+
 	var itemsTemplate = _.template($('#item-list-template').html());
 	processItem().then(function() {
 		addDetail($('#item-id').val());
 	});
 
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+		var d = moment(endDate).diff(startDate, 'days');
+		daysDiff = d + 1;
 		processItem();
+		$('#item-detail-table > tbody').html("");
+		for (key in formItems) {
+			var amount = (daysDiff / formItems[key]['rental_mode']) * formItems[key]['rate'];
+			var total = amount.toFixed(2) * formItems[key]['qty'];
+			formItems[key]['total'] = total;
+			formItems[key]['total_format'] = formatNumber(total); 
+			formItems[key]['amount'] = formatNumber(amount); 
+			console.log(formItems[key]);
+			$('#item-detail-table > tbody').append(itemDetailTemplate(formItems[key]));	
+		}
+		computeTotal();
   });
 
 	$('#reservation-form').submit(function(e) {
@@ -96,7 +117,7 @@ function getShopItems(shopId, start, to) {
 function getItem($id, start, to) {
 	$.post(itemUrl, {id: id, start:start, to:to}, function(data) {
 		if (data['result']) {
-
+			items = data['items'];
 		} else {
 			errorMessage(data['message']);
 		}
@@ -118,14 +139,21 @@ function addDetail(id) {
 	} else if (isExistFormItem(id)) {
 		errorMessage('Item already exist in detail');
 	} else {
+		// console.log(item['item_rental_mode']);
+		var amount = ((daysDiff / parseFloat(item['item_rental_mode'])) * parseFloat(item['item_rate']));
+		amount = Math.ceil(amount * 10) / 10;
+		var total = item['item_qty'] * amount;
 		var detail = {
 			desc: item['item_desc'],
 			qty: item['item_qty'],
 			rate: item['item_rate'],
-			total: item['item_qty'] * item['item_rate'],
+			total: total,
 			rate_format: formatNumber(item['item_rate']),
-			total_format: formatNumber(item['item_qty'] * item['item_rate']),
-			id: id
+			total_format: formatNumber(total),
+			id: id,
+			rental_mode: item['item_rental_mode'],
+			mode:modes[item['item_rental_mode']],
+			amount: formatNumber(amount)
 		};
 		formItems.push(detail);
 		$('#item-detail-table > tbody').append(itemDetailTemplate(detail));	
@@ -209,9 +237,10 @@ $(document).on('click', '.change-qty', function() {
 		errorMessage('Quantity must not less than 0');
 	} else {
 		successMessage('Quantity of item ' + item['item_desc'] + ' changed');
-		var subtotal =  qty * item['item_rate'];
 		for (key in formItems) {
 			if (formItems[key]['id'] == id) {
+				// var amount = (daysDiff / formItems[key]['rental_mode']) * formItems[key]['rate'];
+				var subtotal = qty * formItems[key]['amount'];
 				formItems[key]['qty'] = qty;
 				formItems[key]['total'] = subtotal;
 				computeTotal();
