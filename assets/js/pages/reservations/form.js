@@ -23,7 +23,8 @@ $(document).ready(function() {
 		$('#item-detail-table > tbody').html("");
 		for (key in formItems) {
 			var amount = (daysDiff / formItems[key]['rental_mode']) * formItems[key]['rate'];
-			var total = amount.toFixed(2) * formItems[key]['qty'];
+			amount = Math.ceil(amount * 10) / 10;
+			var total = amount * formItems[key]['qty'];
 			formItems[key]['total'] = total;
 			formItems[key]['total_format'] = formatNumber(total); 
 			formItems[key]['amount'] = formatNumber(amount); 
