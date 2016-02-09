@@ -30,14 +30,15 @@
 	  								<thead>
 	  									<th width="20"></th>
 	  									<th>ITEM DESCRIPTION</th>
-	  									<th>QUANTITY</th>
 	  									<th class="text-right">RATE</th>
+	  									<th class="text-right">DURATION AMOUNT</th>
+	  									<th class="text-right">QUANTITY</th>
 	  									<th class="text-right">SUBTOTAL</th>
 	  								</thead>
 	  								<tbody></tbody>
 	  								<tfoot>
 	  									<tr>
-	  										<th class="text-right" colspan="4">TOTAL</th>
+	  										<th class="text-right" colspan="5">TOTAL</th>
 	  										<td class="text-right"><span id="total-label">0.00</span></td>
 	  									</tr>
 	  								</tfoot>
@@ -101,13 +102,15 @@
 	var reservationListUrl = "<?php echo site_url('lessee/reserved'); ?>";
 	var shopItemsUrl = "<?php echo site_url('items/shopItems'); ?>";
 	var itemUrl = "<?php echo site_url('items/find'); ?>";
+	var modeUrl = "<?php echo site_url('items/getMode'); ?>";
 </script>
 <script type="text/template" id="item-detail-template">
 	<tr data-item-detail-row="<%-id%>">
 		<td><a href="javascript:;" class="item-remove"><i class="fa fa-times"></i></a></td>
 		<td><%-desc%></td>
-		<td><span class="label-qty"><%-qty%></span> <a href="javascript:;" class="change-qty"><i class="fa fa-caret-down"></i></a></td>
-		<td class="text-right"><%-rate_format%></td>
+		<td class="text-right"><%-rate_format%> / <%-mode%></td>
+		<td class="text-right"><%-amount%></td>
+		<td class="text-right"><span class="label-qty"><%-qty%></span> <a href="javascript:;" class="change-qty"><i class="fa fa-caret-down"></i></a></td>
 		<td class="text-right"><span class="label-subtotal"><%-total_format%></span></td>
 	</tr>
 </script>
@@ -119,7 +122,7 @@
 	  	<div class="caption">
 	  		<h4><%-listItem.item_desc%></h4>
 	  		<dl>
-	        <dt>Rate <%-listItem.item_rate%></dt>
+	        <dt>₱ <%-listItem.item_rate%> / <%-listItem.mode_label%></dt>
 	        <dt><%-listItem.item_qty%> pcs</dt>
 	      </dl>
 	  	</div>
