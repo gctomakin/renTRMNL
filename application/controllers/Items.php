@@ -167,6 +167,7 @@ class Items extends CI_Controller {
 			$obj = json_decode(json_encode($obj), FALSE);
 		}
 		$img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+		$this->load->library('RentalModes');
 		return array(
 			$this->Item->getId() => $obj->item_id,
 			$this->Item->getRate() => $obj->item_rate,
@@ -178,7 +179,8 @@ class Items extends CI_Controller {
 			$this->Item->getRentalMode() => $obj->item_rental_mode,
 			$this->Item->getPenalty() => $obj->item_penalty,
 			$this->Item->getShopId() => $obj->shop_id,
-			$this->Item->getSubscriberId() => $obj->subscriber_id
+			$this->Item->getSubscriberId() => $obj->subscriber_id,
+			'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
 		);
 	}
 
@@ -208,7 +210,7 @@ class Items extends CI_Controller {
 	public function getMode() {
 		$this->isAjax();
 		$this->load->library('RentalModes');
-		$modes = $this->rentalmode->getModes();
+		$modes = $this->rentalmodes->getModes();
 		echo json_encode($modes);
 	}
 
