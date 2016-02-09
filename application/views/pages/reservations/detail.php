@@ -12,7 +12,7 @@
                 <dt>Quantity</dt>
                 <dd><?php echo $detail['qty']; ?></dd>
                 <dt>TOTAL</dt>
-                <dd><?php echo number_format($detail['qty'] * $detail['item_rate'], 2); ?></dd>
+                <dd><?php echo number_format($detail['qty'] * $detail['rental_amt'], 2); ?></dd>
               </dl>
           </div>
         </div>
