@@ -43,8 +43,8 @@ class Reservations extends CI_Controller {
     $post = $this->input->post();
   	if ($res['result']) { 
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
-			$this->Reservation->setDateRented($post['from']);
-			$this->Reservation->setDateReturned($post['to']);
+			$this->Reservation->setDateRented(date('Y-m-d H:i:s', strtotime($post['from'])));
+			$this->Reservation->setDateReturned(date('Y-m-d H:i:s', strtotime($post['to'])));
 			$this->Reservation->setTotalAmt($post['total']);
 			$this->Reservation->setDownPayment($post['total']/2);
 			$this->Reservation->setTotalBalance($post['total']);
