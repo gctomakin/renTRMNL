@@ -39,7 +39,7 @@ class Paypal {
 		if ($packet == FALSE) {
 			$res['message'] = 'Fail to create packet';
 		} else if (isset($packet['error'])) {
-			$res['message'] = $packet['error']['message'];
+			$res['message'] = $packet['error'][0]['message'];
 		} else {
 			$packetDetails = array(
 				'requestEnvelope' => $this->_envelops(),
