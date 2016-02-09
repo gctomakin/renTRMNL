@@ -57,7 +57,7 @@ class Reservations extends CI_Controller {
 			if ($id > 0) {
         $error = array();
         foreach ($post['details'] as $detail) {
-          $this->ReservationDetail->setRentalAmt($detail['rate']);
+          $this->ReservationDetail->setRentalAmt($detail['amount']);
           $this->ReservationDetail->setQty($detail['qty']);
           $this->ReservationDetail->setItemId($detail['id']);
           $this->ReservationDetail->setReserveId($id);
