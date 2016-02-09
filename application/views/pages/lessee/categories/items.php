@@ -21,7 +21,11 @@
                 <img src="<?php echo $itemPic; ?>" alt="" style="width:320px; height:150px;">
                 <div class="caption">
                     <h4><a href="#"><?php echo $item['info']->item_desc; ?></a></h4>
-                    <p>₱ <?php echo number_format($item['info']->item_rate, 2) . '/pcs'; ?></p>
+                    <p>₱ <?php echo number_format($item['info']->item_rate, 2); ?> 
+                      <small>
+                        <?php echo $rentalMode[$item['info']->item_rental_mode]; ?>
+                      </small>
+                    </p>
                     <?php if (isset($item['info']->shop_name)) { ?>
                     <p><?php echo $item['info']->shop_name . ' - ' . $item['info']->shop_branch; ?></p>
                     <?php } ?>
@@ -46,6 +50,7 @@
                       <input type="hidden" value="<?php echo $item['info']->item_qty; ?>" class="item-qty">
                       <input type="hidden" value="<?php echo $item['info']->item_rate; ?>" class="item-rate">
                       <input type="hidden" value="<?php echo $item['info']->item_desc; ?>" class="item-desc">
+                      <input type="hidden" value="<?php echo $item['info']->item_rental_mode; ?>" class="item-mode">
                       <input type="hidden" value="<?php echo $item['info']->subscriber_id; ?>" class="subscriber">
                     </div>
                 </div>
@@ -64,10 +69,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title" id="reservation-modal-title" >Reservation Confirmation</i></h4>
+        <h4 class="modal-title" id="reservation-modal-title" >Rental Confirmation</i></h4>
       </div>
       <div class="modal-body">
-        <h2><i class="fa fa-info"></i> Are you sure about this reservation?</h2>
+        <h2><i class="fa fa-info"></i> Are you sure about this rental?</h2>
         <div class="details">
           <h3>ITEM <span id="confirm-item-desc"></span></h3>
           <p id="confirm-item-details"></p>
