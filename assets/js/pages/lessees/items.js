@@ -75,18 +75,25 @@ $(document).ready(function(){
       itemId = 0;
       qtyRent = 0; 
     } else {
-      rentAmount = (daysDiff/rentalMode ) * itemRate;
-      rentAmount = Math.ceil(rentAmount * 10) / 10;
-      rentTotal = qtyRent * rentAmount;
+      computeRentTotal();
       $('#confirm-item-desc').text(desc);
       $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
       $('#reservation-modal').modal('show');
     }
   });
+  
+  function computeRentTotal() {
+    rentAmount = (daysDiff/rentalMode ) * itemRate;
+    rentAmount = Math.ceil(rentAmount * 10) / 10;
+    rentTotal = qtyRent * rentAmount;  
+  }
 
   $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
     console.log(startDate, endDate);
-    $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + itemRate + ' = ₱ ' + formatNumber(qtyRent * itemRate));
+    var d = moment(endDate).diff(startDate, 'days');
+    daysDiff = d + 1;
+    computeRentTotal();
+    $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
   });
   $('.daterangepicker').css('z-index', 9999);
 
