@@ -319,6 +319,7 @@ class Lessees extends CI_Controller
 
   public function itemsPage($page = 1) {
       $this->load->library('pagination');
+      $this->load->library('RentalModes');
 
       $data['title'] = 'ITEMS';
       $keyword = $this->input->get('item');
@@ -337,6 +338,7 @@ class Lessees extends CI_Controller
       $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
+      $content['rentalMode'] = $this->rentalmodes->getModes();
       $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
       $data['style'] = array('libs/pnotify', 'libs/datepicker');
       $data['script'] = array(
