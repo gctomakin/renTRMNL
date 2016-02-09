@@ -1,7 +1,11 @@
 var itemId = 0;
 var qtyRent = 0;
 var itemRate = 0;  
+var rentalMode = 0;
+var daysDiff = 1;
 var subscriber = 0;
+var rentTotal = 0;
+var rentAmount = 0;
 $(document).ready(function(){
   $('.my-interest-trigger').click(function(e) {
     e.preventDefault();
@@ -56,6 +60,7 @@ $(document).ready(function(){
     itemId = $(this).data('item-id');
     itemRate = parseFloat($(this).siblings('.item-rate').val());
     qtyRent = parseFloat(prompt('How many items you want to rent?', qty));
+    rentalMode = $(this).siblings('.item-mode').val();
     subscriber = $(this).siblings('.subscriber').val();
     if (isNaN(qtyRent)) {
       message = 'Quantity is not numeric';
@@ -70,14 +75,18 @@ $(document).ready(function(){
       itemId = 0;
       qtyRent = 0; 
     } else {
+      rentAmount = (daysDiff/rentalMode ) * itemRate;
+      rentAmount = Math.ceil(rentAmount * 10) / 10;
+      rentTotal = qtyRent * rentAmount;
       $('#confirm-item-desc').text(desc);
-      $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + itemRate + ' = ₱ ' + formatNumber(qtyRent * itemRate));
+      $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
       $('#reservation-modal').modal('show');
     }
   });
 
   $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
     console.log(startDate, endDate);
+    $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + itemRate + ' = ₱ ' + formatNumber(qtyRent * itemRate));
   });
   $('.daterangepicker').css('z-index', 9999);
 
@@ -85,11 +94,11 @@ $(document).ready(function(){
     // Check for item and rented qty
     var detail = [];
     if (itemId != 0 && qtyRent != 0) {
-      detail.push({rate : itemRate, id: itemId, qty: qtyRent});
+      detail.push({amount : rentAmount, id: itemId, qty: qtyRent});
       proccessAction(rentUrl, {
         from: startDate,
         to: endDate,
-        total: (itemRate*qtyRent),
+        total: rentTotal,
         details: detail,
         subscriber: subscriber
       }).then(function() {
