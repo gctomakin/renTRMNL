@@ -45,7 +45,7 @@ class Rental extends CI_Controller {
           $type = ucfirst($post['type']);
           $cashbond = 0;
           $total = $reservation[$this->Reservation->getTotalAmt()];
-          if ($post['type'] != 'Full') {
+          if ($type != 'Full') {
             $total = $total / 2;
           }
           if (empty($payments)) {
