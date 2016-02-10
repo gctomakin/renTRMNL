@@ -104,6 +104,7 @@ $route['lessor/reservations/approve'] = 'lessors/approveReserves';
 $route['lessor/rental/history'] 		= 'lessors/historyRental';
 $route['lessor/items/rented'] 			= 'lessors/rentedItems';
 $route['lessor/items/rented/(:num)']	= 'lessors/rentedItems/$1';
+$route['lessor/items/report']				= 'lessors/itemReport';
 $route['lessor/account'] 						= 'lessors/account';
 
 /** Lessees Pages*/

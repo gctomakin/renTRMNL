@@ -29,6 +29,7 @@
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('lessor/items/create'); ?>">Create</a></li>
                         <li><a href="<?php echo site_url('lessor/items/list'); ?>">List</a></li>
+                        <li><a href="<?php echo site_url('lessor/items/report') ?>">Report</a></li>
                     </ul>
                 </li>
                 <li>

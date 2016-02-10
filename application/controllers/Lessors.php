@@ -162,6 +162,17 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
+  public function itemReport() {
+    $this->load->model('Item');
+    $lessorId = $this->session->userdata('lessor_id');
+    $data = $this->_commonListAsset();
+    $data['title'] = "Item Report";
+    $content['items'] = $this->Item->findRentedReport($lessorId);
+    $data['content'] = $this->load->view('pages/items/report', $content, true);
+    $data['script'][] = 'pages/items/report';
+    $this->load->view('common/lessor', $data);
+  }
+
   private function _formAsset() {
     $data['script'] = array(
       'libs/pnotify.core',
