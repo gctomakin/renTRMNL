@@ -120,6 +120,38 @@ class Reservation extends CI_Model{
 		return $data;
 	}
 
+	public function findActiveItemByLesseeId($id) {
+		$join = $this->_joinReservationDetail();
+		$joinItem = $this->_joinItem();
+		$joinLessee = $this->_joinLessee();
+		$joinShop = $this->_joinShop();
+
+		$where = $this->rAlias . '.'. $this->lesseeId . ' = ' . $id;
+		$where .= " AND '" . date('Y-m-d H:i:s') . "'";
+		$where .= " BETWEEN " . $this->rAlias . '.' . $this->getDateRented();
+		$where .= " AND " . $this->rAlias . '.' . $this->getDateReturned();
+		
+		$data['count'] = $this->db
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($join['table'], $join['on'])
+			->join($joinLessee['table'], $joinLessee['on'], 'LEFT')
+			->join($joinItem['table'], $joinItem['on'], 'LEFT')
+			->where($where)
+			->count_all_results();
+		
+		$data['result'] = $this->db
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($join['table'], $join['on'])
+			->join($joinLessee['table'], $joinLessee['on'], 'LEFT')
+			->join($joinItem['table'], $joinItem['on'], 'LEFT')
+			->join($joinShop['table'], $joinShop['on'], 'LEFT')
+			->where($where)
+			->limit($this->limit, $this->offset)
+			->get()
+			->result();
+		return $data;
+	}
+
 	public function findSubscriberById($id, $select = "") {
 		$joinSub = $this->_joinSubscriber();
 		if (empty($select)) {

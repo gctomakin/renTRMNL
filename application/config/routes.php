@@ -120,6 +120,7 @@ $route['lessee/items/category']        = 'lessees/itemsCategoryPage';
 $route['lessee/items/category/(:num)'] = 'lessees/itemsCategoryPage/$1';
 $route['lessee/items/category/(:num)/(:num)'] = 'lessees/itemsCategoryPage/$1/$2';
 $route['lessee/reserved']        			 = 'lessees/reservedPage';
+$route['lessee/rent']        		 = 'lessees/itemRentPage';
 /** Lessees Actions*/
 $route['lessee/inbox']                 = 'lessees/inboxPage';
 $route['lessee/shops']                 = 'lessees/shopsPage';
