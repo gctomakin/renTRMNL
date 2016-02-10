@@ -10,12 +10,16 @@ $data['script'] = array(
   'jquery.fittext', 
   'wow.min', // <-- End
   'creative', // Custome Theme
-  'pages/main' // Page Script
+  'pages/main', // Page Script
+  'libs/pnotify.core',
+  'libs/pnotify.button',
+  'common'
 );
 
 $data['style'] = array(
 	'animate.min', //Plugin CSS
-	'creative'
+	'creative',
+	'libs/pnotify'
 );
 
 $data['bodyId'] = "page-top";
