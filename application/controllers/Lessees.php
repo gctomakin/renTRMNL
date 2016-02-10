@@ -18,6 +18,7 @@ class Lessees extends CI_Controller
       $this->load->model('MyShop');
       $this->load->model('MyInterest');
       $this->load->model('Category');
+      $this->load->model('Subscriber');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
       $this->MyInterest->setLesseeId($this->session->userdata('lessee_id'));
@@ -135,7 +136,6 @@ class Lessees extends CI_Controller
       $content['action'] = site_url('lessees/signin');
       $data['content']   = $this->load->view('pages/signin', $content, TRUE);
       $data['title']     = 'SIGN IN';
-      $this->output->cache(1);
       $this->load->view('common/plain', $data);
   }
 
@@ -287,6 +287,7 @@ class Lessees extends CI_Controller
   {
       $data['title']      = 'INBOX';
       $content['myshops'] = $this->Lessee->myInterests();
+      $content['lessors'] = $this->Subscriber->all($select = "*",$status="active");
       $data['content']    = $this->load->view('pages/lessee/inbox', $content, TRUE);
       $this->load->view('common/lessee', $data);
   }
@@ -429,6 +430,21 @@ class Lessees extends CI_Controller
           echo TRUE;
       }
   }
+
+  public function sendInbox()
+  {   
+      if ($_POST) {
+          $data['subject']  = 'New message - '.$this->input->post('subject');
+          $data['message']  = $this->input->post('message');
+          $data['receiver'] = $this->input->post('receiver');
+          $data['usertype'] = $this->input->post('user-type');
+          $data['date']     = date("Y/m/d");
+          $this->pusher ->trigger('inbox-channel', 'inbox-event', $data);
+             $this->session->set_flashdata('success', TRUE);
+          redirect('lessee/inbox', 'refresh');
+      }
+  }
+
 
   private function notify($subject,$message,$type)
   {
