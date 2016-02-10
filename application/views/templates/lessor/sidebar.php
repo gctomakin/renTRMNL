@@ -35,12 +35,23 @@
                     <a href="#rent-nav"><i class="fa fa-tag fa-fw"></i> Rental<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?php echo site_url('lessor/items/rented'); ?>">Rented Items</a></li>
-                        <li><a href="<?php echo site_url('lessor/reservations/approve'); ?>">Approved Reservations</a></li>
-                        <li><a href="<?php echo site_url('lessor/reservations/pending'); ?>">Pending Reservations</a></li>
-                        <li><a href="<?php echo site_url('lessor/payments/pending'); ?>">Pending Payments</a></li>
-                        <li><a href="<?php echo site_url('lessor/reservations/history'); ?>">History</a></li>
+                        <li><a href="<?php echo site_url('lessor/rental/history'); ?>">History</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#rent-nav"><i class="fa fa-bookmark fa-fw"></i> Reservation<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="<?php echo site_url('lessor/reservations/approve'); ?>">Approved Reservations</a></li>
+                        <li><a href="<?php echo site_url('lessor/reservations/pending'); ?>">Pending Reservations</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#rent-nav"><i class="fa fa-money fa-fw"></i> Payments<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="<?php echo site_url('lessor/payments/pending'); ?>">Pending Payments</a></li>
+                    </ul>
+                </li>
+                
                 <li>
                     <a href="<?php echo site_url('lessor/subscriptions') ?>"><i class="fa fa-info fa-fw"></i> Subscriptions</a>
                 </li>

@@ -309,7 +309,7 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
-  public function historyReserves() {
+  public function historyRental() {
     $this->load->model('Reservation');
     $data = $this->_commonListAsset();
     $data['title'] = "RENTAL HISTORY";
