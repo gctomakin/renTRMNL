@@ -101,7 +101,7 @@ $route['lessor/dashboard']         = 'lessors/dashboard';
 $route['lessor/reservations/pending'] = 'lessors/pendingReserves';
 $route['lessor/payments/pending'] = 'lessors/pendingPayments';
 $route['lessor/reservations/approve'] = 'lessors/approveReserves';
-$route['lessor/reservations/history'] = 'lessors/historyReserves';
+$route['lessor/rental/history'] 		= 'lessors/historyRental';
 $route['lessor/items/rented'] 			= 'lessors/rentedItems';
 $route['lessor/items/rented/(:num)']	= 'lessors/rentedItems/$1';
 $route['lessor/account'] 						= 'lessors/account';
@@ -120,6 +120,7 @@ $route['lessee/items/category']        = 'lessees/itemsCategoryPage';
 $route['lessee/items/category/(:num)'] = 'lessees/itemsCategoryPage/$1';
 $route['lessee/items/category/(:num)/(:num)'] = 'lessees/itemsCategoryPage/$1/$2';
 $route['lessee/reserved']        			 = 'lessees/reservedPage';
+$route['lessee/rent']        		 = 'lessees/itemRentPage';
 /** Lessees Actions*/
 $route['lessee/inbox']                 = 'lessees/inboxPage';
 $route['lessee/shops']                 = 'lessees/shopsPage';

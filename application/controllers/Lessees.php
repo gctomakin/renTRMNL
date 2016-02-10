@@ -283,6 +283,25 @@ class Lessees extends CI_Controller
     $this->load->view('common/lessee', $data);
   }
 
+  public function itemRentPage() {
+    $this->load->model('Reservation');
+
+    $lesseeId = $this->session->userdata('lessee_id');
+    $items = $this->Reservation->findActiveItemByLesseeId($lesseeId);
+    
+    $data['title'] = 'ITEM CURRENTLY RENTED';
+    $content['items'] = array_map(array($this, '_mapItemRented'), $items['result']);
+    $data['content'] = $this->load->view('pages/lessee/items/rented', $content, TRUE);
+    $data['script'] = array(
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/jquery.dataTables',
+      'pages/lessees/items'
+    );
+    $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
+    $this->load->view('common/lessee', $data);
+  }
+
   public function inboxPage()
   {
       $data['title']      = 'INBOX';
@@ -509,5 +528,25 @@ class Lessees extends CI_Controller
       'info' => $data,
       'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
     );
+  }
+
+  private function _mapItemRented($item) {
+    if (!empty($item)) {
+      return array (
+        'rental_amt' => $item->rental_amt,
+        'item_rate' => $item->item_rate,
+        'qty' => $item->qty,
+        'item_id' => $item->item_id,
+        'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
+        'item_desc' => $item->item_desc,
+        'shop_id' => $item->shop_id,
+        'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
+        'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
+        'reserve_id' => $item->reserve_id,
+        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
+      );
+    } else {
+      return NULL;
+    }
   }
 }

@@ -34,7 +34,7 @@
                             <a href="<?php echo site_url('lessee/items/'); ?>">List</a>
                         </li>
                         <li>
-                            <a href="panels-wells.html">Rent</a>
+                            <a href="<?php echo site_url('lessee/rent') ?>">Rent</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('lessee/reserved/') ?>">Reserved</a>
