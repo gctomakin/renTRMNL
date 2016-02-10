@@ -263,7 +263,7 @@ class Lessees extends CI_Controller
     
     // Configuring Pagination
     $config['base_url'] = site_url('lessee/myinterests/');
-    $config['total_rows'] = $this->MyInterest->getAllCount() - 1;
+    $config['total_rows'] = $this->MyInterest->getAllCount();
     $config['per_page'] = $this->Item->getLimit();
     $this->pagination->initialize($config);
 
@@ -272,8 +272,14 @@ class Lessees extends CI_Controller
     $content['myinterests'] = $this->MyInterest->all();
     $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
     $data['script'] = array(
-        'pages/lessees/items'
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'libs/moment.min2',
+      'libs/daterangepicker',
+      'pages/reservations/daterange',
+      'pages/lessees/items'
     );
+    $data['style'] = array('libs/pnotify', 'libs/datepicker');
     $this->load->view('common/lessee', $data);
   }
 
