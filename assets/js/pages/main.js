@@ -29,9 +29,10 @@ function viewCategory(id, page) {
 	$.post(categoryItemsUrl+'/'+id+'/'+page, {}, function(data) {
 		if (data['result']) {
 			$('#category-modal').find('.modal-body').html(data['view']);
-			$('#category-modal').modal('show');
 		} else {
-			errorMessage(data['message']);
+			$('#category-modal').find('.modal-body').html(data['message']);
 		}
+		$('#category-modal').modal('show');
+		
 	}, 'JSON');
 }
