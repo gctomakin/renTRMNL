@@ -355,6 +355,7 @@ class Lessees extends CI_Controller
 
   public function itemsCategoryPage($categoryId, $page = 1) {
       $this->load->library('pagination');
+      $this->load->library('RentalModes');
       $this->load->model('Category');
 
       $category = $this->Category->findById($categoryId);
@@ -382,6 +383,7 @@ class Lessees extends CI_Controller
       $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
+      $content['rentalMode'] = $this->rentalmodes->getModes();
       $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
       $data['style'] = array('libs/pnotify');
       $data['script'] = array(
