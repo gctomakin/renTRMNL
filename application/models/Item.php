@@ -27,6 +27,7 @@ class Item extends CI_Model{
 	private $subscriberAlias = 'sub';
 	private $categoryAlias = 'c';
 	private $rdAlias = 'rd';
+	private $rAlias = 'r';
 
 	public function __construct() {
 		parent::__construct();
@@ -221,6 +222,45 @@ class Item extends CI_Model{
 			->get()
 			->result();
 		return $data;
+	}
+
+	public function findRentedReport($lessorId) {
+		$joinResDetail = $this->_joinReservationDetail();
+		$joinRes = $this->_joinReservation();
+		$joinShop = $this->_joinShop();
+		$select = array(
+			$this->id,
+			$this->desc
+		);
+		$select = "{$this->itemAlias}." . implode(', ' . $this->itemAlias . '.', $select) . ', ';
+		$select .= "(SELECT SUM({$this->rdAlias}.{$this->ReservationDetail->getQty()}) ";
+		$select .= "FROM {$joinResDetail['table']} INNER JOIN {$joinRes['table']} ";
+		$select .= "ON {$joinRes['on']} AND {$this->rAlias}.{$this->Reservation->getStatus()} = 'close' ";
+		$select .= "WHERE {$joinResDetail['on']}) as rented, ";
+		$select .= "{$this->shopAlias}.*";
+		$query = $this->db
+			->select($select)
+			->from($this->table . ' as ' . $this->itemAlias)
+			->join($joinShop['table'], $joinShop['on'], 'LEFT')
+			->where(array($this->itemAlias . '.' . $this->subscriberId => $lessorId))
+			->get();
+		return $query->result();
+	}
+
+	private function _joinReservation() {
+		$this->load->model('Reservation');
+		$table = $this->Reservation->getTable() . ' as ' . $this->rAlias;
+		$on = $this->rAlias . '.' . $this->Reservation->getId();
+		$on .= ' = ' . $this->rdAlias . '.' . $this->ReservationDetail->getReserveId();
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinReservationDetail() {
+		$this->load->model('ReservationDetail');
+		$table = $this->ReservationDetail->getTable() . ' as ' . $this->rdAlias;
+		$on = $this->rdAlias . '.' . $this->ReservationDetail->getItemId();
+		$on .= ' = ' . $this->itemAlias . '.' . $this->id;
+		return array('table' => $table, 'on' => $on);
 	}
 
 	public function getId() { return $this->id; }
