@@ -125,6 +125,7 @@ $route['lessee/inbox']                 = 'lessees/inboxPage';
 $route['lessee/shops']                 = 'lessees/shopsPage';
 $route['lessee/shops/(:num)']          = 'lessees/shopsPage/$1';
 $route['lessee/send']                  = 'lessees/sendMessage';
+$route['lessee/sendinbox']                  = 'lessees/sendInbox';
 $route['lessee/update-info']           = 'lessees/updateInfo';
 $route['lessee/update-account']        = 'lessees/updateAccount';
 $route['lessee/add-myshop']            = 'lessees/addMyShop';
