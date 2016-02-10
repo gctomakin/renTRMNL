@@ -77,7 +77,6 @@ class Main extends CI_Controller {
     $content['authUrl'] = $authUrl;
     $content['categories'] = $this->Category->random();
     $data['content'] = $this->load->view('pages/main', $content, TRUE);
-
     $this->load->view('common/main', $data);
   }
 
@@ -158,5 +157,69 @@ class Main extends CI_Controller {
     $data['content'] = $this->load->view('pages/lessor/pending', '', TRUE);
     $this->load->view('common/plain', $data);
   }
+
+
+  public function listByCategory($category, $page = 1) {
+    $this->isAjax();
+    $res['result'] = FALSE;
+    $post = $this->input->post();
+    if (
+      !is_numeric($category) ||
+      !is_numeric($page)
+    ) {
+      $res['message'] = 'Invalid Parameter';
+    } else {
+      $this->load->library('pagination');
+      $this->load->model('ItemCategory');
+
+      $this->ItemCategory->setLimit(4); // Setting ItemCategory offset rows
+      $offset = ($page - 1) * $this->ItemCategory->getLimit();
+      $this->ItemCategory->setOffset($offset); // Setting Rentalshop offset rows
+            
+      $items = $this->ItemCategory->findItemByCategory($category);
+      $content['items'] = array_map(array($this, '_processItem'), $items['data']);
+      
+      // Configuring Pagination
+      $config['base_url'] = site_url('main/listByCategory/' + $category + '/');
+      $config['total_rows'] = $items['count'];
+      $config['per_page'] = $this->ItemCategory->getLimit();
+      $this->pagination->initialize($config);
+
+      $content['pagination'] = $this->pagination->create_links();
+      
+      if (empty($content['items'])) {
+        $res['message'] = 'No Item found in this category';
+      } else {
+        $res['result'] = TRUE;
+        $res['view'] = $this->load->view('pages/items/listByCategory', $content, TRUE);
+      }
+
+    }
+    echo json_encode($res);
+  }
+
+  private function _processItem($obj) {
+    if (is_array($obj)) {
+      $obj = json_decode(json_encode($obj), FALSE);
+    }
+    $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+    $this->load->library('RentalModes');
+    $this->load->library('Item');
+    return array(
+      $this->Item->getId() => $obj->item_id,
+      $this->Item->getRate() => $obj->item_rate,
+      $this->Item->getPic() => $img,
+      $this->Item->getStatus() => $obj->item_stats,
+      $this->Item->getQty() => $obj->item_qty,
+      $this->Item->getDesc() => $obj->item_desc,
+      $this->Item->getCashBond() => $obj->item_cash_bond,
+      $this->Item->getRentalMode() => $obj->item_rental_mode,
+      $this->Item->getPenalty() => $obj->item_penalty,
+      $this->Item->getShopId() => $obj->shop_id,
+      $this->Item->getSubscriberId() => $obj->subscriber_id,
+      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
+    );
+  }
+
 
 }
