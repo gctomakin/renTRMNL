@@ -9,6 +9,10 @@ class ItemCategory extends CI_Model {
 	private $itemId;
 	private $categoryId;
 
+	private $offset;
+	private $limit = 10;
+
+
 	public function __construct() {
 		parent::__construct();
 		$this->table = "items_categories";
@@ -66,10 +70,49 @@ class ItemCategory extends CI_Model {
 		return $data;
 	}
 
+	public function findItemByCategory($id) {
+		$where = array("{$this->iCategoryAlias}." . $this->categoryId => $id);
+		$joinItem = $this->_joinItem();
+		$from = $this->table . ' as ' . $this->iCategoryAlias;
+		$data['count'] = $this->db
+			->from($from)
+			->join($joinItem['table'], $joinItem['on'])
+			->where($where)
+			->count_all_results();
+		$data['data'] = $this->db
+			->select("{$this->itemAlias}.*")
+			->from($from)
+			->join($joinItem['table'], $joinItem['on'])
+			->where($where)
+			->limit($this->limit, $this->offset)
+			->get()->result();
+		// echo $this->limit . ' ' . $this->offset;
+		// exit();
+		return $data;
+	}
+
+	private $itemAlias = 'i';
+	private $iCategoryAlias = 'ic';
+
+	private function _joinItem() {
+		$this->load->model('Item');
+		$table = $this->Item->getTable() . " as {$this->itemAlias}";
+		$on = "{$this->iCategoryAlias}." . $this->itemId;
+		$on .= " = {$this->itemAlias}. " . $this->Item->getId();
+		return array('table' => $table, 'on' => $on);
+	}
+
 	public function getId() { return $this->id; }
 	public function getItemId() { return $this->itemId; }
 	public function getCategoryId() { return $this->categoryId; }
 	public function getTable() { return $this->table; }
+
+	public function setOffset($offset) { $this->offset = $offset; }
+	public function setLimit($limit) { $this->limit = $limit; }
+
+	public function getOffset() { return $this->offset; }
+	public function getLimit() { return $this->limit; }
+
 
 	private function deleteCache() {
 		$this->db->cache_delete('itemCategories','all');
