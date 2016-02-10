@@ -1,8 +1,11 @@
 <div class="container-fluid">
+  <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success"><strong>Successfully</strong> Sent Message!</div>';} ?>
+
   <div class="row no-gutter">
       <div class="col-sm-3 col-md-2">
        <a href="#" class="btn btn-primary btn-sm btn-block" role="button" data-toggle="modal" data-target="#compose-message-modal">COMPOSE</a>
       </div>
+
      <div class="col-sm-9 col-md-10">
         <table class="table table-inbox table-hover">
           <tr>
@@ -44,10 +47,22 @@
             <h4 class="modal-title">Compose Message</h4>
           </div>
           <div class="modal-body">
-            <?php $attributes = array('class' => 'form-horizontal'); echo form_open_multipart('lessee/send', $attributes);?>
+            <?php $attributes = array('class' => 'form-horizontal', 'id' => 'message-form'); echo form_open_multipart('lessee/sendinbox', $attributes);?>
                 <div class="form-group">
+                  <?php if($this->session->has_userdata('lessee_id')):?>
+                  <input type="hidden" id="user_type" name="user-type" value="lessor"/>
+                  <?php elseif($this->session->has_userdata('lessor_id')):?>
+                  <input type="hidden" id="user_type" name="user-type" value="lessee"/>
+                  <?php endif; ?>
                   <label class="col-sm-2" for="inputTo">To</label>
-                  <div class="col-sm-10"><input type="email" name="receiver" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
+                  <div class="col-sm-10">
+                    <select name="receiver" id="inputTo">
+                      <?php foreach($lessors as $lessor): ?>
+                        <option value="<?php echo $lessor->subscriber_id;?>"><?php echo $lessor->subscriber_fname.' '.$lessor->subscriber_lname?></option>
+                      <?php endforeach; ?>
+
+                    </select>
+                  </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2" for="inputSubject">Subject</label>
