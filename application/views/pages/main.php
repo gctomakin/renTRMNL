@@ -73,7 +73,7 @@
                     $img = $cat->category_image == NULL ? site_url('assets/img/portfolio/1.jpg') : 'data:image/jpeg;base64,'.base64_encode($cat->category_image);
             ?>
             <div class="col-lg-4 col-sm-6">
-                <a href="#" class="portfolio-box">
+                <a href="javascript:;" class="portfolio-box" data-category-name="<?php echo $cat->category_type; ?>" data-category-id="<?php echo $cat->category_id; ?>">
                 <img src="<?php echo $img;?>" class="img-responsive" alt="" style="width:430px; height:230px;">
                     <div class="portfolio-box-caption">
                         <div class="portfolio-box-caption-content">
@@ -235,7 +235,26 @@
         </div>
     </div>
 </div>
+<div class="modal modal-fullscreen fade" id="category-modal" tabindex='-1'>
+  <div class="modal-dialog">
+    <div class="modal-content" style="background: #fff!important; margin-top:2rem;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">ITEM CATEGORY <strong id="category-modal-title"></strong></h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script type="text/javascript">
     var signinLesseeUrl = "<?php echo site_url('lessees/signin'); ?>";
     var signinLessorUrl = "<?php echo site_url('lessors/signin'); ?>";
+    var categoryItemsUrl = "<?php echo site_url('main/listByCategory'); ?>";
 </script>
