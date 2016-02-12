@@ -3,11 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Lessees extends CI_Controller
 {
-  private $app_id     = '163140';
-  private $app_key    = 'b3c7fc474d668cd4563e';
-  private $app_secret = '221d49143b9fcdd747ef';
-  private $pusher;
-
   public function __construct()
   {
       parent::__construct(1);
@@ -19,10 +14,10 @@ class Lessees extends CI_Controller
       $this->load->model('MyInterest');
       $this->load->model('Category');
       $this->load->model('Subscriber');
+      $this->load->library('MyPusher');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
       $this->MyInterest->setLesseeId($this->session->userdata('lessee_id'));
-      $this->pusher = new Pusher($this->app_key, $this->app_secret, $this->app_id);
   }
 
   public function index()
@@ -445,8 +440,11 @@ class Lessees extends CI_Controller
           $data['receiver'] = $this->input->post('receiver');
           $data['usertype'] = $this->input->post('user-type');
           $data['date']     = date("Y/m/d");
-          $this->pusher ->trigger('msg-channel', 'msg-event', $data);
-          echo TRUE;
+          if($this->mypusher->Message('msg-channel', 'msg-event', $data)):
+            echo TRUE;
+          else:
+            echo FALSE;
+          endif;
       }
   }
 
@@ -458,12 +456,15 @@ class Lessees extends CI_Controller
           $data['receiver'] = $this->input->post('receiver');
           $data['usertype'] = $this->input->post('user-type');
           $data['date']     = date("Y/m/d");
-          $this->pusher ->trigger('inbox-channel', 'inbox-event', $data);
-             $this->session->set_flashdata('success', TRUE);
-          redirect('lessee/inbox', 'refresh');
+          if($this->mypusher->Message('inbox-channel', 'inbox-event', $data)):
+            $this->session->set_flashdata('success', TRUE);
+            redirect('lessee/inbox', 'refresh');
+          else:
+            echo FALSE;
+          endif;
+
       }
   }
-
 
   private function notify($subject,$message,$type)
   {
@@ -472,7 +473,12 @@ class Lessees extends CI_Controller
     $data['receiver'] = ($this->session->has_userdata('lessee_id')) ? $this->session->userdata('lessee_id') : $this->session->userdata('lessor_id') ;
     $data['date']     = date("Y/m/d");
     $data['usertype'] = $type;
-    $this->pusher ->trigger('notify-channel', 'notify-event', $data);
+    if($this->mypusher->Message('notify-channel', 'notify-event', $data)):
+      echo TRUE;
+    else:
+      echo FALSE;
+    endif;
+
   }
 
   public function addMyShop()
