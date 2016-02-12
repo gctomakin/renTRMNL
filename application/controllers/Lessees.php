@@ -466,6 +466,12 @@ class Lessees extends CI_Controller
       }
   }
 
+  /**
+   * @param  {String} $subject notification subject
+   * @param  {String} $message notification message
+   * @param  {String} $type user type who will be notified
+   * @return {Boolean} 
+   */
   private function notify($subject,$message,$type)
   {
     $data['subject']  = $subject;
@@ -474,9 +480,9 @@ class Lessees extends CI_Controller
     $data['date']     = date("Y/m/d");
     $data['usertype'] = $type;
     if($this->mypusher->Message('notify-channel', 'notify-event', $data)):
-      echo TRUE;
+      return TRUE;
     else:
-      echo FALSE;
+      return FALSE;
     endif;
 
   }
@@ -486,8 +492,11 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyShop->setMyShopName($post['shop_name']);
       $this->MyShop->setShopId($post['shop_id']);
-      $this->notify('Shop has been added','Your shop has been added','lessor');
-      echo $this->MyShop->insert();
+      if($this->notify('Shop has been added','Your shop has been added','lessor')):
+        echo $this->MyShop->insert();
+      else:
+        echo FALSE;
+      endif;
   }
 
   public function removeMyShop($id)
@@ -510,8 +519,11 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyInterest->setMyInterestName($post['interest_name']);
       $this->MyInterest->setItemId($post['item_id']);
-      $this->notify('Item has been added','Your item has been added','lessor');
-      echo $this->MyInterest->insert();
+      if($this->notify('Item has been added','Your item has been added','lessor')):
+         echo $this->MyInterest->insert();
+      else:
+        echo FALSE;
+      endif;
   }
 
   public function removeMyInterest($id)

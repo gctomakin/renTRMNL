@@ -18,6 +18,12 @@ class MyPusher{
 	   $this->pusher = new Pusher(self::APP_KEY, self::APP_SECRET, self::APP_ID);
 	}
 
+	/**
+	 * @param {String} $channel channel to be triggered
+	 * @param {String} $event event to be triggered
+	 * @param {Array} $data information to be sent
+	 * @return{Boolean}
+	 */
 	public function Message($channel, $event, $data)
 	{
 		$this->channel = $channel;
