@@ -78,7 +78,14 @@ class Admin extends CI_Model{
 
     }
 
-    return true;
+    return $this->db->insert_id();
+  }
+
+  public function findById() {
+    $query = $this->db->get_where($this->admin_table, array(
+      'admin_id' => $this->getId()
+    ));
+    return $query->row_array();
   }
 
   public function findByUsername()
