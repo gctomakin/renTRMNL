@@ -10,10 +10,14 @@ $data['script'] = array(
   'jquery.fittext', 
   'wow.min', // <-- End
   'creative', // Custome Theme
+  'libs/pnotify.core',
+  'libs/pnotify.buttons',    
+  'common',
   'pages/main' // Page Script
 );
 
 $data['style'] = array(
+	'libs/pnotify',
 	'animate.min', //Plugin CSS
 	'creative'
 );
