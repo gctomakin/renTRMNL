@@ -77,6 +77,9 @@ class Accounts extends CI_Controller {
 	      	if ($this->Account->create($data) > 0) {
 	      		$res['message'] = 'Success Signup';
 	      		$res['result'] = TRUE;
+	      		if ($post['user_type'] == 'lessor') {
+	      			$this->_signIn($post['username'], $post['password']);
+	      		}
 	      	} else {
 	      		$res['message'] = 'Internal Server Error # 2';		
 	      	}
@@ -94,68 +97,72 @@ class Accounts extends CI_Controller {
   	if (!empty($post)) {
 	  	$username = $post['username'];
 	    $password = $post['password'];
-	    $account = $this->Account->findUsername($username);
-	    
-	    if (
-	    	!empty( $account ) &&
-	    	$this->encryption->decrypt($account[$this->Account->getPassword()]) == $password
-	    ) {
-
-	    	$userdata = array();
-	    	$redirectTo = "";
-	    	$userId = $account[$this->Account->getUserId()];
-	    	switch($account[$this->Account->getUserType()]) {
-	    		case 'lessor':
-	    			$this->load->model('Subscriber');
-	    			$user = $this->Subscriber->findId($userId);
-	    			$userdata = array(
-			      	'lessor_id' => $user[$this->Subscriber->getId()],
-			        'lessor_fullname' => $user[$this->Subscriber->getFname()] . ' ' . $user[$this->Subscriber->getLname()],
-			        'lessor_logged_in' => TRUE
-			      );
-			      $redirectTo = 'lessors';
-			      break;
-			    case 'lessee':
-			    	$this->load->model('Lessee');
-			    	$redirectTo = 'lessees';
-			    	$this->Lessee->setId($userId);
-			    	$user = $this->Lessee->findById();
-			    	$userdata = array(
-              'lessee_id' => $user['lessee_id'],
-              'username' => $user['username'],
-              'lessee_fname' => $user['lessee_fname'],
-              'lessee_lname' => $user['lessee_lname'],
-              'lessee_email' => $user['lessee_email'],
-              'lessee_phoneno' => $user['lessee_phoneno'],
-              'image' => $user['image'],
-              'logged_in' => TRUE
-            );
-			    	break;
-			    case 'admin':
-			    	$this->load->model('Admin');
-			    	$redirectTo = 'admins';
-			    	$this->Admin->setId($userId);
-			    	$user = $this->Admin->findById();
-			    	$userdata = array(
-			    		'admin_id' => $user['admin_id'],
-              'username' => $user['username'],
-              'admin_fname' => $user['admin_fname'],
-              'admin_midint' => $user['admin_midint'],
-              'admin_lname' => $user['admin_lname'],
-              'admin_status' => $user['admin_status'],
-              'admin_logged_in' => TRUE
-            );
-			    	break;
-	    	}
-
-	      $this->session->set_userdata($userdata);
-	      redirect($redirectTo);
-	    } else {
-	      $this->session->set_flashdata('error_login', TRUE);
-	      redirect('/#wew','refresh');
-	    }
+	    $redirectTo = $this->_signIn($username, $password);
+	    redirect($redirectTo);
 	  } else {
-	  	redirect('/#lol','refresh');
+	  	redirect('/','refresh');
 	  }
+	}
+
+	private function _signIn($username, $password) {
+		$redirectTo = "";
+		$account = $this->Account->findUsername($username);
+    if (
+    	!empty( $account ) &&
+    	$this->encryption->decrypt($account[$this->Account->getPassword()]) == $password
+    ) {
+
+    	$userdata = array();
+    	$userId = $account[$this->Account->getUserId()];
+    	switch($account[$this->Account->getUserType()]) {
+    		case 'lessor':
+    			$this->load->model('Subscriber');
+    			$user = $this->Subscriber->findId($userId);
+    			$userdata = array(
+		      	'lessor_id' => $user[$this->Subscriber->getId()],
+		        'lessor_fullname' => $user[$this->Subscriber->getFname()] . ' ' . $user[$this->Subscriber->getLname()],
+		        'lessor_logged_in' => TRUE
+		      );
+		      $redirectTo = 'lessors';
+		      break;
+		    case 'lessee':
+		    	$this->load->model('Lessee');
+		    	$redirectTo = 'lessees';
+		    	$this->Lessee->setId($userId);
+		    	$user = $this->Lessee->findById();
+		    	$userdata = array(
+            'lessee_id' => $user['lessee_id'],
+            'username' => $user['username'],
+            'lessee_fname' => $user['lessee_fname'],
+            'lessee_lname' => $user['lessee_lname'],
+            'lessee_email' => $user['lessee_email'],
+            'lessee_phoneno' => $user['lessee_phoneno'],
+            'image' => $user['image'],
+            'logged_in' => TRUE
+          );
+		    	break;
+		    case 'admin':
+		    	$this->load->model('Admin');
+		    	$redirectTo = 'admins';
+		    	$this->Admin->setId($userId);
+		    	$user = $this->Admin->findById();
+		    	$userdata = array(
+		    		'admin_id' => $user['admin_id'],
+            'username' => $user['username'],
+            'admin_fname' => $user['admin_fname'],
+            'admin_midint' => $user['admin_midint'],
+            'admin_lname' => $user['admin_lname'],
+            'admin_status' => $user['admin_status'],
+            'admin_logged_in' => TRUE
+          );
+		    	break;
+    	}
+
+      $this->session->set_userdata($userdata);
+    } else {
+      $this->session->set_flashdata('error_login', TRUE);
+      $redirectTo = '/';
+    }
+    return $redirectTo;
 	}
 }
