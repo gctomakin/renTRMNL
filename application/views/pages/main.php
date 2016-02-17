@@ -1,10 +1,16 @@
 <header id="particles-js">
     <div class="header-content">
         <div class="header-content-inner">
+        <?php if($this->session->flashdata('error_login')) { ?>
+            <div class="alert alert-danger">
+                <h2>Username and Password does not match.</h2>
+            </div>
+        <?php } ?>
             <h1>A Software-as-a-Service for Rental Shops</h1>
             <hr>
             <p>renTRMNL facilitates the rental management process and transactions. Design to help users to find the nearest rental shops and to increase the effectiveness and efficiency of renting services. </p>
-            <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out More</a>
+            <a href="/lessor/signup" class="btn btn-primary btn-xl">Become a Lessor</a>
+            <a href="#signup" class="btn btn-primary btn-xl page-scroll">Become a Lessee</a>
         </div>
     </div>
 </header>
@@ -109,7 +115,7 @@
                 <hr class="light">
                 <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('error').'</div>'; }?>
                 <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success"><strong>Successfully</strong> Signed Up!</div>';} ?>
-                <?php echo form_open('signup'); ?>
+                <form method="POST" action="/accounts/signup" id="lessee-form">
                   <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" name="username" class="form-control" id="username">
@@ -139,8 +145,8 @@
                     <input type="number" name="phoneno" class="form-control" id="phoneno">
                   </div>
                   <div class="form-group">
-                      <label for="usertype" class="control-label col-lg-12">Type of User:</label>
-                      <div class="form-group text-center">
+                      <!-- <label for="usertype" class="control-label col-lg-12">Type of User:</label> -->
+                      <!-- <div class="form-group text-center">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active">
                                     Lessee
@@ -151,10 +157,11 @@
                                     <input type="radio" name="user_type" value="lessor" />
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
+                    <input type="hidden" name="user_type" value="lessee" />
                   </div>
-                  <button type="submit" class="btn btn-default btn-xl wow bounce">Submit</button>
-                <?php echo form_close(); ?>
+                  <button type="submit" class="btn btn-default btn-xl wow bounce">Sign up</button>
+                </form>
             </div>
         </div>
     </div>
@@ -199,8 +206,8 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('lessees/signin', $attributes); ?>
-                            <div class="form-group text-center">
+                        <?php $attributes = array('class' => 'form-signin', 'id' => 'form-signin'); echo form_open('accounts/signin', $attributes); ?>
+                            <!-- <div class="form-group text-center">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-primary btn-signin-type active">
                                         Lessee
@@ -211,7 +218,7 @@
                                         <input type="radio" name="usertype" value="lessor" />
                                     </label>
                                 </div>
-                            </div>
+                            </div> -->
                             <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
