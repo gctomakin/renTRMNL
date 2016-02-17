@@ -1,4 +1,12 @@
 $(document).ready(function() {
+  $('#lessee-form').submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    proccessAction(url, form.serialize()).then(function(data) {
+      form[0].reset();
+    });
+  });
   $('.btn-signin-type').click(function() {
   	var action = ($(this).find('input').val() == 'lessee') ? signinLesseeUrl : signinLessorUrl;
     if($(this).find('input').val() == 'lessee'){
