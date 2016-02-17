@@ -268,6 +268,26 @@ class Lessors extends CI_Controller {
     $this->load->view('common/lessor', $data);
   }
 
+  // Signup
+  public function signup() {
+    $this->load->model('SubscriptionPlan');
+    $content['plans'] = $this->SubscriptionPlan->all();
+    $data['content'] = $this->load->view('pages/lessor/signup', $content, true);
+    $data['style'] = array(
+      'libs/price-table',
+      'libs/form-wizard',
+      'libs/pnotify'
+    );
+    $data['script'] = array(
+      'libs/jquery.smartWizard',
+      'libs/pnotify.core',
+      'libs/pnotify.buttons',
+      'common',
+      'pages/lessor/signup'
+    );
+    $this->load->view('common/plain', $data);
+  }
+
   private function _mapItemRented($item) {
     if (!empty($item)) {
       return array (
@@ -340,6 +360,21 @@ class Lessors extends CI_Controller {
     $data['script'][] = 'pages/lessor/account';
 
     $this->load->view('common/lessor', $data); 
+  }
+
+  public function pendingSubscription() {
+    $this->load->model('Subscriber');
+    $lessorId = $this->session->userdata('lessor_id');
+    $lessor = $this->Subscriber->findId($lessorId);
+
+    if ($lessor[$this->Subscriber->getStatus()] == 'active') {
+      redirect('/lessor/dashboard', 'refresh');
+      exit(); 
+    }
+
+    $data['title'] = 'Lessee Pending Subscription';
+    $data['content'] = $this->load->view('pages/lessor/pending', '', TRUE);
+    $this->load->view('common/plain', $data);
   }
 
   private function _commonAsset() {
