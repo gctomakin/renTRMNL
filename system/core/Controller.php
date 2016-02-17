@@ -138,10 +138,10 @@ class CI_Controller {
   				$role = "lessor";
   				break;
   		}
-
-	  	if ( // Check for login session except for :
+  		if ( // Check for login session except for :
 	  		$method == "signinPage" ||
-	  		$method == "signin"
+	  		$method == "signin" ||
+	  		$method == "signup"
 	  	) {
 	  		if ($isLogin) { // Check if login session already exist
 	  			redirect($role);
@@ -152,7 +152,8 @@ class CI_Controller {
 	  			echo json_encode(array('result' => FALSE, 'message' => '403 permission denied')); // Returns Forbidden code if not signed in
 	  			exit();
 	  		} else if (!$isLogin) { // Redirect to signin page if not signed in
-	  			redirect($role . "/signin-page");
+	  			// redirect($role . "/signin-page");
+	  			redirect('/', TRUE);
 	  			exit();
 	  		} else if ($isLessorLogin && $role == 'lessor' && $this->uri->segments[1] != 'subscriptions') {
 	  			$this->_checkSubscription();
@@ -178,14 +179,35 @@ class CI_Controller {
     $this->load->model('Subscription');
     $this->load->model('Subscriber');
     $lessorId = $this->session->userdata('lessor_id');
-    $subs = $this->Subscription->findActiveBySubscriberId($lessorId);
+    $subs = $this->Subscription->findLastBySubscriberId($lessorId);
     $lessor = $this->Subscriber->findId($lessorId);
     if (empty($subs)) {
       redirect('subscriptions/entry');
       exit();
-    } else if ($lessor[$this->Subscriber->getStatus()] == 'pending') {
-    	redirect('main/lessorPending');
+    } else if (
+    	$subs[$this->Subscription->getStatus()] == 'pending' ||
+    	$lessor[$this->Subscriber->getStatus()] == 'pending'
+    ) {
+    	redirect('subscriptions/pending');
     	exit();
     }
+  }
+
+  public function isLogin() {
+  	$isLesseeLogin = $this->session->has_userdata('logged_in');
+		$isLessorLogin = $this->session->has_userdata('lessor_logged_in');
+		$isAdminLogin = $this->session->has_userdata('admin_logged_in');
+		$data = array('isLogin' => FALSE);
+		if ($isLesseeLogin) {
+			$data['isLogin'] = TRUE;
+			$data['typeLogin'] = 'lessees';
+		} else if ($isLessorLogin) {
+			$data['isLogin'] = TRUE;
+			$data['typeLogin'] = 'lessors';
+		} else if ($isAdminLogin) {
+			$data['isLogin'] = TRUE;
+			$data['typeLogin'] = 'admins';
+		}
+  	return $data;
   }
 }
