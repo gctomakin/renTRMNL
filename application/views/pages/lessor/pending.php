@@ -5,4 +5,5 @@
 	<p>
 		Report to <a href="#">ADMIN</a> if your subscription is idle for 24 hours already.
 	</p>
+	<a href="/logout">Logout Account</a>
 </div>
