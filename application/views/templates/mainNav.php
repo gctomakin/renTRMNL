@@ -27,7 +27,7 @@
                     <a class="page-scroll" href="#signup">Sign Up</a>
                 </li>
                 <li>
-                    <a href="#" class="btn btn-primary btn-xsm" role="button" data-toggle="modal" data-target="#login-modal">Sign In</a>
+                    <a href="#" class="" data-toggle="modal" data-target="#login-modal">Sign In</a>
                 </li>
             </ul>
         </div>
