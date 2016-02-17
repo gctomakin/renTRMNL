@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">renTRMNL</a>
+        <a class="navbar-brand" href="/lessor/dashboard">renTRMNL - LESSOR</a>
     </div>
     <!-- /.navbar-header -->
 
