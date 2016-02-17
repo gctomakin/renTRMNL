@@ -209,7 +209,7 @@
                 </span>
                 &nbsp;
                  <!-- <i class="fa fa-user fa-fw"></i> -->
-                 <span><strong><?php echo $this->session->userdata('username'); ?></strong></span> <i class="fa fa-caret-down"></i>
+                 <span><strong><?php echo $this->session->userdata('lessee_fname'); ?></strong></span> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="<?php echo site_url('lessee/profile'); ?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
