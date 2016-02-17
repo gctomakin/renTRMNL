@@ -55,6 +55,17 @@ class Subscription extends CI_Model{
 		return $query->result();
 	}
 
+	public function findLastBySubscriberId($id) {
+		$query = $this->db
+			->from($this->table . ' as s')
+			//->join('subscription_plans as sp', 's.' . $this->planId . ' = sp.plan_id')
+			->where(array('s.' . $this->subscriberId => $id))
+			->order_by('s.'.$this->id, 'DESC')
+			->get();
+		return $query->row_array();
+	}
+
+
 	public function findActiveBySubscriberId($id) {
 		$query = $this->db
 			->from($this->table . ' as s')
