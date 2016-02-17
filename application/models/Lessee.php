@@ -208,7 +208,7 @@ class Lessee extends CI_Model
 
     }
 
-    return true;
+    return $this->db->insert_id();
   }
 
   public function updateInfo()
