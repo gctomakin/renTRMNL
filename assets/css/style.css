@@ -229,3 +229,7 @@
 .row-centered {
     text-align:center;
 }
+
+.table-small {
+  font-size: 1rem;
+}
