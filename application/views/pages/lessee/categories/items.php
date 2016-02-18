@@ -20,11 +20,14 @@
             ?>
                 <img src="<?php echo $itemPic; ?>" alt="" style="width:320px; height:150px;">
                 <div class="caption">
-                    <h4><a href="#"><?php echo $item['info']->item_desc; ?></a></h4>
+                    <h4><a href="#"><?php echo empty($item['info']->item_name) ? '<span class="text-danger">No Name</span>' : $item['info']->item_name; ?></a></h4>
+                    <p>(<?php echo $item['info']->item_desc; ?>)</p>
                     <p>₱ <?php echo number_format($item['info']->item_rate, 2); ?> 
                       <small>
                         <?php echo $rentalMode[$item['info']->item_rental_mode]; ?>
                       </small>
+                      <br>
+                      <?php echo number_format($item['info']->item_qty); ?> pcs
                     </p>
                     <?php if (isset($item['info']->shop_name)) { ?>
                     <p><?php echo $item['info']->shop_name . ' - ' . $item['info']->shop_branch; ?></p>
