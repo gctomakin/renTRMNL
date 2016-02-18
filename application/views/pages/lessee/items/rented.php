@@ -13,19 +13,23 @@
   				</tr>
   			</thead>
   			<tbody>
-  				<?php foreach ($items as $item) { ?>
-  				<tr>
-  					<td><a href="<?php echo site_url('lessee/items/?item=' . $item['item_desc']); ?>" target="_blank"><?php echo $item['item_desc']; ?></a></td>
-  					<td><?php echo $item['rental_amt']; ?></td>
-  					<td><?php echo $item['qty']; ?></td>
-  					<td><?php echo $item['duration']; ?></td>
-  					<td><?php echo $item['shop']; ?></td>
-  					<td>
-  						<button class="btn btn-xs btn-primary">return</button>
-  						<button class="btn btn-xs btn-default">view transaction</button>
-  					</td>
-  				</tr>
-  				<?php } ?>
+          <?php if (empty($items)) { ?>
+          <tr><td colspan="6"><h2 class="text-danger">No Item Rented as of now.</h2></td></tr>
+          <?php } else { ?>
+    				<?php foreach ($items as $item) { ?>
+    				<tr>
+    					<td><a href="<?php echo site_url('lessee/items/?item=' . $item['item_desc']); ?>" target="_blank"><?php echo $item['item_desc']; ?></a></td>
+    					<td><?php echo $item['rental_amt']; ?></td>
+    					<td><?php echo $item['qty']; ?></td>
+    					<td><?php echo $item['duration']; ?></td>
+    					<td><?php echo $item['shop']; ?></td>
+    					<td>
+    						<button class="btn btn-xs btn-primary">return</button>
+    						<button class="btn btn-xs btn-default">view transaction</button>
+    					</td>
+    				</tr>
+    				<?php } ?>
+          <?php } ?>
   			</tbody>
   		</table>
   	</div>
