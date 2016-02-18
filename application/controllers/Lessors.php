@@ -144,21 +144,22 @@ class Lessors extends CI_Controller {
   }
 
   public function itemEdit($id) {
-    if (empty($id) || !is_numeric($id)) {
+    $this->load->model('Item');
+    $lessorId = $this->session->userdata('lessor_id');
+    $content['item'] = $this->Item->findByIdComplete($id, $lessorId);
+    if (empty($content['item'])) {
       redirect('lessor/items/list');
       exit();
     }
-    $this->load->model('Item');
     $this->load->model('ItemCategory');
     $this->load->library('rentalmodes');
     $data = $this->_formAsset();
     $data['title'] = "Edit Item";
     $content['action'] = "update";
-    $content['item'] = $this->Item->findByIdComplete($id);
     $content['categories'] = $this->ItemCategory->findCategoryByItem($id);
     $content['rental_modes'] = $this->rentalmodes->getModes();
     $data['content'] = $this->load->view('pages/items/form', $content, true);
-    
+      
     $this->load->view('common/lessor', $data);
   }
 
