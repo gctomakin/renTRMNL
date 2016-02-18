@@ -70,35 +70,63 @@ class ItemCategory extends CI_Model {
 		return $data;
 	}
 
-	public function findItemByCategory($id) {
+	public function findShopByCategory($id) {
 		$where = array("{$this->iCategoryAlias}." . $this->categoryId => $id);
 		$joinItem = $this->_joinItem();
+		$joinShop = $this->_joinShop();
 		$from = $this->table . ' as ' . $this->iCategoryAlias;
 		$data['count'] = $this->db
 			->from($from)
 			->join($joinItem['table'], $joinItem['on'])
+			->join($joinShop['table'], $joinShop['on'])
 			->where($where)
+			->group_by("{$this->shopAlias}." . $this->RentalShop->getId())
 			->count_all_results();
 		$data['data'] = $this->db
+			->select("{$this->shopAlias}.*")
+			->from($from)
+			->join($joinItem['table'], $joinItem['on'])
+			->join($joinShop['table'], $joinShop['on'])
+			->where($where)
+			->group_by("{$this->shopAlias}." . $this->RentalShop->getId())
+			->limit($this->limit, $this->offset)
+			->get()->result();
+		return $data;
+	}
+
+	public function findItemByIdAndShop($category, $shop) {
+		$where = array(
+			"{$this->iCategoryAlias}." . $this->categoryId => $category,
+			"{$this->itemAlias}." . $this->Item->getShopId() => $shop,
+		);
+		$joinItem = $this->_joinItem();
+		$from = $this->table . ' as ' . $this->iCategoryAlias;
+		$query = $this->db
 			->select("{$this->itemAlias}.*")
 			->from($from)
 			->join($joinItem['table'], $joinItem['on'])
 			->where($where)
-			->limit($this->limit, $this->offset)
-			->get()->result();
-		// echo $this->limit . ' ' . $this->offset;
-		// exit();
-		return $data;
+			->get();
+		return $query->result();	
 	}
 
 	private $itemAlias = 'i';
 	private $iCategoryAlias = 'ic';
+	private $shopAlias = 's';
 
 	private function _joinItem() {
 		$this->load->model('Item');
 		$table = $this->Item->getTable() . " as {$this->itemAlias}";
 		$on = "{$this->iCategoryAlias}." . $this->itemId;
-		$on .= " = {$this->itemAlias}. " . $this->Item->getId();
+		$on .= " = {$this->itemAlias}." . $this->Item->getId();
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinShop() {
+		$this->load->model('RentalShop');
+		$table = $this->RentalShop->getTable() . " as {$this->shopAlias}";
+		$on = "{$this->itemAlias}." . $this->Item->getShopId();
+		$on .= " = {$this->shopAlias}." . $this->RentalShop->getId();
 		return array('table' => $table, 'on' => $on);
 	}
 
