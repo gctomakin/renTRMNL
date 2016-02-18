@@ -78,7 +78,7 @@ class MyShop extends CI_Model
 
   public function all()
   {
-    $this->db->select('rental_shops.shop_id, rental_shops.shop_name, rental_shops.shop_branch, rental_shops.subscriber_id, rental_shops.address, my_shops.myshop_id');
+    $this->db->select('rental_shops.shop_id, rental_shops.shop_image, rental_shops.shop_name, rental_shops.shop_branch, rental_shops.subscriber_id, rental_shops.address, my_shops.myshop_id');
     $this->db->from('rental_shops');
     $this->db->join($this->my_shops_table, 'my_shops.shop_id = rental_shops.shop_id');
     $this->db->limit($this->limit, $this->offset);
