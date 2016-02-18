@@ -27,7 +27,8 @@
               ?>
                 <img src="<?php echo $itemPic; ?>" alt="">
                 <div class="caption">
-                    <h4><a href="#"><?php echo $myinterest->item_desc; ?></a></h4>
+                    <h4><a href="#"><?php echo empty($myinterest->item_name) ? '<span class="text-danger">No Name</span>' : $myinterest->item_name; ?></a></h4>
+                    <p><?php echo $myinterest->item_desc; ?></p>
                     <dl>
                       <dt>Item Rate</dt>
                       <dd><?php echo $myinterest->item_rate; ?></dd>
