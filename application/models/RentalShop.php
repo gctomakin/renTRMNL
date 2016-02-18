@@ -10,6 +10,7 @@ class RentalShop extends CI_Model{
 	private $id = "shop_id";
 	private $name = "shop_name";
 	private $branch = "shop_branch";
+	private $image = "shop_image";
 	private $address = "address";
 	private $latitude = "latitude";
 	private $longitude = "longitude";
@@ -97,6 +98,7 @@ class RentalShop extends CI_Model{
 	public function getId() { return $this->id; }
 	public function getName() { return $this->name; }
 	public function getBranch() { return $this->branch; }
+	public function getImage() { return $this->image; }
 	public function getAddress() { return $this->address; }
 	public function getLatitude() { return $this->latitude; }
 	public function getLongitude() { return $this->longitude; }
