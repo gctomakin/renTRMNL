@@ -218,6 +218,7 @@ class Items extends CI_Controller {
 		$this->isAjax();
 		$this->form_validation->set_rules('shop', 'Shop', 'trim|numeric|xss_clean');
 		$this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[2]|xss_clean');
+		$this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|xss_clean');
 		$this->form_validation->set_rules('rate', 'Rate', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('qty', 'Quantity', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('cashbond', 'Cash Bond', 'trim|required|numeric|xss_clean');
@@ -236,6 +237,7 @@ class Items extends CI_Controller {
 				$post = $this->input->post();
 				$data['post'] = array(
 					$this->Item->getShopId() => empty($post['shop']) ? null : $post['shop'],
+					$this->Item->getName() => $post['name'],
 					$this->Item->getDesc() => $post['description'],
 					$this->Item->getRate() => $post['rate'],
 					$this->Item->getQty() => $post['qty'],
@@ -245,7 +247,7 @@ class Items extends CI_Controller {
 					$this->Item->getSubscriberId() => $this->session->userdata('lessor_id'),
 					$this->Item->getStatus() => 'active'
 				);
-				if (isset($_FILES['picture'])) {
+				if ($_FILES['picture']['size'] != 0) {
 					$picture = file_get_contents($_FILES['picture']['tmp_name']);
 					$data['post'][$this->Item->getPic()] = $picture;
 				}
@@ -277,7 +279,7 @@ class Items extends CI_Controller {
 	}
 
 	private function _validateImage() {
-		$message = '';
+		$message = empty($this->input->post('id')) ? 'Item picture required' : '';
 		if (!empty($_FILES['picture']) && $_FILES['picture']['size'] != 0) { // check if image has been upload
 			$this->load->library('MyFile', $_FILES['picture']); // Load My File Library
 			$validate = $this->myfile->validateImage(); // Validate Image
