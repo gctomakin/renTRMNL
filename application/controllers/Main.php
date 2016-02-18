@@ -160,18 +160,18 @@ class Main extends CI_Controller {
       $offset = ($page - 1) * $this->ItemCategory->getLimit();
       $this->ItemCategory->setOffset($offset); // Setting Rentalshop offset rows
             
-      $items = $this->ItemCategory->findItemByCategory($category);
-      $content['items'] = array_map(array($this, '_processItem'), $items['data']);
-      
+      $shops = $this->ItemCategory->findShopByCategory($category);
+      $content['shops'] = $this->_processGroupShop($shops['data'], $category);
+
       // Configuring Pagination
       $config['base_url'] = site_url('main/listByCategory/' + $category + '/');
-      $config['total_rows'] = $items['count'];
+      $config['total_rows'] = $shops['count'];
       $config['per_page'] = $this->ItemCategory->getLimit();
       $this->pagination->initialize($config);
 
       $content['pagination'] = $this->pagination->create_links();
       
-      if (empty($content['items'])) {
+      if (empty($content['shops'])) {
         $res['message'] = 'No Item found in this category';
       } else {
         $res['result'] = TRUE;
@@ -182,6 +182,33 @@ class Main extends CI_Controller {
     echo json_encode($res);
   }
 
+  private function _processGroupShop($shops, $category) {
+    $this->load->model('RentalShop');
+    $data = array();
+    foreach ($shops as $shop) {
+      $item = $this->ItemCategory->findItemByIdAndShop($category, $shop->shop_id);
+      $result = $this->RentalShop->findById($shop->shop_id);
+      $data[$shop->shop_id]['items'] = array_map(array($this, '_processItem'), $item);
+      $data[$shop->shop_id]['detail'] = $this->_processShop($result);
+    }
+    return $data;
+  }
+
+  private function _processShop($obj) {
+    if (is_array($obj)) {
+      $obj = (Object)$obj;
+    }
+    $img = $obj->shop_image == NULL ? 
+      'http://placehold.it/250x150' :
+      'data:image/jpeg;base64,' . base64_encode($obj->shop_image);
+    return array(
+      $this->RentalShop->getName() => $obj->shop_name,
+      $this->RentalShop->getBranch() => $obj->shop_branch,
+      $this->RentalShop->getImage() => $img,
+      $this->RentalShop->getAddress() => $obj->address,
+      $this->RentalShop->getSubscriberId() => $obj->subscriber_id
+    );
+  }
   private function _processItem($obj) {
     if (is_array($obj)) {
       $obj = json_decode(json_encode($obj), FALSE);
@@ -189,6 +216,7 @@ class Main extends CI_Controller {
     $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
     $this->load->library('RentalModes');
     $this->load->library('Item');
+
     return array(
       $this->Item->getId() => $obj->item_id,
       $this->Item->getRate() => $obj->item_rate,
