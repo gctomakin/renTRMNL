@@ -1,34 +1,33 @@
 <div class="container-fluid">
-  <div class="row no-gutter">
-    <?php foreach($items as $item):?>
+  <div class="row">
+    <?php foreach($shops as $shop):?>
     <div class="col-sm-3 col-lg-3 col-md-3">
       <div class="thumbnail">
-        <img src="<?php echo $item['item_pic']; ?>" alt="" style="width:320px; height:150px;">
+        <img src="<?php echo $shop['detail']['shop_image']; ?>" alt="" style="width:320px; height:150px;">
         <div class="caption">
-          <h4><a href="#"><?php echo empty($item['item_name']) ? '<span class="text-danger">No Name</span>' : $item['item_name']; ?></a></h4>
-          <p>(<?php echo $item['item_desc']; ?>)</p>
-          <p>₱ <?php echo number_format($item['item_rate'], 2); ?> 
-            <small>
-              <?php echo $item['mode_label']; ?>
-            </small>
-          </p>
-          <?php if (isset($item['shop_name'])) { ?>
-          <p><?php echo $item['shop_name'] . ' - ' . $item['shop_branch']; ?></p>
-          <?php } ?>
-          <p>
-            <?php 
-              if (!empty($item['categories'])) {
-                $label = "<span class='label label-default'>";
-                echo $label;
-                $categoryType = array();
-                foreach ($item['categories'] as $category) {
-                  $categoryType[] = $category->category_type;
-                }
-                echo implode("</span>  $label", $categoryType);
-                echo "</span>";
-              }
-            ?>
-          </p>
+          <h4>
+            <a href="#">
+              <?php echo $shop['detail']['shop_name'] . ' - ' . $shop['detail']['shop_name']; ?>
+            </a>
+          </h4>
+          <p><?php echo $shop['detail']['address']; ?></p>
+          <table class="table table-small">
+            <tr>
+              <th>ITEM</th>
+              <th>QTY</th>
+              <th class='text-right'>PRICE</th>
+            </tr>
+            <?php foreach ($shop['items'] as $item) { ?>
+            <tr>
+              <td>
+                <?php echo $item['item_name']; ?>
+                <small>(<?php echo $item['item_desc'] ?>)</small>
+              </td>
+              <td><?php echo number_format($item['item_qty']); ?></td>
+              <td class='text-right'><?php echo number_format($item['item_rate'], 2); ?></td>
+            </tr>
+            <?php } ?>
+          </table>
         </div>
       </div>
     </div>
