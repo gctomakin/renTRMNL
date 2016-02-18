@@ -28,12 +28,14 @@
     <?php foreach($myshops as $myshop): ?>
     <div class="row no-gutter">
           <div class="col-md-7">
+            <?php $shopImage = $myshop->shop_image == NULL ? 'http://placehold.it/700x300' : 'data:image/jpeg;base64,'.base64_encode($myshop->shop_image); ?>
+            
               <a href="#">
-                  <img class="img-responsive" src="http://placehold.it/700x300" alt="">
+                  <img class="img-responsive" src="<?php echo $shopImage; ?>" style="width:700px; height:300px;" alt="">
               </a>
           </div>
           <div class="col-md-5">
-              <h3><?php echo $myshop->shop_name; ?></h3>
+              <h3><?php echo $myshop->shop_name .' - '. $myshop->shop_branch; ?></h3>
               <h4><?php echo $myshop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <div class="btn-group" role="group" aria-label="Shop Actions">
