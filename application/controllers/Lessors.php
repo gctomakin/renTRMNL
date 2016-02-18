@@ -17,7 +17,7 @@ class Lessors extends CI_Controller {
     $this->load->model('RentalShop');
     $this->load->model('Item');
     
-    $data['title'] = "Lessor Dashboard";
+    $data['title'] = "Dashboard";
     $lessorId = $this->session->userdata('lessor_id');
   	
     $content['subscriber'] = $this->Subscriber->findId($lessorId);
