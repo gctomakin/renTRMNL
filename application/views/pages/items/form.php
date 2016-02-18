@@ -15,6 +15,12 @@
 		  	</div>
 			</div>
 			<div class="form-group">
+		  	<label for="name" class="control-label col-lg-3">Name</label>
+		  	<div class="col-lg-5">
+		  		<input type="text" value="<?php echo set_value('name', empty($item['item_name']) ? '' : $item['item_name']); ?>" id="name" required class="form-control" placeholder="Name of the item" name="name">
+		  	</div>
+			</div>
+			<div class="form-group">
 		  	<label for="description" class="control-label col-lg-3">Description</label>
 		  	<div class="col-lg-5">
 		  		<input type="text" value="<?php echo set_value('description', empty($item['item_desc']) ? '' : $item['item_desc']); ?>" id="description" required class="form-control" placeholder="Description of the item" name="description">
@@ -23,7 +29,7 @@
 			<div class="form-group">
 		  	<label for="picture" class="control-label col-lg-3">Picture</label>
 		  	<div class="col-lg-5">
-		  		<input type="file" accept="image/*" value="<?php echo set_value('picture', empty($item['item_pic']) ? '' : $item['item_pic']); ?>" id="picture" required name="picture">
+		  		<input type="file" accept="image/*" value="" id="picture" name="picture">
 		  		<?php $itemPic = empty($item['item_pic']) ? '' : 'data:image/jpeg;base64,'.base64_encode($item['item_pic']); ?>
           <img src="<?php echo $itemPic; ?>" id="preview-image" alt="" class="thumbnail" style="<?php echo empty($itemPic) ? 'display:none;' : ''; ?> width:100%; height: auto;">
 		  	</div>
