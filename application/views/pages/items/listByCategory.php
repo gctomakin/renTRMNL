@@ -5,7 +5,8 @@
       <div class="thumbnail">
         <img src="<?php echo $item['item_pic']; ?>" alt="" style="width:320px; height:150px;">
         <div class="caption">
-          <h4><a href="#"><?php echo $item['item_desc']; ?></a></h4>
+          <h4><a href="#"><?php echo empty($item['item_name']) ? '<span class="text-danger">No Name</span>' : $item['item_name']; ?></a></h4>
+          <p>(<?php echo $item['item_desc']; ?>)</p>
           <p>₱ <?php echo number_format($item['item_rate'], 2); ?> 
             <small>
               <?php echo $item['mode_label']; ?>
