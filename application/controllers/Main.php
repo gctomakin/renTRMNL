@@ -201,6 +201,7 @@ class Main extends CI_Controller {
       $this->Item->getPenalty() => $obj->item_penalty,
       $this->Item->getShopId() => $obj->shop_id,
       $this->Item->getSubscriberId() => $obj->subscriber_id,
+      $this->Item->getName() => $obj->item_name,
       'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
     );
   }
