@@ -11,6 +11,7 @@ class Item extends CI_Model{
 	private $pic = "item_pic";
 	private $status = "item_stats";
 	private $qty = "item_qty";
+	private $name = "item_name";
 	private $desc = "item_desc";
 	private $cashBond = "item_cash_bond";
 	private $rentalMode = "item_rental_mode";
@@ -164,16 +165,22 @@ class Item extends CI_Model{
 		return $query->row_array();
 	}
 
-	public function findByIdComplete($id) {
+	public function findByIdComplete($id, $byLessor = "") {
 		$select = $this->_joinSelect();
 		$joinShop = $this->_joinShop();
 		$joinSubs = $this->_joinSubscriber();
+		$where = array($this->itemAlias .".". $this->id => $id);
+		
+		if (!empty($byLessor)) {
+			$where[$this->itemAlias .".". $this->subscriberId] = $byLessor;
+		}
+
 		$query = $this->db
 			->select($select)
 			->from($this->table . " as ". $this->itemAlias)
 			->join($joinShop['table'], $joinShop['on'], $joinShop['type'])
 			->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type'])
-			->where(array($this->itemAlias .".". $this->id => $id))
+			->where($where)
 			->get();
 
 		return $query->row_array();
@@ -269,6 +276,7 @@ class Item extends CI_Model{
 	public function getStatus() { return $this->status; }
 	public function getQty() { return $this->qty; }
 	public function getDesc() { return $this->desc; }
+	public function getName() { return $this->name; }
 	public function getCashBond() { return $this->cashBond; }
 	public function getRentalMode() { return $this->rentalMode; }
 	public function getPenalty() { return $this->penalty; }
