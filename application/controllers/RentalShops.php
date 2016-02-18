@@ -19,6 +19,7 @@ class RentalShops extends CI_Controller {
 				$res['message'] = 'Internal Server Error.';
 				$res['result'] = false;
 			}
+			unset($res['post']);
 		}
     echo json_encode($res);
 	}
@@ -30,6 +31,7 @@ class RentalShops extends CI_Controller {
 			$this->RentalShop->update($data);
 			$res['message'] = 'Updated Shop ' . $res['post'][$this->RentalShop->getName()];
 		}
+		unset($res['post']);
     echo json_encode($res);
 	}
 
@@ -63,19 +65,25 @@ class RentalShops extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$data['message'] = validation_errors();
 		} else {
-			$post = $this->input->post();
-			$data['post'] = array(
-				$this->RentalShop->getName() => $post['name'],
-				$this->RentalShop->getBranch() => $post['branch'],
-				$this->RentalShop->getAddress() => $post['address'],
-				$this->RentalShop->getLatitude() => $post['latitude'],
-				$this->RentalShop->getLongitude() => $post['longitude'],
-				$this->RentalShop->getSubscriberId() => $this->session->userdata('lessor_id')
-			);
-			if (!empty($post['id'])) {
-				$data['post'][$this->RentalShop->getId()] = $post['id'];
+			$data['message'] = $this->_validateImage();
+			if (empty($data['message'])) {
+				$post = $this->input->post();
+				$data['post'] = array(
+					$this->RentalShop->getName() => $post['name'],
+					$this->RentalShop->getBranch() => $post['branch'],
+					$this->RentalShop->getAddress() => $post['address'],
+					$this->RentalShop->getLatitude() => $post['latitude'],
+					$this->RentalShop->getLongitude() => $post['longitude'],
+					$this->RentalShop->getSubscriberId() => $this->session->userdata('lessor_id')
+				);
+				if ($_FILES['image']['size'] != 0) {
+					$data['post'][$this->RentalShop->getImage()] = file_get_contents($_FILES['image']['tmp_name']);
+				}
+				if (!empty($post['id'])) {
+					$data['post'][$this->RentalShop->getId()] = $post['id'];
+				}
+				$data['result'] = true;
 			}
-			$data['result'] = true;
 		}
 		return $data;
 	}
@@ -128,6 +136,18 @@ class RentalShops extends CI_Controller {
 		);
 	}
 
-
+	private function _validateImage() {
+		$message = empty($this->input->post('id')) ? 'Invalid Image' : '';
+		if (!empty($_FILES['image']) && $_FILES['image']['size'] != 0) { // check if image has been upload
+			$this->load->library('MyFile', $_FILES['image']); // Load My File Library
+			$validate = $this->myfile->validateImage(); // Validate Image
+			if (!$validate['result']) {
+				$message = implode(', ', $validate['message']); // Specify Image validate errors
+			} else {
+				$message = '';
+			}
+		}
+		return $message;
+	}
 
 }
