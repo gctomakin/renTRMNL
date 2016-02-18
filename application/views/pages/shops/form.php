@@ -4,7 +4,7 @@
 			<div id="map" class="text-center" style="width:100%; height:480px;"></div>
 		</div>
 		<div class="col-lg-7">
-	  	<form id="create-form" action="<?php echo site_url('/rentalshops/' . $action); ?>" method="POST" class="form-horizontal">
+	  	<form id="create-form" enctype="multipart/form-data" action="<?php echo site_url('/rentalshops/' . $action); ?>" method="POST" class="form-horizontal">
 				<?php if (!empty($shop)) { ?>
 	  		<input type="hidden" name="id" value="<?php echo $shop['shop_id']; ?>">
 	  		<?php } ?>
@@ -26,6 +26,14 @@
 						<input type="text" class="form-control" name="address" id="address" value="<?php echo set_value('address', empty($shop['address']) ? '' : $shop['address']); ?>" required placeholder="Address of the shop">
 					</div>
 				</div>	
+				<div class="form-group">
+			  	<label for="image" class="control-label col-lg-2">Image</label>
+			  	<div class="col-lg-8">
+			  		<?php $itemPic = empty($shop['shop_image']) ? '' : 'data:image/jpeg;base64,'.base64_encode($shop['shop_image']); ?>
+			  		<input type="file" value="" id="image" name="image" accept="image/*">
+			  		<img src="<?php echo $itemPic; ?>" id="preview-image" alt="" class="thumbnail" style="<?php echo empty($itemPic) ? 'display:none;' : ''; ?> width:100%; height: auto;">
+			  	</div>
+				</div>
 				<!-- <div class="form-group">
 			  	<label for="latitude" class="control-label col-lg-2">Latitude</label>
 			  	<div class="col-lg-8"> -->

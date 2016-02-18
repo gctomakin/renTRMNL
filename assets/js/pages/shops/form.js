@@ -19,4 +19,8 @@ $(document).ready(function() {
 			$('#longitude').val(longitude);
 		});
 	});
+
+	$('#image').change(function() {
+		previewImage(this);
+	});
 }); 
