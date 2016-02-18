@@ -12,7 +12,7 @@
           </a>
         </div>
         <div class="col-md-5 col-sm-5">
-          <h2><?php echo $item['info']->item_name;?></h2>
+          <h2><?php echo empty($item['info']->item_name) ? '<span class="text-danger">No Name</span>' : $item['info']->item_name;?></h2>
           <h5><i class="fa fa-building"></i> <?php echo $item['info']->shop_name . ' - ' . $item['info']->shop_branch; ?></h5>
           <p>(<?php echo $item['info']->item_desc; ?>)</p>
           <div class="row">
