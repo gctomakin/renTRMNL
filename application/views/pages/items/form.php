@@ -21,7 +21,7 @@
 		  	</div>
 			</div>
 			<div class="form-group">
-		  	<label for="name" class="control-label col-lg-3">Picture</label>
+		  	<label for="picture" class="control-label col-lg-3">Picture</label>
 		  	<div class="col-lg-5">
 		  		<input type="file" accept="image/*" value="<?php echo set_value('picture', empty($item['item_pic']) ? '' : $item['item_pic']); ?>" id="picture" required name="picture">
 		  		<?php $itemPic = empty($item['item_pic']) ? '' : 'data:image/jpeg;base64,'.base64_encode($item['item_pic']); ?>
