@@ -100,20 +100,51 @@ $(document).ready(function(){
   $('#btn-confirm-modal').click(function() {
     // Check for item and rented qty
     var detail = [];
+    var endDate = $('#end-date').val();
     if (itemId != 0 && qtyRent != 0) {
       detail.push({amount : rentAmount, id: itemId, qty: qtyRent});
-      proccessAction(rentUrl, {
-        from: startDate,
+      var forRent = {
         to: endDate,
         total: rentTotal,
         details: detail,
-        subscriber: subscriber
-      }).then(function() {
-        successMessage('Your rental needs to be confirm by the lessor');
-        $('#reservation-modal').modal('hide');
-      });
+        subscriber: subscriber,
+        status: 'rent',
+        forRent: true
+      };
+      // proceedPay(detail, 'half');
+      $.post(reservationUrl, forRent, function(data) {
+        // successMessage('Your rental needs to be confirm by the lessor');
+        if (data['result']) {
+          proceedPay(forRent, 'half');
+          $('#reservation-modal').modal('hide');
+        } else {
+          errorMessage(data['message']);
+        }
+      }, 'JSON');
     } else {
       errorMessage('No Item SELECTED OR specified quantity to rent');
     }
   });
 });
+
+function proceedPay(reservation, type) {
+  successMessage('Please wait while connecting to paypal');
+  reservation.type = type;
+  $.post(rentItemUrl, reservation, function(data) {
+    if (data['result']) {
+      if (data['paypal']['result']) {
+        $('#paykey').val(data['paypal']['packet']['payKey']);
+        $('#btn-pay').click();
+      } else {
+        errorMessage(data['paypal']['message']);
+      }
+    } else {
+      errorMessage(data['message']);
+    }
+  }, 'JSON');
+}
+function closePaypal()  {
+  dgFlow.closeFlow();
+  top.close();
+  location.reload();
+}

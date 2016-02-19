@@ -81,11 +81,13 @@
           <p id="confirm-item-details"></p>
         </div>
         <div class="other-details">
-          <div id="reportrange" style="z-index: 99999; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+          <!-- <div id="reportrange" style="z-index: 99999; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
             <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-          </div>
-          <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
+          </div> -->
+          <!-- <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>"> -->
+          <label for="end-date">Rent Until</label>
+          <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d'); ?>">
         </div>
       </div>
       <div class="modal-footer">
@@ -98,6 +100,14 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<form id='paypal-form' class="standard" action="https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">
+  <input id="type" type="hidden" name="expType" value="light">
+  <input id="paykey" type="hidden" name="paykey" value="">
+  <input class="hidden" type="submit" id="btn-pay"> 
+</form>
+<script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
 <script>
-  var rentUrl = "<?php echo site_url('reservations/save'); ?>";
+  var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'btn-pay'});
+  var rentItemUrl = "<?php echo site_url('rental/item'); ?>";
+  var reservationUrl = "<?php echo site_url('reservations/save'); ?>";
 </script>
