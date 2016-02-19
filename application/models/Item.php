@@ -62,7 +62,7 @@ class Item extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	public function all($select = "", $status = "", $like = "") {
+	public function all($select = "", $status = "", $like = "", $id = "") {
 		$where = array();
 
 		if (!empty($status)) {
@@ -71,8 +71,13 @@ class Item extends CI_Model{
 
 		if (!empty($like)) {
 			$where[] = $this->itemAlias.".".$this->desc ." LIKE '%$like%' " . " OR ".
+			 						$this->itemAlias . "." . $this->name . " LIKE '%$like%'" . " OR ".
 			 						$this->shopAlias . "." . $this->RentalShop->getName() . " LIKE '%$like%'" . " OR ".
 			 						$this->shopAlias . "." . $this->RentalShop->getBranch() . " LIKE '%$like%'";
+		}
+
+		if (!empty($id)) {
+			$where[] = $this->itemAlias . "." . $this->id . " = $id";
 		}
 
 		if (!empty($where)) {
@@ -326,4 +331,57 @@ class Item extends CI_Model{
 		$on .= " = " . $this->categoryAlias . "." . $this->ItemCategory->getItemId();
 		return array('table' => $table, 'on' => $on);
 	}
+
+	// MAPPING
+	public function processItem($obj) {
+    if (is_array($obj)) {
+      $obj = json_decode(json_encode($obj), FALSE);
+    }
+    $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+    $this->load->library('RentalModes');
+    
+    return array(
+      $this->id => $obj->item_id,
+      $this->rate => $obj->item_rate,
+      $this->pic => $img,
+      $this->status => $obj->item_stats,
+      $this->qty => $obj->item_qty,
+      $this->desc => $obj->item_desc,
+      $this->cashBond => $obj->item_cash_bond,
+      $this->rentalMode => $obj->item_rental_mode,
+      $this->penalty => $obj->item_penalty,
+      $this->shopId => $obj->shop_id,
+      $this->subscriberId => $obj->subscriber_id,
+      $this->name => $obj->item_name,
+      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
+    );
+  }
+
+  public function mapItemsWithCategory($data) {
+    $this->load->model('ItemCategory');
+    return array(
+      'info' => $data,
+      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
+    );
+  }
+
+  public function mapItemRented($item) {
+    if (!empty($item)) {
+      return array (
+        'rental_amt' => $item->rental_amt,
+        'item_rate' => $item->item_rate,
+        'qty' => $item->qty,
+        'item_id' => $item->item_id,
+        'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
+        'item_desc' => $item->item_desc,
+        'shop_id' => $item->shop_id,
+        'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
+        'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
+        'reserve_id' => $item->reserve_id,
+        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
+      );
+    } else {
+      return NULL;
+    }
+  }
 }

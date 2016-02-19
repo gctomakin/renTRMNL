@@ -285,7 +285,7 @@ class Lessees extends CI_Controller
     $items = $this->Reservation->findActiveItemByLesseeId($lesseeId);
     
     $data['title'] = 'ITEM CURRENTLY RENTED';
-    $content['items'] = array_map(array($this, '_mapItemRented'), $items['result']);
+    $content['items'] = array_map(array($this->Item, 'mapItemRented'), $items['result']);
     $data['content'] = $this->load->view('pages/lessee/items/rented', $content, TRUE);
     $data['script'] = array(
       'libs/pnotify.core',
@@ -361,7 +361,13 @@ class Lessees extends CI_Controller
 
         $content['pagination'] = $this->pagination->create_links();
       }
-      $content['items'] = empty($items['data']) ?  array() : array_map(array($this, '_mapItems'), $items['data']);
+      $content['items'] = empty($items['data']) ? 
+        array() :
+        array_map(array(
+            $this->Item,
+            'mapItemsWithCategory'
+          ), $items['data']
+        );
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $content['rentalMode'] = $this->rentalmodes->getModes();
@@ -407,7 +413,7 @@ class Lessees extends CI_Controller
       if (!empty($items['count'])) {
         $content['pagination'] = $this->pagination->create_links();
       }
-      $content['shops'] = $this->_processGroupShop($shops['data'], $categoryId);
+      $content['shops'] = $this->RentalShop->processGroupShop($shops['data'], $categoryId);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $content['rentalMode'] = $this->rentalmodes->getModes();
@@ -545,84 +551,5 @@ class Lessees extends CI_Controller
         redirect('lessee/myinterests', 'refresh');
     endif;
   }
-
-  private function _processGroupShop($shops, $category) {
-    $this->load->model('RentalShop');
-    $data = array();
-    foreach ($shops as $shop) {
-      $item = $this->ItemCategory->findItemByIdAndShop($category, $shop->shop_id);
-      $result = $this->RentalShop->findById($shop->shop_id);
-      $data[$shop->shop_id]['items'] = array_map(array($this, '_processItem'), $item);
-      $data[$shop->shop_id]['detail'] = $this->_processShop($result);
-    }
-    return $data;
-  }
-
-  private function _processShop($obj) {
-    if (is_array($obj)) {
-      $obj = (Object)$obj;
-    }
-    $img = $obj->shop_image == NULL ? 
-      'http://placehold.it/250x150' :
-      'data:image/jpeg;base64,' . base64_encode($obj->shop_image);
-    return array(
-      $this->RentalShop->getName() => $obj->shop_name,
-      $this->RentalShop->getBranch() => $obj->shop_branch,
-      $this->RentalShop->getImage() => $img,
-      $this->RentalShop->getAddress() => $obj->address,
-      $this->RentalShop->getSubscriberId() => $obj->subscriber_id
-    );
-  }
-
-  private function _mapItems($data) {
-    $this->load->model('ItemCategory');
-    return array(
-      'info' => $data,
-      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
-    );
-  }
-
-  private function _mapItemRented($item) {
-    if (!empty($item)) {
-      return array (
-        'rental_amt' => $item->rental_amt,
-        'item_rate' => $item->item_rate,
-        'qty' => $item->qty,
-        'item_id' => $item->item_id,
-        'item_pic' => $item->item_pic == NULL ? 'http://placehold.it/320x150' : 'data:image/jpeg;base64,' . base64_encode($item->item_pic),
-        'item_desc' => $item->item_desc,
-        'shop_id' => $item->shop_id,
-        'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
-        'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
-        'reserve_id' => $item->reserve_id,
-        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
-      );
-    } else {
-      return NULL;
-    }
-  }
-  private function _processItem($obj) {
-    if (is_array($obj)) {
-      $obj = json_decode(json_encode($obj), FALSE);
-    }
-    $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
-    $this->load->library('RentalModes');
-    $this->load->library('Item');
-
-    return array(
-      $this->Item->getId() => $obj->item_id,
-      $this->Item->getRate() => $obj->item_rate,
-      $this->Item->getPic() => $img,
-      $this->Item->getStatus() => $obj->item_stats,
-      $this->Item->getQty() => $obj->item_qty,
-      $this->Item->getDesc() => $obj->item_desc,
-      $this->Item->getCashBond() => $obj->item_cash_bond,
-      $this->Item->getRentalMode() => $obj->item_rental_mode,
-      $this->Item->getPenalty() => $obj->item_penalty,
-      $this->Item->getShopId() => $obj->shop_id,
-      $this->Item->getSubscriberId() => $obj->subscriber_id,
-      $this->Item->getName() => $obj->item_name,
-      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
-    );
-  }
+  
 }

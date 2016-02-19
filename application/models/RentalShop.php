@@ -122,4 +122,34 @@ class RentalShop extends CI_Model{
 		$this->db->cache_delete('lessee','shops');
 		$this->db->cache_delete('admin','rentalshops');
 	}
+
+	// MAPPING
+	public function processShop($obj) {
+    if (is_array($obj)) {
+      $obj = (Object)$obj;
+    }
+    $img = $obj->shop_image == NULL ? 
+      'http://placehold.it/250x150' :
+      'data:image/jpeg;base64,' . base64_encode($obj->shop_image);
+    return array(
+      $this->name => $obj->shop_name,
+      $this->branch => $obj->shop_branch,
+      $this->image => $img,
+      $this->address => $obj->address,
+      $this->subscriberId => $obj->subscriber_id
+    );
+  }
+
+  public function processGroupShop($shops, $category) {
+    $this->load->model('Item');
+    $this->load->model('ItemCategory');
+    $data = array();
+    foreach ($shops as $shop) {
+      $item = $this->ItemCategory->findItemByIdAndShop($category, $shop->shop_id);
+      $result = $this->findById($shop->shop_id);
+      $data[$shop->shop_id]['items'] = array_map(array($this->Item, 'processItem'), $item);
+      $data[$shop->shop_id]['detail'] = $this->processShop($result);
+    }
+    return $data;
+  }
 }
