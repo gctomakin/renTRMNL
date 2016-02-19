@@ -343,20 +343,25 @@ class Lessees extends CI_Controller
       $this->load->library('RentalModes');
 
       $data['title'] = 'ITEMS';
+      $itemId = $this->input->get('id');
       $keyword = $this->input->get('item');
-      $this->Item->setLimit(8); // Setting Rentalshop offset rows
-      $offset = ($page - 1) * $this->Item->getLimit();
-      $this->Item->setOffset($offset); // Setting Rentalshop offset rows
-      $items = $this->Item->all($select = "*", '', $keyword);
-      
-      // Configuring Pagination
-      $config['base_url'] = site_url('lessee/items/');
-      $config['total_rows'] = $items['count'];
-      $config['per_page'] = $this->Item->getLimit();
-      $this->pagination->initialize($config);
+      if (!empty($itemId) && is_numeric($itemId)) {
+        $items = $this->Item->all($select = "*", '', '', $itemId);
+      } else {
+        $this->Item->setLimit(8); // Setting Rentalshop offset rows
+        $offset = ($page - 1) * $this->Item->getLimit();
+        $this->Item->setOffset($offset); // Setting Rentalshop offset rows
+        $items = $this->Item->all($select = "*", '', $keyword);
+        
+        // Configuring Pagination
+        $config['base_url'] = site_url('lessee/items/');
+        $config['total_rows'] = $items['count'];
+        $config['per_page'] = $this->Item->getLimit();
+        $this->pagination->initialize($config);
 
-      $content['pagination'] = $this->pagination->create_links();
-      $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
+        $content['pagination'] = $this->pagination->create_links();
+      }
+      $content['items'] = empty($items['data']) ?  array() : array_map(array($this, '_mapItems'), $items['data']);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $content['rentalMode'] = $this->rentalmodes->getModes();
@@ -377,6 +382,7 @@ class Lessees extends CI_Controller
   public function itemsCategoryPage($categoryId, $page = 1) {
       $this->load->library('pagination');
       $this->load->library('RentalModes');
+      $this->load->model('ItemCategory');
       $this->load->model('Category');
 
       $category = $this->Category->findById($categoryId);
@@ -387,25 +393,25 @@ class Lessees extends CI_Controller
       }
 
       $data['title'] = 'ITEMS BY CATEGORY : ' . $category[$this->Category->getType()];
-      $offset = ($page - 1) * $this->Item->getLimit();
-      $this->Item->setOffset($offset); // Setting Rentalshop offset rows
-      $this->Item->setLimit(8); // Setting Rentalshop offset rows
-      $items = $this->Item->findByCategory($categoryId);
+      $this->ItemCategory->setLimit(8); // Setting Rentalshop offset rows
+      $offset = ($page - 1) * $this->ItemCategory->getLimit();
+      $this->ItemCategory->setOffset($offset); // Setting Rentalshop offset rows
+      $shops = $this->ItemCategory->findShopByCategory($categoryId);
       
       // Configuring Pagination
       $config['base_url'] = site_url("lessee/items/category/$categoryId/");
-      $config['total_rows'] = $items['count']-1;
+      $config['total_rows'] = $shops['count'];
       $config['per_page'] = $this->Item->getLimit();
       $this->pagination->initialize($config);
 
       if (!empty($items['count'])) {
         $content['pagination'] = $this->pagination->create_links();
       }
-      $content['items'] = array_map(array($this, '_mapItems'), $items['data']);
+      $content['shops'] = $this->_processGroupShop($shops['data'], $categoryId);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
       $content['rentalMode'] = $this->rentalmodes->getModes();
-      $data['content'] = $this->load->view('pages/lessee/categories/items', $content, TRUE);
+      $data['content'] = $this->load->view('pages/items/listByCategory', $content, TRUE);
       $data['style'] = array('libs/pnotify');
       $data['script'] = array(
         'libs/pnotify.core',
@@ -540,6 +546,34 @@ class Lessees extends CI_Controller
     endif;
   }
 
+  private function _processGroupShop($shops, $category) {
+    $this->load->model('RentalShop');
+    $data = array();
+    foreach ($shops as $shop) {
+      $item = $this->ItemCategory->findItemByIdAndShop($category, $shop->shop_id);
+      $result = $this->RentalShop->findById($shop->shop_id);
+      $data[$shop->shop_id]['items'] = array_map(array($this, '_processItem'), $item);
+      $data[$shop->shop_id]['detail'] = $this->_processShop($result);
+    }
+    return $data;
+  }
+
+  private function _processShop($obj) {
+    if (is_array($obj)) {
+      $obj = (Object)$obj;
+    }
+    $img = $obj->shop_image == NULL ? 
+      'http://placehold.it/250x150' :
+      'data:image/jpeg;base64,' . base64_encode($obj->shop_image);
+    return array(
+      $this->RentalShop->getName() => $obj->shop_name,
+      $this->RentalShop->getBranch() => $obj->shop_branch,
+      $this->RentalShop->getImage() => $img,
+      $this->RentalShop->getAddress() => $obj->address,
+      $this->RentalShop->getSubscriberId() => $obj->subscriber_id
+    );
+  }
+
   private function _mapItems($data) {
     $this->load->model('ItemCategory');
     return array(
@@ -566,5 +600,29 @@ class Lessees extends CI_Controller
     } else {
       return NULL;
     }
+  }
+  private function _processItem($obj) {
+    if (is_array($obj)) {
+      $obj = json_decode(json_encode($obj), FALSE);
+    }
+    $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
+    $this->load->library('RentalModes');
+    $this->load->library('Item');
+
+    return array(
+      $this->Item->getId() => $obj->item_id,
+      $this->Item->getRate() => $obj->item_rate,
+      $this->Item->getPic() => $img,
+      $this->Item->getStatus() => $obj->item_stats,
+      $this->Item->getQty() => $obj->item_qty,
+      $this->Item->getDesc() => $obj->item_desc,
+      $this->Item->getCashBond() => $obj->item_cash_bond,
+      $this->Item->getRentalMode() => $obj->item_rental_mode,
+      $this->Item->getPenalty() => $obj->item_penalty,
+      $this->Item->getShopId() => $obj->shop_id,
+      $this->Item->getSubscriberId() => $obj->subscriber_id,
+      $this->Item->getName() => $obj->item_name,
+      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
+    );
   }
 }
