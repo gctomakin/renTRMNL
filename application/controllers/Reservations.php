@@ -41,15 +41,17 @@ class Reservations extends CI_Controller {
   public function save() {
     $res = $this->_validate();
     $post = $this->input->post();
-  	if ($res['result']) { 
+  	if ($res['result'] && empty($post['forRent'])) { 
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
-			$this->Reservation->setDateRented(date('Y-m-d H:i:s', strtotime($post['from'])));
+      $from = empty($post['from']) ? date('Y-m-d H:i:s') : $post['from'];
+			$this->Reservation->setDateRented(date('Y-m-d H:i:s', strtotime($from)));
 			$this->Reservation->setDateReturned(date('Y-m-d H:i:s', strtotime($post['to'])));
 			$this->Reservation->setTotalAmt($post['total']);
 			$this->Reservation->setDownPayment($post['total']/2);
 			$this->Reservation->setTotalBalance($post['total']);
 			$this->Reservation->setPenalty(0);
-			$this->Reservation->setStatus('pending');
+      $status = empty($post['status']) ? 'pending' : $post['status']; 
+			$this->Reservation->setStatus($status);
       $this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
 			$this->Reservation->setSubscriberId($post['subscriber']);
 			$id = $this->Reservation->create();
@@ -68,6 +70,7 @@ class Reservations extends CI_Controller {
         if (empty($error)) {
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
+          $res['resid'] = $id;
         } else {
           $this->Reservation->delete($id);
           $res['message'] = "Reservation Detail: Internal Server Error : " . implode(', ', $error);
@@ -177,7 +180,7 @@ class Reservations extends CI_Controller {
   private function _validate() {
   	$this->isAjax();
   	$res['result'] = FALSE;
-    $this->form_validation->set_rules('from', 'Start Date', 'trim|required|date|xss_clean');
+    $this->form_validation->set_rules('from', 'Start Date', 'trim|date|xss_clean');
     $this->form_validation->set_rules('to', 'End Date', 'trim|required|date|xss_clean');
     $this->form_validation->set_rules('total', 'Total', 'trim|required|numeric|xss_clean');
     
