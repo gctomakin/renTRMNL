@@ -75,6 +75,125 @@ class Rental extends CI_Controller {
     echo json_encode($res);
   }
 
+  public function item() {
+    $this->isAjax();
+    $res['result'] = FALSE;
+    $post = $this->input->post();
+    $this->load->model('Subscriber');
+    $this->load->model('Item');
+    
+    $paypalCol = $this->Subscriber->getPaypal();
+    
+    $item = $this->Item->findById($post['details'][0]['id']);
+   
+    $subscriber = $this->Subscriber->findId(
+      $item['subscriber_id'], array($paypalCol)
+    );
+    
+    $email = $subscriber[$paypalCol];
+
+    if (empty($email)) {
+      $res['message'] = 'Lessor does not have paypal account, please contact him for reservation';
+    } else {
+      $details = array( 0 => (object)array(
+          'item_desc' => $item['item_desc'],
+          'item_name' => $item['item_name'],
+          'rental_amt' => $post['details'][0]['amount'],
+          'qty' => $post['details'][0]['qty'],
+          'item_cash_bond' => $item['item_cash_bond'],
+          'item_id' => $item['item_id']
+        )
+      );
+      $this->load->library('Paypal');
+      $type = ucfirst($post['type']);
+      $cashbond = 0;
+      $full = $post['details'][0]['amount'] * $post['details'][0]['qty'];
+      $total = ($type != 'Full') ? $full / 2 : $full;//$reservation[$this->Reservation->getTotalAmt()];
+      $pDetails = array_map(array($this, '_proPaypalWithCashBond' . $type), $details);
+      $cashbond = $this->_calTotalCashBond($details);
+      $type .= " With Cashbonds";
+      $res['paypal'] = $this->paypal->createPacketDetail(
+        $total + $cashbond,
+        $email,
+        $pDetails,
+        $type,
+        'rental/returnItemPaypal', // Return
+        'rental/cancelPaypal' // Cancel
+      );
+      $data = array(
+        'to' => $post['to'],
+        'total' => $post['total'],
+        'details' => $post['details'],
+        'subscriber' => $post['subscriber'],
+        'status' => $post['rent']
+      );
+      $this->session->set_flashdata('reservation', $data);
+      $this->session->set_flashdata('reservation_payment', $total);
+      $this->session->set_flashdata('reservation_type', $type);
+      $this->session->set_flashdata('is_paypal', TRUE);
+      $res['email'] = $email;
+      $res['result'] = TRUE;
+    }
+    echo json_encode($res);
+  }
+
+  public function returnItemPaypal() {
+    $paypal = $this->session->flashdata();
+    // print_r($paypal);
+    // exit();
+    if (empty($paypal['is_paypal'])) {
+      redirect('lessees');
+      exit();
+    }
+    $this->load->model('Reservation');
+
+    $this->Reservation->setDate(date('Y-m-d H:i:s'));
+    $from = empty($paypal['reservation']['from']) ?
+      date('Y-m-d H:i:s') :
+      $paypal['reservation']['from'];
+    $this->Reservation->setDateRented(date('Y-m-d H:i:s', strtotime($from)));
+    $this->Reservation->setDateReturned(date('Y-m-d H:i:s', strtotime($paypal['reservation']['to'])));
+    $this->Reservation->setTotalAmt($paypal['reservation']['total']);
+    $this->Reservation->setDownPayment($paypal['reservation']['total']/2);
+    $this->Reservation->setTotalBalance($paypal['reservation']['total']);
+    $this->Reservation->setPenalty(0);
+    $status = empty($paypal['reservation']['status']) ?
+      'pending' :$paypal['reservation']['status']; 
+    $this->Reservation->setStatus($status);
+    $this->Reservation->setLesseeId($this->session->userdata('lessee_id'));
+    $this->Reservation->setSubscriberId($paypal['reservation']['subscriber']);
+    $id = $this->Reservation->create();
+    $res['result'] = FALSE;
+    $content['message'] = "";
+    if ($id > 0) {
+      $this->load->model('ReservationDetail');
+      $error = array();
+      foreach ($paypal['reservation']['details'] as $detail) {
+        $this->ReservationDetail->setRentalAmt($detail['amount']);
+        $this->ReservationDetail->setQty($detail['qty']);
+        $this->ReservationDetail->setItemId($detail['id']);
+        $this->ReservationDetail->setReserveId($id);
+        if ($this->ReservationDetail->create() <= 0) {
+         $error[] = 'Error on item # ' . $detail['id'];
+        } 
+      }
+      if (empty($error)) {
+        $this->session->set_flashdata('is_paypal', TRUE);
+        $this->session->set_flashdata('reservation_id', $id);
+        $this->session->set_flashdata('reservation_payment', $paypal['reservation_payment']);
+        $this->session->set_flashdata('reservation_type', $paypal['reservation_type']);
+        $this->returnPaypal();
+        exit();
+      } else {
+        $content['message'] = "ERROR ON RESERVATION DETAIL";
+      }
+    } else {
+      $content['message'] = "ERROR ON RESERVATION";
+    }
+    $data['content'] = $this->load->view('pages/paypal/return', $content, TRUE);
+    $this->load->view('common/plain', $data);
+  }
+
   public function returnPaypal() {
     $paypal = $this->session->flashdata();
     if (empty($paypal['is_paypal'])) {
@@ -221,7 +340,7 @@ class Rental extends CI_Controller {
 
   private function _proPaypalWithCashBondFull($detail) {
     if (is_array($detail)) {
-      $detail = json_decode(json_encode($detail), FALSE);
+      $detail = (object)$detail;
     }
     return array(
       'name' => $detail->item_desc . ' ('. $detail->rental_amt . ' x ' . $detail->qty . ') + ' . $detail->item_cash_bond,
@@ -242,6 +361,7 @@ class Rental extends CI_Controller {
   }
 
   private function _calTotalCashBond($details) {
+    $details = (object) $details;
     $total = 0;
     foreach ($details as $detail) {
       $total += $detail->item_cash_bond;
