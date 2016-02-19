@@ -378,7 +378,8 @@ class Lessees extends CI_Controller
         'libs/pnotify.buttons',
         'libs/moment.min2',
         'libs/daterangepicker',
-        'pages/reservations/daterange',
+        'libs/single-datepicker',
+        // 'pages/reservations/daterange',
         'pages/lessees/items'
       );
       $this->load->view('common/lessee', $data);
