@@ -13,6 +13,14 @@ var session_id = $('#sessionId').val();
 var user_type = $('#userType').val();
 var template = _.template($("#notify-template").html());
 
+
+$("body").on('click', ".notify-msg-show", function(e){
+  e.preventDefault();
+
+  $(this).next("p").toggle();
+
+});
+
 msg_channel.bind('msg-event', function(data) {
   if(data.receiver == session_id && data.usertype == user_type){
     var tmpl = template({receiver: data.receiver, subject: data.subject, message: data.message, date: data.date});
