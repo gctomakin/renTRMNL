@@ -75,11 +75,12 @@
                         <!-- /.panel-body -->
                     </div>
                     <script type="text/template" id="notify-template">
-                     <a href="#" class="list-group-item">
+                     <a href="#" class="list-group-item notify-msg-show">
                          <i class="fa fa-comment fa-fw"></i> <%= subject %>
-                         <span class="pull-right text-muted small"><em><%= date %></em>
+                         <span class="pull-right text-muted small"><small><em><%= date %></em></small>
                          </span>
                      </a>
+                     <p class="notify-msg" hidden><%= message %></p>
                     </script>
                     <!-- notification end -->
                 </li>
