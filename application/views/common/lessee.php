@@ -18,6 +18,7 @@ $data['style'] 		= empty($style) ? array() : $style;
 $data['style'][] 	= 'new-bootstrap.min';
 $data['style'][] 	= 'metisMenu.min';
 $data['style'][] 	= 'sb-admin-2';
+$data['style'][] 	= 'navs';
 
 $data['hasNewBootrstap'] = true;
 
