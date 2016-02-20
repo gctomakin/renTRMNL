@@ -29,7 +29,7 @@ $(document).ready(function() {
     format: 'MM/DD/YYYY',
     separator: ' to ',
     locale: {
-      applyLabel: 'Submit',
+      applyLabel: 'Ok',
       cancelLabel: 'Clear',
       fromLabel: 'From',
       toLabel: 'To',
