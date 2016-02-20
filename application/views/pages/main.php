@@ -9,7 +9,7 @@
             <h1>A Software-as-a-Service for Rental Shops</h1>
             <hr>
             <p>renTRMNL facilitates the rental management process and transactions. Design to help users to find the nearest rental shops and to increase the effectiveness and efficiency of renting services. </p>
-            <a href="/lessor/signup" class="btn btn-primary btn-xl">Become a Lessor</a>
+            <a href="<?php echo site_url('/lessor/signup'); ?>" class="btn btn-primary btn-xl">Become a Lessor</a>
             <a href="#signup" class="btn btn-primary btn-xl page-scroll">Become a Lessee</a>
         </div>
     </div>
