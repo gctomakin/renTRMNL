@@ -161,7 +161,7 @@ class Main extends CI_Controller {
       $this->ItemCategory->setOffset($offset); // Setting Rentalshop offset rows
             
       $shops = $this->ItemCategory->findShopByCategory($category);
-      $content['shops'] = $this->_processGroupShop($shops['data'], $category);
+      $content['shops'] = $this->RentalShop->processGroupShop($shops['data'], $category);
 
       // Configuring Pagination
       $config['base_url'] = site_url('main/listByCategory/' + $category + '/');
