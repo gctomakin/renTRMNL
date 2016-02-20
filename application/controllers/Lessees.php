@@ -504,7 +504,7 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyShop->setMyShopName($post['shop_name']);
       $this->MyShop->setShopId($post['shop_id']);
-      if($this->notify('Shop has been added','Your shop has been added','lessor')):
+      if($this->notify('Shop added','Your shop has been added','lessor')):
         echo $this->MyShop->insert();
       else:
         echo FALSE;
@@ -531,7 +531,7 @@ class Lessees extends CI_Controller
       $post = $this->input->post(NULL, TRUE);
       $this->MyInterest->setMyInterestName($post['interest_name']);
       $this->MyInterest->setItemId($post['item_id']);
-      if($this->notify('Item has been added','Your item has been added','lessor')):
+      if($this->notify('Item added','Your item has been added','lessor')):
          echo $this->MyInterest->insert();
       else:
         echo FALSE;
