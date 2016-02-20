@@ -12,6 +12,7 @@ class RentalShop extends CI_Model{
 	private $branch = "shop_branch";
 	private $image = "shop_image";
 	private $address = "address";
+	private $desc = "shop_desc";
 	private $latitude = "latitude";
 	private $longitude = "longitude";
 	private $subscriberId = "subscriber_id";
@@ -100,6 +101,7 @@ class RentalShop extends CI_Model{
 	public function getBranch() { return $this->branch; }
 	public function getImage() { return $this->image; }
 	public function getAddress() { return $this->address; }
+	public function getDesc() { return $this->desc; }
 	public function getLatitude() { return $this->latitude; }
 	public function getLongitude() { return $this->longitude; }
 	public function getSubscriberId() { return $this->subscriberId; }
@@ -136,6 +138,7 @@ class RentalShop extends CI_Model{
       $this->branch => $obj->shop_branch,
       $this->image => $img,
       $this->address => $obj->address,
+      $this->desc => $obj->shop_desc,
       $this->subscriberId => $obj->subscriber_id
     );
   }
