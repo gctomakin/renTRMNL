@@ -27,6 +27,12 @@
 					</div>
 				</div>	
 				<div class="form-group">
+					<label for="description" class="control-label col-lg-2">Description</label>
+					<div class="col-lg-8">
+						<textarea class="form-control" name="description" id="description" required placeholder="Address of the shop"><?php echo set_value('description', empty($shop['shop_desc']) ? '' : $shop['shop_desc']); ?></textarea>
+					</div>
+				</div>	
+				<div class="form-group">
 			  	<label for="image" class="control-label col-lg-2">Image</label>
 			  	<div class="col-lg-8">
 			  		<?php $itemPic = empty($shop['shop_image']) ? '' : 'data:image/jpeg;base64,'.base64_encode($shop['shop_image']); ?>

@@ -59,6 +59,7 @@ class RentalShops extends CI_Controller {
 		$this->form_validation->set_rules('address', 'Address of the Shop', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('latitude', 'Location Latitude', 'trim|required|numeric|xss_clean');
 		$this->form_validation->set_rules('longitude', 'Location Longitude', 'trim|required|numeric|xss_clean');
+		$this->form_validation->set_rules('description', 'Location Longitude', 'trim|xss_clean');
 
 		$data['result'] = false;
 
@@ -72,6 +73,7 @@ class RentalShops extends CI_Controller {
 					$this->RentalShop->getName() => $post['name'],
 					$this->RentalShop->getBranch() => $post['branch'],
 					$this->RentalShop->getAddress() => $post['address'],
+					$this->RentalShop->getDesc() => $post['description'],
 					$this->RentalShop->getLatitude() => $post['latitude'],
 					$this->RentalShop->getLongitude() => $post['longitude'],
 					$this->RentalShop->getSubscriberId() => $this->session->userdata('lessor_id')
