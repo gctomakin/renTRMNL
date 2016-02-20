@@ -119,9 +119,9 @@ $route['lessee/myinterests']           = 'lessees/myInterestsPage';
 $route['lessee/myinterests/(:num)']    = 'lessees/myInterestsPage/$1';
 $route['lessee/items']                 = 'lessees/itemsPage';
 $route['lessee/items/(:num)']          = 'lessees/itemsPage/$1';
-$route['lessee/items/category']        = 'lessees/itemsCategoryPage';
-$route['lessee/items/category/(:num)'] = 'lessees/itemsCategoryPage/$1';
-$route['lessee/items/category/(:num)/(:num)'] = 'lessees/itemsCategoryPage/$1/$2';
+$route['lessee/shops/category']        = 'lessees/shopsCategoryPage';
+$route['lessee/shops/category/(:num)'] = 'lessees/shopsCategoryPage/$1';
+$route['lessee/shops/category/(:num)/(:num)'] = 'lessees/shopsCategoryPage/$1/$2';
 $route['lessee/reserved']        			 = 'lessees/reservedPage';
 $route['lessee/rent']        		 = 'lessees/itemRentPage';
 /** Lessees Actions*/

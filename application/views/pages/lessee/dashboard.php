@@ -11,7 +11,7 @@
         <div class="col-lg-4 col-sm-6 portfolio-item">
           <?php $img = $category->category_image == NULL ? site_url('assets/img/portfolio/1.jpg') : 'data:image/jpeg;base64,'.base64_encode($category->category_image); ?>
         
-            <a href="<?php echo site_url('lessee/items/category/' . $category->category_id); ?>" class="portfolio-box">
+            <a href="<?php echo site_url('lessee/shops/category/' . $category->category_id); ?>" class="portfolio-box">
               <img src="<?php echo $img; ?>" class="img-responsive" alt="" style="width:430px; height: 230px;">
               <h3><?php echo $category->category_type;?></a></h3>
             </a>

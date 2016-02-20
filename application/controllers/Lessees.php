@@ -385,7 +385,7 @@ class Lessees extends CI_Controller
   }
 
 
-  public function itemsCategoryPage($categoryId, $page = 1) {
+  public function shopsCategoryPage($categoryId, $page = 1) {
       $this->load->library('pagination');
       $this->load->library('RentalModes');
       $this->load->model('ItemCategory');
@@ -398,14 +398,14 @@ class Lessees extends CI_Controller
         exit();
       }
 
-      $data['title'] = 'ITEMS BY CATEGORY : ' . $category[$this->Category->getType()];
+      $data['title'] = 'SHOPS BY CATEGORY : ' . $category[$this->Category->getType()];
       $this->ItemCategory->setLimit(8); // Setting Rentalshop offset rows
       $offset = ($page - 1) * $this->ItemCategory->getLimit();
       $this->ItemCategory->setOffset($offset); // Setting Rentalshop offset rows
       $shops = $this->ItemCategory->findShopByCategory($categoryId);
       
       // Configuring Pagination
-      $config['base_url'] = site_url("lessee/items/category/$categoryId/");
+      $config['base_url'] = site_url("lessee/shops/category/$categoryId/");
       $config['total_rows'] = $shops['count'];
       $config['per_page'] = $this->Item->getLimit();
       $this->pagination->initialize($config);
