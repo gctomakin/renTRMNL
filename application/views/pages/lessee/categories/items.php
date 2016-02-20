@@ -85,9 +85,10 @@
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
             <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
           </div> -->
-          <!-- <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>"> -->
+          <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
           <label for="end-date">Rent Until</label>
           <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d'); ?>">
+          <input type="hidden" id="startDate" value="<?php echo date('Y-m-d'); ?>">
         </div>
       </div>
       <div class="modal-footer">

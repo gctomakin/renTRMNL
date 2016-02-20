@@ -95,6 +95,14 @@ $(document).ready(function(){
     computeRentTotal();
     $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
   });
+  var startDate = $('#start-date').val();
+  $('#end-date').on('apply.daterangepicker', function (ev, picker) {
+    console.log($(this).val());
+    var d = moment($(this).val()).diff(startDate, 'days');
+    daysDiff = d + 1;
+    computeRentTotal();
+    $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
+  });
   $('.daterangepicker').css('z-index', 9999);
 
   $('#btn-confirm-modal').click(function() {
