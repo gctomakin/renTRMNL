@@ -1,0 +1,46 @@
+/* nav bars*/
+.navbar-brand {
+	font-weight: bold;	
+}
+/*ADMIN*/
+.navbar-admin {
+  background: #222;
+}
+.navbar-admin .navbar-top-links a {
+	color: #888;
+}
+.navbar-admin .navbar-brand {
+	color: #fff;
+}
+
+
+/*LESSEE*/
+.navbar-lessee {
+	background-color: #F05F40;
+}
+
+.navbar-lessee .navbar-top-links a {
+	color: #fff;
+}
+
+.navbar-lessee .sidebar a {
+	color: #F05F40;
+}
+
+.navbar-lessee .navbar-top-links .dropdown-menu li a {
+	color: #555;
+}
+
+.navbar-lessee .navbar-top-links .dropdown-menu li a:hover {
+	background-color: #F05F40;
+	color: #fff;
+}
+
+.navbar-lessee .navbar-top-links a.dropdown-toggle:hover {
+	background-color: #fff;
+	color: #F05F40;
+}
+
+.navbar-lessee .navbar-brand {
+	color: #fff;
+}
