@@ -125,7 +125,7 @@ class Rental extends CI_Controller {
         'total' => $post['total'],
         'details' => $post['details'],
         'subscriber' => $post['subscriber'],
-        'status' => $post['rent']
+        'status' => $post['status']
       );
       $this->session->set_flashdata('reservation', $data);
       $this->session->set_flashdata('reservation_payment', $total);
