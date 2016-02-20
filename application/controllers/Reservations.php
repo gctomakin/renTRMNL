@@ -11,7 +11,7 @@ class Reservations extends CI_Controller {
 
   public function item($itemId = "") {
   	$this->load->model('Item');
-  	$content['item'] = $this->Item->findById($itemId);
+  	$content['item'] = $this->Item->findByIdComplete($itemId);
 		$content['itemPic'] = $content['item']['item_pic'] == NULL ? 'http://placehold.it/150x100' : 'data:image/jpeg;base64,'.base64_encode($content['item']['item_pic']);
 		$content['action'] = site_url('reservations/save');
 	  $content['startDate'] = date('m/d/Y');

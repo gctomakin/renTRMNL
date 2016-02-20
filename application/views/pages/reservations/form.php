@@ -18,8 +18,12 @@
 	  					</div>
 	  					<div class="col-lg-6">
 	  						<div class="row">
-		  						<label for="shop" class="control-label col-lg-12">Shop : My Shop</label>
-		  						<label for="shop" class="control-label col-lg-12">OWner : My Shop</label> 
+		  						<label for="shop" class="control-label col-lg-12">Shop : 
+		  							<a href="#"><?php echo $item['shop_name']; ?></a>
+		  						</label>
+		  						<label for="shop" class="control-label col-lg-12">OWner : 
+		  							<a href="#"><?php echo $item['subscriber_fname'] ;?></a>
+		  						</label> 
 	  						</div>
 	  					</div>
 	  				</div>
