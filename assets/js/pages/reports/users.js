@@ -25,18 +25,18 @@ function setChart(labels, lessor, lessee) {
     labels: labels,
     datasets: [{
         label: "Lessors",
-        fillColor: "rgba(217, 83, 79, 0.2)", //rgba(220,220,220,0.2)
-        strokeColor: "rgba(217, 83, 79, 0.7)", //rgba(220,220,220,1)
-        pointColor: "rgba(217, 83, 79, 0.8)", //rgba(220,220,220,1)
+        fillColor: "rgba(217, 83, 79, 0.8)", //rgba(220,220,220,0.8)
+        strokeColor: "rgba(217, 83, 79, 0.9)", //rgba(220,220,220,1)
+        pointColor: "rgba(217, 83, 79, 1)", //rgba(220,220,220,1)
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(217, 83, 79, 1)",
         data: lessor
       }, {
       	label: "Lessees",
-        fillColor: "rgba(92, 184, 92, 0.2)", //rgba(220,220,220,0.2) rgba(92, 184, 92, 1)
-        strokeColor: "rgba(92, 184, 92, 0.7)", //rgba(220,220,220,1)
-        pointColor: "rgba(92, 184, 92, 0.8)", //rgba(220,220,220,1)
+        fillColor: "rgba(92, 184, 92, 0.8)", //rgba(220,220,220,0.8) rgba(92, 184, 92, 1)
+        strokeColor: "rgba(92, 184, 92, 0.9)", //rgba(220,220,220,1)
+        pointColor: "rgba(92, 184, 92, 1)", //rgba(220,220,220,1)
         pointStrokeColor: "#fff",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(92, 184, 92, 1)",
@@ -45,8 +45,10 @@ function setChart(labels, lessor, lessee) {
     ]
   }
 
-  window.reportChat = new Chart(document.getElementById("canvas-line-graph").getContext("2d")).Line(lineChartData, {
+  window.reportChat = new Chart(document.getElementById("canvas-line-graph").getContext("2d")).Bar(lineChartData, {
       responsive: true,
-      multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
+      multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>",
+      barDatasetSpacing: 6,
+      barValueSpacing: 20
   });
 }
