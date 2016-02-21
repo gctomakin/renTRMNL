@@ -74,6 +74,24 @@ class Reservation extends CI_Model{
 		return $query->result();
 	}
 
+	public function findComplete() {
+		$data = array_filter($this->data);
+		$joinDetail = $this->_joinReservationDetail();
+		$joinShop = $this->_joinShop();
+		$joinItem = $this->_joinItem();
+		$select = $this->rAlias.'.*, ' . $this->rsAlias.'.*';
+		$query = $this->db
+			->select($select)
+			->from($this->table . ' as ' . $this->rAlias)
+			->join($joinDetail['table'], $joinDetail['on'], 'INNER')
+			->join($joinItem['table'], $joinItem['on'], 'INNER')
+			->join($joinShop['table'], $joinShop['on'], 'INNER')
+			->where($data)
+			->group_by($this->rAlias .'.'. $this->id)
+			->get();
+		return $query->result();
+	}
+
 	public function findById($id) {
 		$query = $this->db->get_where($this->table, array($this->id => $id));
 		return $query->row_array();
@@ -258,5 +276,15 @@ class Reservation extends CI_Model{
 	private function deleteCache() {
 		$this->db->cache_delete('lessee','reserved');
 		$this->db->cache_delete('lessor','reservations');
+	}
+
+	// MAP
+	public function mapDetailItem($res) {
+		$this->load->model('ReservationDetail');
+		$detail = $this->ReservationDetail->findByReservationId($res->reserve_id);
+		return array(
+			'info' => $res,
+			'detail' => array_map(array($this->Item, 'mapItemRentedSimple'), $detail)
+		);
 	}
 }
