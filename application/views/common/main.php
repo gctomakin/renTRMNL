@@ -2,7 +2,6 @@
 
 $data['content'] = $this->load->view('templates/mainNav', '', true); // Main Nav
 $data['content'] .= $content;
-
 $data['script'] = array(
 	'particle',
   'app',
@@ -11,7 +10,8 @@ $data['script'] = array(
   'wow.min', // <-- End
   'creative', // Custome Theme
   'libs/pnotify.core',
-  'libs/pnotify.buttons',    
+  'libs/pnotify.buttons', 
+  'libs/jquery.dataTables',   
   'common',
   'pages/main' // Page Script
 );
@@ -19,7 +19,8 @@ $data['script'] = array(
 $data['style'] = array(
 	'libs/pnotify',
 	'animate.min', //Plugin CSS
-	'creative'
+	'creative',
+  'libs/dataTables.min'
 );
 
 $data['bodyId'] = "page-top";
