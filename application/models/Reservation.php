@@ -189,6 +189,21 @@ class Reservation extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function countTotalByDate($from, $to = "") {
+		if ($from == $to) {
+		 	$where = "DATE({$this->date}) = DATE('$from')";
+		} else {
+			$where = "{$this->date} between '$from' and '$to'";
+		}
+		$query = $this->db
+			->select('count('. $this->id .') as total')
+			->from($this->table)
+			->where($where)
+			->get();
+		$result = $query->row_array(); 
+		return $result['total'];
+	}
+
 	private $limit = 5;
 	private $offset = 0;
 
