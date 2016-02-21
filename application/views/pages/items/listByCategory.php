@@ -54,5 +54,7 @@
 </div>
 <!-- <link rel="stylesheet" href="<?php echo site_url('assets/css/libs/dataTables.min.css'); ?>"> -->
 <script type="text/javascript">
-  $('.list-category-table').DataTable();
+  $(document).ready(function() {
+    $('.list-category-table').DataTable();    
+  }); 
 </script>
