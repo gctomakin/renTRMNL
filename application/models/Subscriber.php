@@ -141,23 +141,27 @@ class Subscriber extends CI_Model{
 		return $query->result();
 	}
 
-	public function findReservation($id, $status) {
+	public function findReservation($id, $status, $select = 'r.*') {
 		$this->load->model('ReservationDetail');
 		$this->load->model('Reservation');
 		$this->load->model('Item');
 		$joinItem = $this->_joinItem();
 		$joinResDetail = $this->_joinReservationDetail();
 		$joinRes = $this->_joinReservation();
+		$joinLessee = $this->_joinLessee();
+		$joinShop = $this->_joinShop();
 		$where = array(
 			's.'.$this->id => $id,
 			'r.'.$this->Reservation->getStatus() => $status
 		);
 		$query = $this->db
-			->select('r.*')
+			->select($select)
 			->from($this->table . ' as s')
 			->join($joinItem['table'], $joinItem['on'])
 			->join($joinResDetail['table'], $joinResDetail['on'])
 			->join($joinRes['table'], $joinRes['on'])
+			->join($joinLessee['table'], $joinLessee['on'])
+			->join($joinShop['table'], $joinShop['on'])
 			->where($where)
 			->group_by('r.'. $this->Reservation->getId())
 			->get();
@@ -209,6 +213,22 @@ class Subscriber extends CI_Model{
 		$table = $this->Reservation->getTable() . ' as r';
 		$on = 'r.' . $this->Reservation->getId() . ' = ';
 		$on .= 'rd.' . $this->ReservationDetail->getReserveId();
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinLessee() {
+		$this->load->model('Lessee');
+		$table = $this->Lessee->getTable() . ' as l';
+		$on = 'r.' . $this->Reservation->getLesseeId() . ' = ';
+		$on .= 'l.lessee_id';
+		return array('table' => $table, 'on' => $on);
+	}
+
+	private function _joinShop() {
+		$this->load->model('RentalShop');
+		$table = $this->RentalShop->getTable() . ' as rs';
+		$on = 'rs.'. $this->RentalShop->getId() . ' = ';
+		$on .= 'i.' . $this->Item->getShopId();
 		return array('table' => $table, 'on' => $on);
 	}
 
