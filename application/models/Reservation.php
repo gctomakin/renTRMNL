@@ -74,19 +74,23 @@ class Reservation extends CI_Model{
 		return $query->result();
 	}
 
-	public function findComplete() {
-		$data = array_filter($this->data);
+	public function findComplete($where = "") {
+		// $data = array_filter($this->data);
 		$joinDetail = $this->_joinReservationDetail();
-		$joinShop = $this->_joinShop();
 		$joinItem = $this->_joinItem();
-		$select = $this->rAlias.'.*, ' . $this->rsAlias.'.*';
+		$joinShop = $this->_joinShop();
+		$joinLessee = $this->_joinLessee();
+		$select = $this->rAlias.'.*, ' . $this->rsAlias.'.*, ' . $this->lAlias . '.*';
+		if (!empty($where)) {
+			$this->db->where($where);
+		}
 		$query = $this->db
 			->select($select)
 			->from($this->table . ' as ' . $this->rAlias)
-			->join($joinDetail['table'], $joinDetail['on'], 'INNER')
-			->join($joinItem['table'], $joinItem['on'], 'INNER')
-			->join($joinShop['table'], $joinShop['on'], 'INNER')
-			->where($data)
+			->join($joinLessee['table'], $joinLessee['on'])
+			->join($joinDetail['table'], $joinDetail['on'])
+			->join($joinItem['table'], $joinItem['on'])
+			->join($joinShop['table'], $joinShop['on'], 'LEFT')
 			->group_by($this->rAlias .'.'. $this->id)
 			->get();
 		return $query->result();
