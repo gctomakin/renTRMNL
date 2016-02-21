@@ -371,5 +371,14 @@ class Lessee extends CI_Model
     return $query->result();
   }
 
+  public function isEmailExist($email, $id = "") {
+    if (!empty($id)) {
+      $where['lessee_id <>'] = $id;
+    }
+    $where['lessee_email'] = $email;
+    $query = $this->db->get_where($this->lessees_table, $where);
+    return $query->num_rows() > 0;
+  }
+
   public function getTable() { return $this->lessees_table; }
 }
