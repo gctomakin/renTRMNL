@@ -245,16 +245,23 @@ class Item extends CI_Model{
 			$this->desc
 		);
 		$select = "{$this->itemAlias}." . implode(', ' . $this->itemAlias . '.', $select) . ', ';
-		$select .= "(SELECT SUM({$this->rdAlias}.{$this->ReservationDetail->getQty()}) ";
-		$select .= "FROM {$joinResDetail['table']} INNER JOIN {$joinRes['table']} ";
-		$select .= "ON {$joinRes['on']} AND {$this->rAlias}.{$this->Reservation->getStatus()} = 'close' ";
-		$select .= "WHERE {$joinResDetail['on']}) as rented, ";
-		$select .= "{$this->shopAlias}.*";
+		$select .= "{$this->shopAlias}.{$this->RentalShop->getName()}, {$this->shopAlias}.{$this->RentalShop->getBranch()}, ";
+		
+		$rdA = $this->rdAlias;
+		$when = $this->rAlias . '.' . $this->Reservation->getStatus() ." = 'close'";
+		$rdQty = $rdA .'.'. $this->ReservationDetail->getQty();
+		$rdAmtTotal = $rdA .'.'.$this->ReservationDetail->getQty() .' * '. $rdA .'.'. $this->ReservationDetail->getRentalAmt();
+		$select .= "SUM(IF($when, $rdQty , 0)) as rentedQty, ";
+		$select .= "SUM(IF($when, ($rdAmtTotal), 0)) as rentedAmt ";
+		
 		$query = $this->db
 			->select($select)
 			->from($this->table . ' as ' . $this->itemAlias)
 			->join($joinShop['table'], $joinShop['on'], 'LEFT')
+			->join($joinResDetail['table'], $joinResDetail['on'], 'LEFT')
+			->join($joinRes['table'], $joinRes['on'], 'LEFT')
 			->where(array($this->itemAlias . '.' . $this->subscriberId => $lessorId))
+			->group_by($this->itemAlias.'.'.$this->id)
 			->get();
 		return $query->result();
 	}

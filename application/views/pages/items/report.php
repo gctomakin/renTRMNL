@@ -12,6 +12,7 @@
 						<th>DESCRIPTION</th>
 						<th>SHOP</th>
 						<th>RENTED</th>
+						<th>SALES</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -23,7 +24,8 @@
 						<td><?php echo $item->item_id; ?></td>
 						<td><?php echo $item->item_desc; ?></td>
 						<td><?php echo $shop; ?></td>
-						<td><?php echo number_format($item->rented); ?></td>
+						<td><?php echo number_format($item->rentedQty); ?></td>
+						<td><?php echo number_format($item->rentedAmt, 2); ?></td>
 						<td></td>
 					</tr>
 					<?php } ?>
