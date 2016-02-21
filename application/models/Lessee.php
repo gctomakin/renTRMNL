@@ -15,6 +15,7 @@ class Lessee extends CI_Model
   private $myinterests_table = 'my_interests';
   private $limit = 20;
   private $offset = 0;
+  private $date;
 
   private function getId()
   {
@@ -94,6 +95,14 @@ class Lessee extends CI_Model
   public function setImage($image)
   {
     $this->image = $image;
+  }
+
+  public function getDate() {
+    return $this->date;
+  }
+
+  public function setDate($date) {
+    $this->date = $date;
   }
 
   public function authenticate()
@@ -194,6 +203,7 @@ class Lessee extends CI_Model
     $data['lessee_phoneno'] = $this->getPhoneno();
     $data['username']       = $this->getUsername();
     $data['password']       = $this->getPassword();
+    $data['date_registered'] = $this->getDate();
 
     try {
 
