@@ -18,7 +18,7 @@ class Subscriber extends CI_Model{
 	private $username = "username";
 	private $password = "password";
 	private $date = "date_registered";
-
+	private $address = "address";
 
 	public function __construct() {
 		parent::__construct();
@@ -247,6 +247,7 @@ class Subscriber extends CI_Model{
 	public function getUsername() { return $this->username; }	
 	public function getPassword() { return $this->password; }	
 	public function getDate() { return $this->date; }
+	public function getAddress() { return $this->address; }
 
 	private function _deleteCache() {
 		$this->db->cache_delete('lessors','accountSave');
