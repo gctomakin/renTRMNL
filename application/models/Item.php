@@ -384,4 +384,9 @@ class Item extends CI_Model{
       return NULL;
     }
   }
+
+  public function mapItemRentedSimple($item) {
+  	return empty($item->item_name) ? $item->item_desc : $item->item_name; 
+  }
+
 }
