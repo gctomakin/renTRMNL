@@ -29,7 +29,24 @@ class Accounts extends CI_Controller {
     } else {
       $post = $this->input->post(NULL, TRUE);
       $account = $this->Account->findUsername($post['username']);
-      if (empty($account)) {
+      
+      $error = array();
+
+      $this->load->model('Subscriber');
+      if ($this->Subscriber->isEmailExist($post['email'])) {
+      	$error[] = 'Email Exist on Subscriber already';
+      }
+
+      $this->load->model('Lessee');
+      if ($this->Lessee->isEmailExist($post['email'])) {
+				$error[] = 'Email Exist on Lessee already';
+      }
+
+      if (!empty($account)) {
+      	$error[] = 'Username already taken';
+      }
+
+      if (empty($error)) {
 	      $userId = 0;
 	      $encryptPassword = $this->encryption->encrypt($post['password']);
 	      switch ($post['user_type']) {
@@ -53,7 +70,7 @@ class Accounts extends CI_Controller {
 		        $data[$this->Subscriber->getLname()] = $post['lname'];
 		        $data[$this->Subscriber->getEmail()] = $post['email'];
 		        $data[$this->Subscriber->getTelno()] = $post['phoneno'];
-
+		        $data[$this->Subscriber->getAddress()] = $post['address'];
 		        $userId = $this->Subscriber->create($data);
 		       	break;
 		      case 'admin' :
@@ -85,7 +102,7 @@ class Accounts extends CI_Controller {
 	      	}
 	      }
 	    } else {
-	    	$res['message'] = 'Username already taken';
+	    	$res['message'] = implode(', ', $error);
 	    }
     }
 
