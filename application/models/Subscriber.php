@@ -142,9 +142,6 @@ class Subscriber extends CI_Model{
 	}
 
 	public function findReservation($id, $status, $select = 'r.*') {
-		$this->load->model('ReservationDetail');
-		$this->load->model('Reservation');
-		$this->load->model('Item');
 		$joinItem = $this->_joinItem();
 		$joinResDetail = $this->_joinReservationDetail();
 		$joinRes = $this->_joinReservation();
@@ -196,6 +193,7 @@ class Subscriber extends CI_Model{
 	}
 
 	private function _joinItem() {
+		$this->load->model('Item');
 		$table = $this->Item->getTable() . ' as i';
 		$on = 'i.' . $this->Item->getSubscriberId() . ' = ';
 		$on .= 's.' . $this->id;
@@ -203,6 +201,7 @@ class Subscriber extends CI_Model{
 	}
 
 	private function _joinReservationDetail() {
+		$this->load->model('ReservationDetail');
 		$table = $this->ReservationDetail->getTable() . ' as rd';
 		$on = 'rd.' . $this->ReservationDetail->getItemId() . ' = ';
 		$on .= 'i.' . $this->Item->getId();
@@ -210,6 +209,7 @@ class Subscriber extends CI_Model{
 	}
 
 	private function _joinReservation() {
+		$this->load->model('Reservation');
 		$table = $this->Reservation->getTable() . ' as r';
 		$on = 'r.' . $this->Reservation->getId() . ' = ';
 		$on .= 'rd.' . $this->ReservationDetail->getReserveId();
