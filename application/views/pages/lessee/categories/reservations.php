@@ -1,10 +1,13 @@
 <div class="container-fluid">
 	<div class="row no-gutter">
-		<table id="reservation-table" class="table">
+		<table id="reservation-table" class="table table-hover">
 			<thead>
 				<tr>
+					<th>ID</th>
 					<th>DATE</th>
 					<th>DURATION</th>
+					<th>SHOP</th>
+					<th  width="50">ITEM</th>
 					<th class="text-right">TOTAL</th>
 					<th class="text-right">PENALTY</th>
 					<th class="text-right">BALANCE</th>
@@ -14,27 +17,31 @@
 			</thead>
 			<tbody>
 				<?php foreach($reservations as $rev) { ?>
-				<tr data-reservation="<?php echo $rev->reserve_id; ?>">
-					<td><?php echo date('M d, Y', strtotime($rev->reserve_date)); ?></td>
+				<tr data-reservation="<?php echo $rev['info']->reserve_id; ?>">
+					<td><?php echo $rev['info']->reserve_id; ?></td>
+					<td><?php echo date('M d, Y', strtotime($rev['info']->reserve_date)); ?></td>
 					<td>
 						<?php 
-							echo date('M d, Y', strtotime($rev->date_rented)) . ' - ';
-							echo date('M d, Y', strtotime($rev->date_returned)); 
+							echo date('M d, Y', strtotime($rev['info']->date_rented)) . ' - ';
+							echo date('M d, Y', strtotime($rev['info']->date_returned)); 
 						?>
 					</td>
-					<td class="text-right total-amount"><?php echo $rev->total_amt; ?></td>
-					<td class="text-right"><?php echo $rev->penalty; ?></td>
-					<td class="text-right total-balance"><?php echo $rev->total_balance; ?></td>
-					<td class="status"><?php echo $rev->status; ?></td>
+					<td><?php echo $rev['info']->shop_name; ?></td>
+					<td><?php echo implode(', ', $rev['detail']); ?>
+					</td>
+					<td class="text-right total-amount"><?php echo $rev['info']->total_amt; ?></td>
+					<td class="text-right"><?php echo $rev['info']->penalty; ?></td>
+					<td class="text-right total-balance"><?php echo $rev['info']->total_balance; ?></td>
+					<td class="status"><?php echo $rev['info']->status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
-							<?php if ($rev->status == 'approve' && $rev->total_balance > 0) { ?>
-							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev->reserve_id?>">pay</button>
-							<?php } else if ($rev->status == 'pending') { ?>
-							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev->reserve_id?>">cancel</button>
+							<?php if ($rev['info']->status == 'approve' && $rev['info']->total_balance > 0) { ?>
+							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev['info']->reserve_id?>">pay</button>
+							<?php } else if ($rev['info']->status == 'pending') { ?>
+							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev['info']->reserve_id?>">cancel</button>
 							<?php }?>
-							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">view</button>
-							<button class="btn btn-danger btn-xs btn-payment" data-rev-id="<?php echo $rev->reserve_id?>">payments</button>
+							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev['info']->reserve_id?>">details</button>
+							<button class="btn btn-danger btn-xs btn-payment" data-rev-id="<?php echo $rev['info']->reserve_id?>">payments</button>
 						</div>
 					</td>
 				</tr>
