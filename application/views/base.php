@@ -31,6 +31,10 @@
       echo $css;
     }
 	?>
+  
+  <!-- jQuery -->
+  <script src="<?php echo site_url("bower_components/jquery/dist/jquery.min.js"); ?>"></script>
+
 </head>
 <body <?php echo empty($bodyId) ? '' : "id='$bodyId'" ; ?> >
 <?php if($this->session->has_userdata('lessee_id')):?>
@@ -44,8 +48,6 @@
 
 
 	<!-- DEFAULT SCRIPTS -->
-  <!-- jQuery -->
-  <script src="<?php echo site_url("bower_components/jquery/dist/jquery.min.js"); ?>"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="<?php echo site_url("bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>"></script>
   <!-- Misc Libs -->
