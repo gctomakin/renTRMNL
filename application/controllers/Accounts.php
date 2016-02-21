@@ -58,6 +58,7 @@ class Accounts extends CI_Controller {
 		        $this->Lessee->setPhoneno($post['phoneno']);
 		        $this->Lessee->setUsername($post['username']);
 		        $this->Lessee->setPassword($encryptPassword);        
+		        $this->Lessee->setDate(date('Y-m-d H:i:s'));        
 		        $userId = $this->Lessee->insert();
 		        break;
 		      case 'lessor' :
@@ -71,6 +72,7 @@ class Accounts extends CI_Controller {
 		        $data[$this->Subscriber->getEmail()] = $post['email'];
 		        $data[$this->Subscriber->getTelno()] = $post['phoneno'];
 		        $data[$this->Subscriber->getAddress()] = $post['address'];
+		        $data[$this->Subscriber->getDate()] = date('Y-m-d H:i:s');
 		        $userId = $this->Subscriber->create($data);
 		       	break;
 		      case 'admin' :
