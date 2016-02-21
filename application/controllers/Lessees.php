@@ -418,10 +418,11 @@ class Lessees extends CI_Controller
       $content['action'] = site_url('lessee/add-myinterest');
       $content['rentalMode'] = $this->rentalmodes->getModes();
       $data['content'] = $this->load->view('pages/items/listByCategory', $content, TRUE);
-      $data['style'] = array('libs/pnotify');
+      $data['style'] = array('libs/pnotify', 'libs/dataTables.min');
       $data['script'] = array(
         'libs/pnotify.core',
         'libs/pnotify.buttons',
+        'libs/jquery.dataTables',
         'pages/lessees/items'
       );
       $this->load->view('common/lessee', $data); 
