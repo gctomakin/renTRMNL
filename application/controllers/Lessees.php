@@ -429,10 +429,12 @@ class Lessees extends CI_Controller
 
   public function reservedPage() {
     $this->load->model('Reservation');
-    $data['title'] = 'Item Reserved';
+    $this->load->model('ReservationDetail');
+    $data['title'] = 'Reservation List';
     $lesseId = $this->session->userdata('lessee_id');
     $this->Reservation->setLesseeId($lesseId);
-    $content['reservations'] = $this->Reservation->find();
+    $reservations = $this->Reservation->findComplete();
+    $content['reservations'] = array_map(array($this->Reservation, 'mapDetailItem'), $reservations);
     $data['content'] = $this->load->view('pages/lessee/categories/reservations', $content, TRUE);
     $data['style'] = array('libs/dataTables.min', 'libs/pnotify');  
     $data['script'] = array(
