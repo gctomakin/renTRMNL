@@ -360,6 +360,7 @@ class Admins extends CI_Controller {
     $data = $this->_reportAssets();
     $data['title'] = 'RENTAL\'s REPORTS';
     $data['content'] = $this->load->view('pages/admin/reports/rentals', '', TRUE);
+    array_push($data['script'], 'pages/reports/rentals');
     $this->load->view('common/admin', $data);
   }
 
