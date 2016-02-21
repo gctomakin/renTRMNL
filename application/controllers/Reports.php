@@ -31,7 +31,12 @@ class Reports extends CI_Controller {
 			$this->load->model('Lessee');
 			for ($i = 0; $i < count($res['date']); $i++) {
 				$dates = $this->_getFromTo($res['date'], $i, $res['type']);
-				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($dates['from'])) : date('M d' , strtotime($dates['from']));
+				$label = "";
+				if ($res['startDate'] == $res['endDate']) {
+					$label = date('H:i:s', strtotime($dates['from']));
+				} else {
+					$label = date('M d' , strtotime($dates['from'])) . '-' . date('M d', strtotime($dates['to']));
+				}
 	
 				$res['labels'][] = $label;
 				// Count lessors		
