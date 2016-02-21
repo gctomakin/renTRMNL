@@ -49,6 +49,26 @@ class Reports extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function rentals() {
+		$res = $this->_validate();
+		if ($res['result']) {			
+			$this->load->model('Reservation');
+			for ($i = 0; $i < count($res['date']); $i++) {
+				$dates = $this->_getFromTo($res['date'], $i, $res['type']);
+				$label = $res['startDate'] == $res['endDate'] ? date('H:i:s', strtotime($dates['from'])) : date('M d' , strtotime($dates['from']));
+	
+				$res['labels'][] = $label;
+				// Count Reservation
+				$reservation = $this->Reservation->countTotalByDate($dates['from'], $dates['to']);
+				$res['intervals'][$label] = $reservation;
+
+			}
+			// $details['lessors'] = $this->Subscriber->findByDate($res['startDate'], $res['endDate']);
+			// $res['details'] = $this->load->view('pages/admin/reports/userDetails', $details, TRUE);
+		}
+		echo json_encode($res);
+	}
+
 	private function _validate() {
 		$this->isAjax();
 		$post = $this->input->post();
