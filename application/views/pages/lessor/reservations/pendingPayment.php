@@ -14,14 +14,18 @@
 				<?php foreach($payments as $pay) { ?>
 				<tr data-payment="<?php echo $pay->payment_id; ?>">
 					<td><?php echo date('M d, Y', strtotime($pay->payment_date)); ?></td>
-					<td><?php echo $pay->reserve_id; ?></td>
+					<td>
+						<a target="_blank" href="<?php echo site_url('/lessors/reservations/' . $pay->reserve_id); ?>">
+							Res # <?php echo $pay->reserve_id; ?>
+						</a>
+					</td>
 					<td><?php echo $pay->payment_description . ' Payment'; ?></td>
 					<td class="text-right"><?php echo $pay->payment_amt; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="payment-options">
 							<button class="btn btn-success btn-xs btn-receive">receive</button>
 							<button class="btn btn-primary btn-xs btn-cancel">cancel</button>
-							<button class="btn btn-default btn-xs btn-view">view details</button>
+							<button class="btn btn-default btn-xs btn-view">details</button>
 							<input type="hidden" class="pay-id" value="<?php echo $pay->payment_id?>">
 							<input type="hidden" class="rev-id" value="<?php echo $pay->reserve_id?>">
 						</div>
