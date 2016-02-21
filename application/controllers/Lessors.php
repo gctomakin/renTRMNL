@@ -313,7 +313,7 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Pending Reservations";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending');
+    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending', 'r.*, l.*, rs.*');
     $data['content'] = $this->load->view('pages/lessor/reservations/pending', $content, TRUE);
     $data['script'][] = 'pages/lessor/reservations/list';
     $this->load->view('common/lessor', $data);
@@ -323,11 +323,21 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Approved Reservations";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'approve');
+    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'approve', 'r.*, l.*, rs.*');
     $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
     $data['script'][] = 'pages/lessor/reservations/list';
 
     $this->load->view('common/lessor', $data);    
+  }
+
+  public function reservations($id) {
+    $this->load->model('Reservation');
+    $data = $this->_commonListAsset();
+    $data['title'] = "Reservation";
+    $content['reservations'] = $this->Reservation->findComplete("r.reserve_id = $id");
+    $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
+    $data['script'][] = 'pages/lessor/reservations/list';
+    $this->load->view('common/lessor', $data); 
   }
 
   public function pendingPayments() {
