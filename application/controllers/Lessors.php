@@ -313,7 +313,7 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Pending Reservations";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending', 'r.*, l.*, rs.*');
+    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'pending', "'r.*, l.*, rs.*, r.status as 'rent_status'");
     $data['content'] = $this->load->view('pages/lessor/reservations/pending', $content, TRUE);
     $data['script'][] = 'pages/lessor/reservations/list';
     $this->load->view('common/lessor', $data);
@@ -323,7 +323,7 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Approved Reservations";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->Subscriber->findReservation($lessorId, 'approve', 'r.*, l.*, rs.*');
+    $content['reservations'] = $this->Subscriber->findReservation($lessorId, array('approve', 'rent'), "r.*, l.*, rs.*, r.status as 'rent_status'");
     $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
     $data['script'][] = 'pages/lessor/reservations/list';
 
