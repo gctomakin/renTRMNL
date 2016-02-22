@@ -31,7 +31,7 @@
 					<td class="text-right"><?php echo $rev->total_amt; ?></td>
 					<td class="text-right"><?php echo $rev->penalty; ?></td>
 					<td class="text-right"><?php echo $rev->total_balance; ?></td>
-					<td class="status"><?php echo $rev->status; ?></td>
+					<td class="status"><?php echo $rev->rent_status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
 							<button class="btn btn-success btn-xs btn-approve" data-rev-id="<?php echo $rev->reserve_id?>">approve</button>
