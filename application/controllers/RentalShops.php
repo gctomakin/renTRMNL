@@ -52,6 +52,22 @@ class RentalShops extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function getItems() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+		if (empty($post['shopId']) || !is_numeric($post['shopId'])) {
+			$res['message'] = 'Invalid Parameter';
+		} else {
+			$this->load->model('Item');
+			$items = $this->Item->findByShop($post['shopId']);
+			$content['items'] = array_map(array($this->Item, 'processItem'), $items);
+			$res['view'] = $this->load->view('pages/shops/items', $content, TRUE);
+			$res['result'] = TRUE;
+		}
+		echo json_encode($res);
+	}
+
 	private function _validate() {
 		$this->isAjax();
 		$this->form_validation->set_rules('name', 'Name of the Shop', 'trim|required|min_length[2]|xss_clean');
