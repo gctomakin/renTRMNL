@@ -82,6 +82,6 @@ function proceedPay(type) {
 
 function closePaypal()  {
 	dgFlow.closeFlow();
-	top.close();
+	// top.close();
 	location.reload();
 }
