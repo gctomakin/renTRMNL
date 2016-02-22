@@ -244,9 +244,12 @@ class Lessees extends CI_Controller
     $content['myshops'] = $this->MyShop->all();
     $content['getShopsJson']  = site_url('lessee/getshops');
     $data['content']    = $this->load->view('pages/lessee/myshops', $content, TRUE);
-    $data['script']     = array(
-        'pages/lessees/shops'
+    $data['script']           = array(
+      'libs/pnotify.buttons',
+      'libs/pnotify.core',
+      'pages/lessees/shops'
     );
+    $data['style'] = array('libs/pnotify');
     $this->load->view('common/lessee', $data);
   }
 
@@ -327,8 +330,12 @@ class Lessees extends CI_Controller
     $content['getShopsJson']  = site_url('lessee/getshops');
     $data['content']          = $this->load->view('pages/lessee/categories/shops', $content, TRUE);
     $data['script']           = array(
-        'pages/lessees/shops'
+      'libs/pnotify.buttons',
+      'libs/pnotify.core',
+      'pages/lessees/shops'
     );
+    $data['style'] = array('libs/pnotify');
+    
     $this->load->view('common/lessee', $data);
   }
 
