@@ -55,16 +55,26 @@ function initMap() {
       console.log("complete");
     });
 
+  $("#map-modal").on('click',"a[data-window='external']", function() {
+    window.open($(this).attr('href')); 
+    return false; 
+  });
 
   $('.map-modal-trigger').click(function(e) {
-    e.preventDefault();
+    //e.preventDefault();
     var address = $(this).data('address');
     var shop_name = $(this).data('shop-name');
-    $('#map-modal-title').empty().text(shop_name);
-    goToAddress(geocoder, map2, address, directionsService, directionsDisplay);
-
-    $('#map-modal').modal('show');
-
+    var shopId = $(this).data('shop-id');
+    $.post(shopItemUrl, {shopId: shopId}, function(data) {
+      if (data['result']) {
+        $('#map-modal-title').empty().text(shop_name);
+        $('#modal-shops-item').html(data['view']);
+        goToAddress(geocoder, map2, address, directionsService, directionsDisplay);
+        $('#map-modal').modal('show');
+      } else {
+        errorMessage(data['message']);
+      }
+    }, 'JSON');
   });
 
   $('.locate-trigger').click(function(e) {
