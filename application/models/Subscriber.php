@@ -147,10 +147,9 @@ class Subscriber extends CI_Model{
 		$joinRes = $this->_joinReservation();
 		$joinLessee = $this->_joinLessee();
 		$joinShop = $this->_joinShop();
-		$where = array(
-			's.'.$this->id => $id,
-			'r.'.$this->Reservation->getStatus() => $status
-		);
+		$resStat = 'r.' . $this->Reservation->getStatus();
+		$whereStatus = is_array($status) ? $resStat ." = '" . implode("' OR $resStat = '", $status) . "'" : " '$status'"; 
+		$where = 's.'.$this->id . " = '$id' AND ($whereStatus)";
 		$query = $this->db
 			->select($select)
 			->from($this->table . ' as s')
