@@ -80,7 +80,7 @@ class Reservation extends CI_Model{
 		$joinItem = $this->_joinItem();
 		$joinShop = $this->_joinShop();
 		$joinLessee = $this->_joinLessee();
-		$select = $this->rAlias.'.*, ' . $this->rsAlias.'.*, ' . $this->lAlias . '.*';
+		$select = $this->rAlias.'.*, ' . $this->rsAlias.'.*, ' . $this->lAlias . '.*, ' . $this->rAlias . '.status as "reserved_status"';
 		if (!empty($where)) {
 			$this->db->where($where);
 		}
