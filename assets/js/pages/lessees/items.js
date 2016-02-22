@@ -153,6 +153,6 @@ function proceedPay(reservation, type) {
 }
 function closePaypal()  {
   dgFlow.closeFlow();
-  top.close();
+  // top.close();
   location.reload();
 }
