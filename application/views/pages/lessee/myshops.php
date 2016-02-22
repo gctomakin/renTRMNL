@@ -39,7 +39,7 @@
               <h4><?php echo $myshop->shop_branch; ?></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
               <div class="btn-group" role="group" aria-label="Shop Actions">
-              <a class="btn btn-info map-modal-trigger" href="#" data-shop-name="<?php echo $myshop->shop_name; ?>" data-address="<?php echo $myshop->address; ?>"><span class="fa fa-info"> More Info</span></a>
+              <button class="btn btn-info map-modal-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-address="<?php echo $myshop->address; ?>" data-shop-id="<?php echo $myshop->shop_id; ?>"><span class="fa fa-info"> More Info</span></button>
               <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $myshop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
               <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $myshop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
               <a class="btn btn-danger delete-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-id="<?php echo $myshop->myshop_id; ?>" href="<?php echo site_url("lessee/myshops/delete/".$myshop->myshop_id); ?>" role="button"><span class="fa fa-trash"> Delete</span></a>
@@ -78,24 +78,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row no-gutter">
-                      <?php for ($i=0; $i < 12; $i++):?>
-                        <div class="col-sm-3 col-lg-3 col-md-3">
-                            <div class="thumbnail">
-                                <img src="http://placehold.it/320x150" alt="">
-                                <div class="caption">
-                                    <div class="btn-group inline pull-right" data-toggle="buttons-checkbox">
-                                      <a href="#" class="btn btn-info btn-xs">Reserve</a>
-                                      <a href="#" class="btn btn-success btn-xs">Rent</a>
-                                      <a href="#" class="btn btn-primary btn-xs">My Interest</a>
-                                    </div>
-                                    <h4><a href="#">First Interest</a>
-                                    </h4>
-                                    <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                                </div>
-                            </div>
-                        </div>
-                      <?php endfor; ?>
+                    <div id="modal-shops-item" class="row no-gutter">
                     </div>
                 </div>
             </div>
@@ -170,4 +153,6 @@
           </div><!-- /.modal compose message -->
       <script>
         var getShopsJson = "<?php echo $getShopsJson; ?>";
+        var shopItemUrl = "<?php echo site_url('/rentalshops/getItems'); ?>";
+    
       </script>
