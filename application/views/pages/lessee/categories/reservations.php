@@ -40,6 +40,9 @@
 						<div class="btn-group" role="group" aria-label="reservation-options">
 							<?php if (($revStatus == 'approve' || $revStatus == 'rent') && $rev['info']->total_balance > 0) { ?>
 							<button class="btn btn-success btn-xs btn-rent" data-rev-id="<?php echo $rev['info']->reserve_id?>">pay</button>
+							<?php } else if (($revStatus == 'approve' || $revStatus == 'rent') && $rev['info']->total_balance == 0) { ?>
+							<button class="btn btn-success btn-xs btn-return" data-rev-id="<?php echo $rev['info']->reserve_id?>">return</button>
+							
 							<?php } else if ($revStatus == 'pending') { ?>
 							<button class="btn btn-primary btn-xs btn-cancel" data-rev-id="<?php echo $rev['info']->reserve_id?>">cancel</button>
 							<?php }?>
@@ -115,4 +118,5 @@
 	var reservationDetailUrl = "<?php echo site_url('reservations/detail'); ?>";
 	var rentUrl = "<?php echo site_url('rental/pay'); ?>";
 	var paymentUrl = "<?php echo site_url('rental/details'); ?>"
+	var returnUrl = "<?php echo site_url('reservations/returnStatus'); ?>"
 </script>

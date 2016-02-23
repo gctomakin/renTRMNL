@@ -94,6 +94,10 @@ class Reservations extends CI_Controller {
     echo $this->_changeStatus('disapprove');
   }
 
+  public function returnStatus() {
+    echo $this->_changeStatus('return');
+  }
+
   public function close() {
     $this->load->model('RentalPayment');
     $payments = $this->RentalPayment->findByReservationId($this->input->post('id'), 'pending');
@@ -126,14 +130,18 @@ class Reservations extends CI_Controller {
         ) {
           $status = 'payment cancel';
         }
-        $this->Reservation->setId($post['id']);
-        $this->Reservation->setStatus($status);
-        if ($this->Reservation->update()) {
-          $res['message'] = 'Reservation ' . ucfirst($status);
-          $res['result'] = TRUE;
-          $res['status'] = $status;
+        if ($status == 'return' && $reservation[$this->Reservation->getTotalBalance()] > 0) {
+          $res['message'] = 'Cannot return this rental if theres balance left';
         } else {
-          $res['message'] = 'Internal Server Error';
+          $this->Reservation->setId($post['id']);
+          $this->Reservation->setStatus($status);
+          if ($this->Reservation->update()) {
+            $res['message'] = 'Reservation ' . ucfirst($status);
+            $res['result'] = TRUE;
+            $res['status'] = $status;
+          } else {
+            $res['message'] = 'Internal Server Error';
+          }
         }
       }
     }

@@ -64,6 +64,22 @@ $('.btn-payment').on('click', function() {
 	}, 'JSON');
 });
 
+$('.btn-return').on('click', function() {
+	var button = $(this);
+	var resId = button.data('rev-id');
+	if (confirm('Are you sure to return this item')) {
+		$.post(returnUrl, {id: resId}, function(data) {
+			if (data['result']) {
+				$("tr[data-reservation='"+resId+"']").find('.status').text('return');
+				successMessage(data['message']);		
+				button.remove();		
+			} else {
+				errorMessage(data['message']);
+			}
+		}, 'JSON');
+	}
+});
+
 function proceedPay(type) {
 	successMessage('Please wait while connecting to paypal');
 	$.post(rentUrl, {id: resId, type: type}, function(data) {
