@@ -29,8 +29,8 @@
 						?>
 					</td>
 					<td class="text-right"><?php echo $rev->total_amt; ?></td>
-					<td class="text-right"><?php echo $rev->penalty; ?></td>
-					<td class="text-right"><?php echo $rev->total_balance; ?></td>
+					<td class="text-right penalty"><?php echo $rev->penalty; ?></td>
+					<td class="text-right balance"><?php echo $rev->total_balance; ?></td>
 					<td class="status"><?php echo $rev->rent_status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
@@ -42,8 +42,14 @@
 							?>
 							<button class="btn btn-primary btn-xs btn-close" data-rev-id="<?php echo $rev->reserve_id?>">close</button>
 							<?php
-								}
+								} else if (
+									$rev->penalty == 0 &&
+									$rev->total_balance > 0 && 
+									strtotime($rev->date_returned) <= strtotime(date('Y-m-d H:i:s'))
+								) {
 							?>
+							<button class="btn btn-xs btn-primary btn-penalty" data-rev-id="<?php echo $rev->reserve_id; ?>">penalty</button>
+							<?php } ?>
 							<button class="btn btn-default btn-xs btn-view" data-rev-id="<?php echo $rev->reserve_id?>">details</button>
 							<button class="btn btn-danger btn-xs btn-payment" data-rev-id="<?php echo $rev->reserve_id?>">payments</button>
 						</div>
@@ -89,6 +95,6 @@
 <script type="text/javascript">
 	var reservationDetailUrl = "<?php echo site_url('reservations/detail'); ?>";
 	var paymentUrl = "<?php echo site_url('rental/details'); ?>";
-	var closeUrl = "<?php echo site_url('reservations/close'); ?>"
-
+	var closeUrl = "<?php echo site_url('reservations/close'); ?>";
+	var penaltyUrl = "<?php echo site_url('penalties/add'); ?>";
 </script>
