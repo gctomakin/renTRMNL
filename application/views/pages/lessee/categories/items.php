@@ -11,53 +11,56 @@
       </div>
     <?php else: ?>
       <?php foreach($items as $item):?>
-        <div class="col-sm-3 col-lg-3 col-md-3">
-            <div class="thumbnail">
-            <?php
-              $itemPic = $item['info']->item_pic == NULL ? 
-                        'http://placehold.it/320x150' :
-                        'data:image/jpeg;base64,'.base64_encode($item['info']->item_pic);
+        <div class="col-md-7 col-sm-7">
+          <a href="#">
+            <img src="<?php echo $item['info']['item_pic']; ?>" class="thumbnail img-responsive" alt="">
+          </a>
+        </div>
+        <div class="col-md-5 col-sm-5">
+          <h4>
+            <a href="#">
+              <?php echo empty($item['info']['item_name']) ? '<span class="text-danger">No Name</span>' : $item['info']['item_name']; ?>
+            </a>
+          </h4>
+          <p>(<?php echo $item['info']['item_desc']; ?>)</p>
+          <p>₱ <?php echo number_format($item['info']['item_rate'], 2); ?> 
+            <small>
+              <?php echo $rentalMode[$item['info']['item_rental_mode']]; ?>
+            </small>
+            <br>
+            <?php echo number_format($item['info']['item_qty'] - $item['info']['rented_qty']); ?> pcs left
+          </p>
+          <?php if (isset($item['info']['shop_name'])) { ?>
+          <p><?php echo $item['info']['shop_name'] . ' - ' . $item['info']['shop_branch']; ?></p>
+          <?php } ?>
+          <p>
+            <?php 
+              if (!empty($item['categories'])) {
+                $label = "<span class='label label-default'>";
+                echo $label;
+                $categoryType = array();
+                foreach ($item['categories'] as $category) {
+                  $categoryType[] = $category->category_type;
+                }
+                echo implode("</span>  $label", $categoryType);
+                echo "</span>";
+              }
             ?>
-                <img src="<?php echo $itemPic; ?>" alt="" style="width:320px; height:150px;">
-                <div class="caption">
-                    <h4><a href="#"><?php echo empty($item['info']->item_name) ? '<span class="text-danger">No Name</span>' : $item['info']->item_name; ?></a></h4>
-                    <p>(<?php echo $item['info']->item_desc; ?>)</p>
-                    <p>₱ <?php echo number_format($item['info']->item_rate, 2); ?> 
-                      <small>
-                        <?php echo $rentalMode[$item['info']->item_rental_mode]; ?>
-                      </small>
-                      <br>
-                      <?php echo number_format($item['info']->item_qty); ?> pcs
-                    </p>
-                    <?php if (isset($item['info']->shop_name)) { ?>
-                    <p><?php echo $item['info']->shop_name . ' - ' . $item['info']->shop_branch; ?></p>
-                    <?php } ?>
-                    <p>
-                      <?php 
-                        if (!empty($item['categories'])) {
-                          $label = "<span class='label label-default'>";
-                          echo $label;
-                          $categoryType = array();
-                          foreach ($item['categories'] as $category) {
-                            $categoryType[] = $category->category_type;
-                          }
-                          echo implode("</span>  $label", $categoryType);
-                          echo "</span>";
-                        }
-                      ?>
-                    </p>
-                    <div class="btn-group">
-                      <a href="<?php echo site_url('reservations/item/' . $item['info']->item_id); ?>" class="btn btn-info btn-xs">Reserve</a>
-                      <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item['info']->item_id; ?>">Rent</button>
-                      <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item['info']->item_id; ?>" data-interest-name="<?php echo $item['info']->item_desc; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item['info']->item_id,$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item['info']->item_id,$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
-                      <input type="hidden" value="<?php echo $item['info']->item_qty; ?>" class="item-qty">
-                      <input type="hidden" value="<?php echo $item['info']->item_rate; ?>" class="item-rate">
-                      <input type="hidden" value="<?php echo $item['info']->item_desc; ?>" class="item-desc">
-                      <input type="hidden" value="<?php echo $item['info']->item_rental_mode; ?>" class="item-mode">
-                      <input type="hidden" value="<?php echo $item['info']->subscriber_id; ?>" class="subscriber">
-                    </div>
-                </div>
-            </div>
+          </p>
+          <div class="btn-group">
+            <a href="<?php echo site_url('reservations/item/' . $item['info']['item_id']); ?>" class="btn btn-info btn-xs">Reserve</a>
+            <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item['info']['item_id']; ?>">Rent</button>
+            <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item['info']['item_id']; ?>" data-interest-name="<?php echo $item['info']['item_desc']; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
+            <input type="hidden" value="<?php echo $item['info']['item_qty']; ?>" class="item-qty">
+            <input type="hidden" value="<?php echo $item['info']['item_rate']; ?>" class="item-rate">
+            <input type="hidden" value="<?php echo $item['info']['item_desc']; ?>" class="item-desc">
+            <input type="hidden" value="<?php echo $item['info']['item_name']; ?>" class="item-name">
+            <input type="hidden" value="<?php echo $item['info']['item_rental_mode']; ?>" class="item-mode">
+            <input type="hidden" value="<?php echo $item['info']['subscriber_id']; ?>" class="subscriber">
+          </div>
+        </div>
+        <div class="col-md-12">
+          <hr>
         </div>
       <?php endforeach; ?>
       <!--pagination-->
@@ -77,14 +80,10 @@
       <div class="modal-body">
         <h2><i class="fa fa-info"></i> Are you sure about this rental?</h2>
         <div class="details">
-          <h3>ITEM <span id="confirm-item-desc"></span></h3>
-          <p id="confirm-item-details"></p>
+          <h3 id="confirm-item-desc"></h3>
         </div>
         <div class="other-details">
-          <!-- <div id="reportrange" style="z-index: 99999; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-          </div> -->
+          <p id="confirm-item-details"></p>  
           <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
           <label for="end-date">Rent Until</label>
           <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d'); ?>">
@@ -92,8 +91,22 @@
         </div>
       </div>
       <div class="modal-footer">
+        <div class="pull-left">
+          <div class="form-group">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default active">
+                    Full Payment
+                    <input type="radio" class="rentType" name="rentType" value="full" checked />
+                </label>
+                <label class="btn btn-default">
+                    Half Payment
+                    <input type="radio" class="rentType" name="rentType" value="half" />
+                </label>
+            </div>
+          </div>
+        </div>
         <button type="button" class="btn btn-default" id="btn-cancel-modal" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="btn-confirm-modal">Submit Reservation</button>
+        <button type="button" class="btn btn-primary" id="btn-confirm-modal">Submit Rental</button>
       </div>
     </div>
     <!-- /.modal-content -->
