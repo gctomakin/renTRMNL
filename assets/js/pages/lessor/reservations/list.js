@@ -52,3 +52,22 @@ $('.btn-close').on('click', function() {
 		}); 
 	}
 });
+
+$('.btn-penalty').on('click', function() {
+	var button = $(this);
+	var resId = button.data('rev-id');
+	if (confirm('Add penalty for this reservation?')) {
+		$.post(penaltyUrl, {resId: resId}, function(data) {
+			if (data['result']) {
+				successMessage(data['message']);
+				$("[data-reservation='"+resId+"']").find('.penalty').text(data['penalty']);
+				var balanceTd = $("[data-reservation='"+resId+"']").find('.balance');
+				var balance = balanceTd.text();
+				balanceTd.text(data['penalty'] + parseFloat(balance));
+				button.remove();
+			} else {
+				errorMessage(data['message']);
+			}
+		}, 'JSON');
+	}
+});
