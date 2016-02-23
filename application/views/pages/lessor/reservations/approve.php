@@ -12,7 +12,7 @@
 					<th class="text-right">PENALTY</th>
 					<th class="text-right">BALANCE</th>
 					<th>STATUS</th>
-					<th class="text-center" width="100">OPTION</th>
+					<th class="text-center" width="160">OPTION</th>
 				</tr>
 			</thead>
 			<tbody>
