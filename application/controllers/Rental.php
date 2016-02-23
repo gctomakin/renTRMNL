@@ -308,6 +308,7 @@ class Rental extends CI_Controller {
 
     $this->Reservation->setId($resId);
     $this->Reservation->setTotalBalance($balance);
+    $this->Reservation->setStatus('approve');
     return $this->Reservation->update() ? '' : 'Internal Server Error: Reservation Update';
   }
 
