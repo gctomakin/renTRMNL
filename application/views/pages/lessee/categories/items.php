@@ -10,7 +10,10 @@
         <div class="alert alert-warning" role="alert"> <strong>Oops!</strong> No item found. </div>
       </div>
     <?php else: ?>
-      <?php foreach($items as $item):?>
+      <?php 
+        foreach($items as $item):
+          $itemLeft = $item['info']['item_qty'] - $item['info']['rented_qty'];
+      ?>
         <div class="col-md-7 col-sm-7">
           <a href="#">
             <img src="<?php echo $item['info']['item_pic']; ?>" class="thumbnail img-responsive" alt="">
@@ -28,7 +31,7 @@
               <?php echo $rentalMode[$item['info']['item_rental_mode']]; ?>
             </small>
             <br>
-            <?php echo number_format($item['info']['item_qty'] - $item['info']['rented_qty']); ?> pcs left
+            <?php echo number_format($itemLeft); ?> pcs left
           </p>
           <?php if (isset($item['info']['shop_name'])) { ?>
           <p><?php echo $item['info']['shop_name'] . ' - ' . $item['info']['shop_branch']; ?></p>
@@ -49,7 +52,9 @@
           </p>
           <div class="btn-group">
             <a href="<?php echo site_url('reservations/item/' . $item['info']['item_id']); ?>" class="btn btn-info btn-xs">Reserve</a>
+            <?php if ($itemLeft > 0) { ?>
             <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item['info']['item_id']; ?>">Rent</button>
+            <?php } ?>
             <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item['info']['item_id']; ?>" data-interest-name="<?php echo $item['info']['item_desc']; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
             <input type="hidden" value="<?php echo $item['info']['item_qty']; ?>" class="item-qty">
             <input type="hidden" value="<?php echo $item['info']['item_rate']; ?>" class="item-rate">
