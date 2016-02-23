@@ -342,8 +342,10 @@ class Item extends CI_Model{
 	// MAPPING
 	public function processItem($obj) {
     if (is_array($obj)) {
-      $obj = json_decode(json_encode($obj), FALSE);
+      $obj = (object)$obj;
     }
+		$this->load->model('Reservation');
+		$rentedQty = $this->Reservation->countRentedItem($obj->item_id);
     $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
     $this->load->library('RentalModes');
     
@@ -360,14 +362,15 @@ class Item extends CI_Model{
       $this->shopId => $obj->shop_id,
       $this->subscriberId => $obj->subscriber_id,
       $this->name => $obj->item_name,
-      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode)
+      'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode),
+      'rented_qty' => $rentedQty['rented']
     );
   }
 
   public function mapItemsWithCategory($data) {
     $this->load->model('ItemCategory');
     return array(
-      'info' => $data,
+      'info' => $this->processItem($data), //$data,
       'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
     );
   }
