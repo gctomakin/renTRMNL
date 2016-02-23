@@ -323,7 +323,7 @@ class Lessors extends CI_Controller {
     $data = $this->_commonListAsset();
     $data['title'] = "Approved Reservations";
     $lessorId = $this->session->userdata('lessor_id');
-    $content['reservations'] = $this->Subscriber->findReservation($lessorId, array('approve', 'rent'), "r.*, l.*, rs.*, r.status as 'rent_status'");
+    $content['reservations'] = $this->Subscriber->findReservation($lessorId, array('approve', 'rent', 'return'), "r.*, l.*, rs.*, r.status as 'rent_status'");
     $data['content'] = $this->load->view('pages/lessor/reservations/approve', $content, TRUE);
     $data['script'][] = 'pages/lessor/reservations/list';
 
