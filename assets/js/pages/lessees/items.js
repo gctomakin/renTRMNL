@@ -55,32 +55,39 @@ $(document).ready(function(){
 
   $('.btn-rent').click(function() {
     var message = '';
-    var qty = parseFloat($(this).siblings('.item-qty').val());
-    var desc = $(this).siblings('.item-desc').val();
-    var name = $(this).siblings('.item-name').val();
+    var button = $(this);
     itemId = $(this).data('item-id');
-    itemRate = parseFloat($(this).siblings('.item-rate').val());
-    qtyRent = parseFloat(prompt('How many items you want to rent?', qty));
-    rentalMode = $(this).siblings('.item-mode').val();
-    subscriber = $(this).siblings('.subscriber').val();
-    if (isNaN(qtyRent)) {
-      message = 'Quantity is not numeric';
-    } else if (qtyRent <= 0) {
-      message = 'Quantity must exceeds 0';
-    } else if (qtyRent > qty) {
-      message = 'Quantity must not exceeds ' + qty;
-    }
+    $.post(checkItemRentedUrl, {itemId: itemId}, function(data) {
+      if (data['result'] && data['available']) {
+        var qty = parseFloat(button.siblings('.item-qty').val());
+        var desc = button.siblings('.item-desc').val();
+        var name = button.siblings('.item-name').val();
+        itemRate = parseFloat(button.siblings('.item-rate').val());
+        qtyRent = parseFloat(prompt('How many items you want to rent?', qty));
+        rentalMode = button.siblings('.item-mode').val();
+        subscriber = button.siblings('.subscriber').val();
+        if (isNaN(qtyRent)) {
+          message = 'Quantity is not numeric';
+        } else if (qtyRent <= 0) {
+          message = 'Quantity must exceeds 0';
+        } else if (qtyRent > qty) {
+          message = 'Quantity must not exceeds ' + qty;
+        }
 
-    if (message != '') {
-      errorMessage(message);
-      itemId = 0;
-      qtyRent = 0; 
-    } else {
-      computeRentTotal();
-      $('#confirm-item-desc').text(name + ' - ' + desc);
-      $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
-      $('#reservation-modal').modal('show');
-    }
+        if (message != '') {
+          errorMessage(message);
+          itemId = 0;
+          qtyRent = 0; 
+        } else {
+          computeRentTotal();
+          $('#confirm-item-desc').text(name + ' - ' + desc);
+          $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
+          $('#reservation-modal').modal('show');
+        }
+      } else {
+        errorMessage(data['message']);
+      }
+    }, 'JSON');
   });
   
   function computeRentTotal() {
