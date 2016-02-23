@@ -56,7 +56,7 @@
             <button class="btn btn-success btn-xs btn-rent" data-item-id="<?php echo $item['info']['item_id']; ?>">Rent</button>
             <?php } ?>
             <a class="btn btn-primary btn-xs my-interest-trigger" data-item-id="<?php echo $item['info']['item_id']; ?>" data-interest-name="<?php echo $item['info']['item_desc']; ?>" href="<?php echo $action; ?>" <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($item['info']['item_id'],$myinterests)) ? 'Added ' : 'My Interest '; ?></span></a>
-            <input type="hidden" value="<?php echo $item['info']['item_qty']; ?>" class="item-qty">
+            <input type="hidden" value="<?php echo $itemLeft; ?>" class="item-qty">
             <input type="hidden" value="<?php echo $item['info']['item_rate']; ?>" class="item-rate">
             <input type="hidden" value="<?php echo $item['info']['item_desc']; ?>" class="item-desc">
             <input type="hidden" value="<?php echo $item['info']['item_name']; ?>" class="item-name">
@@ -129,4 +129,5 @@
   var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'btn-pay'});
   var rentItemUrl = "<?php echo site_url('rental/item'); ?>";
   var reservationUrl = "<?php echo site_url('reservations/save'); ?>";
+  var checkItemRentedUrl = "<?php echo site_url('rental/checkItemRented'); ?>";
 </script>
