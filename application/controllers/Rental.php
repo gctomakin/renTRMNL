@@ -296,6 +296,37 @@ class Rental extends CI_Controller {
     echo json_encode($res);
   }
 
+
+  public function checkItemRented() {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+    if (empty($post['itemId']) && !is_numeric($post['itemId'])) {
+      $res['message'] = 'Invalid Parameter';
+    } else {
+      $this->load->model('Reservation');
+      $this->load->model('Item');
+      $item = $this->Item->findById($post['itemId']);
+      if (empty($item)) {
+        $res['message'] = 'Item not exist';
+      } else {
+        $date = empty($post['dateFrom']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', strtotime($post['dateFrom']));
+        $rentedItem = $this->Reservation->countRentedItem($post['itemId'], $date);
+        if (
+          (!empty($post['itemQty']) && $post['itemQty'] > $rentedItem['rented']) ||
+          ($rentedItem['rented'] >= $item[$this->Item->getQty()])
+        ) {
+          $res['available'] = FALSE;
+          $res['message'] = "Not available yet";
+        } else {
+          $res['available'] = TRUE;
+        }
+        $res['result'] = TRUE;
+      }
+    }
+    echo json_encode($res);
+  }
+
   // PRIVATE METHODS
   
   private function _addToResBalance($resId, $payment) {
