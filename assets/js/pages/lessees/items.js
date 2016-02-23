@@ -57,6 +57,7 @@ $(document).ready(function(){
     var message = '';
     var qty = parseFloat($(this).siblings('.item-qty').val());
     var desc = $(this).siblings('.item-desc').val();
+    var name = $(this).siblings('.item-name').val();
     itemId = $(this).data('item-id');
     itemRate = parseFloat($(this).siblings('.item-rate').val());
     qtyRent = parseFloat(prompt('How many items you want to rent?', qty));
@@ -76,7 +77,7 @@ $(document).ready(function(){
       qtyRent = 0; 
     } else {
       computeRentTotal();
-      $('#confirm-item-desc').text(desc);
+      $('#confirm-item-desc').text(name + ' - ' + desc);
       $('#confirm-item-details').text(qtyRent + 'pcs x ₱ ' + rentAmount + ' = ₱ ' + formatNumber(rentTotal));
       $('#reservation-modal').modal('show');
     }
@@ -109,6 +110,7 @@ $(document).ready(function(){
     // Check for item and rented qty
     var detail = [];
     var endDate = $('#end-date').val();
+    var rentType = $('.rentType:checked').val();
     if (itemId != 0 && qtyRent != 0) {
       detail.push({amount : rentAmount, id: itemId, qty: qtyRent});
       var forRent = {
@@ -123,7 +125,7 @@ $(document).ready(function(){
       $.post(reservationUrl, forRent, function(data) {
         // successMessage('Your rental needs to be confirm by the lessor');
         if (data['result']) {
-          proceedPay(forRent, 'half');
+          proceedPay(forRent, rentType);
           $('#reservation-modal').modal('hide');
         } else {
           errorMessage(data['message']);
@@ -153,6 +155,6 @@ function proceedPay(reservation, type) {
 }
 function closePaypal()  {
   dgFlow.closeFlow();
-  // top.close();
+  top.close();
   location.reload();
 }
