@@ -101,6 +101,25 @@ class Reservation extends CI_Model{
 		return $query->row_array();
 	}
 
+	public function findItemPenaltyById($id) {
+		$joinDetail = $this->_joinReservationDetail();
+		$joinItem = $this->_joinItem();
+
+		$select = $this->rAlias . ".*, ";
+		$select .= "(SELECT SUM({$this->iAlias}.{$this->Item->getPenalty()}) ";
+		$select .= "from {$joinDetail['table']} JOIN {$joinItem['table']} ";
+		$select .= "ON {$joinItem['on']} WHERE {$joinDetail['on']}";
+		$select .= ") as total_penalty";
+
+		$query = $this->db
+			->select($select)
+			->from($this->table . ' as ' . $this->rAlias)
+			->where(array("{$this->rAlias}.{$this->id}" => $id))
+			->get();
+
+		return $query->row_array();
+	}
+
 	public function findBySubscriberId($id, $status = "") {
 		$where = array($this->subscriberId => $id);
 		if (!empty($status)) {
