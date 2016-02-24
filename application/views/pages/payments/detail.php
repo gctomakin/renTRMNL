@@ -37,7 +37,7 @@
 				var id = $(this).siblings('.pay-id').val();
 				proccessAction(cancelUrl, {id: id}).then(function() {
 					$('[data-pay-id="'+id+'"]').find('.status').text('cancel');
-					$('.btn-payment-detail').hide();
+					$('[data-pay-id="'+id+'"]').find('.btn-payment-detail').hide();
 				});
 			}
 		});
@@ -46,7 +46,7 @@
 				var id = $(this).siblings('.pay-id').val();
 				proccessAction(receiveUrl, {id: id}).then(function() {
 					$('[data-pay-id="'+id+'"]').find('.status').text('receive');
-					$('.btn-payment-detail').hide();
+					$('[data-pay-id="'+id+'"]').find('.btn-payment-detail').hide();
 				});
 			}
 		});
