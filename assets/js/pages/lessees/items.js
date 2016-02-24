@@ -161,7 +161,7 @@ function proceedPay(reservation, type) {
   }, 'JSON');
 }
 function closePaypal()  {
-  //dgFlow.closeFlow();
-  //top.close();
+  dgFlow.closeFlow();
+  // top.close();
   location.reload();
 }
