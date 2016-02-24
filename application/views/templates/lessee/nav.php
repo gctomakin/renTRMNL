@@ -144,7 +144,7 @@
         <!-- /.dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="top-notification">
-                <i class="fa fa-bell fa-fw"></i><span class="badge nav-badge">0</span>  <i class="fa fa-caret-down"></i>
+                <i class="fa fa-bell fa-fw"></i><span class="badge nav-badge" style="display: none;">0</span>  <i class="fa fa-caret-down"></i>
             </a>
             <ul id="top-notification-list" class="dropdown-menu dropdown-alerts">
                 
