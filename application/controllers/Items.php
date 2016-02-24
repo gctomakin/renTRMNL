@@ -156,7 +156,9 @@ class Items extends CI_Controller {
 			} else {
 				$res['message'] = 'Here are the items';
 				$res['result'] = TRUE;
-				$res['items'] = array_map(array($this, '_processItem'), $shopItems);
+				$time = date('H:i:s');
+				$this->Item->setStartDate($post['start'] . " $time");
+				$res['items'] = array_map(array($this->Item, 'processItem'), $shopItems);
 			}
 		}
 		echo json_encode($res);
@@ -201,7 +203,7 @@ class Items extends CI_Controller {
 			} else {
 				$res['message'] = 'Here are the items';
 				$res['result'] = TRUE;
-				$res['items'] = array_map(array($this, '_processItem'), $items);
+				$res['items'] = array_map(array($this->Item, 'processItem'), $items);
 			}
 		}
 		echo json_encode($res);
