@@ -85,15 +85,21 @@ class Rental extends CI_Controller {
     $paypalCol = $this->Subscriber->getPaypal();
     
     $item = $this->Item->findById($post['details'][0]['id']);
-   
+    $available = $this->_checkItemAvailable(
+      $post['details'][0]['id'],
+      $post['details'][0]['qty'],
+      date('Y-m-d H:i:s'),
+      $post['to']
+    );
     $subscriber = $this->Subscriber->findId(
       $item['subscriber_id'], array($paypalCol)
     );
-    
     $email = $subscriber[$paypalCol];
 
     if (empty($email)) {
       $res['message'] = 'Lessor does not have paypal account, please contact him for reservation';
+    } else if ($available['available'] == FALSE) {
+      $res['message'] = $available['message'];
     } else {
       $details = array( 0 => (object)array(
           'item_desc' => $item['item_desc'],
@@ -304,31 +310,40 @@ class Rental extends CI_Controller {
     if (empty($post['itemId']) && !is_numeric($post['itemId'])) {
       $res['message'] = 'Invalid Parameter';
     } else {
-      $this->load->model('Reservation');
-      $this->load->model('Item');
-      $item = $this->Item->findById($post['itemId']);
-      if (empty($item)) {
-        $res['message'] = 'Item not exist';
-      } else {
-        $date = empty($post['dateFrom']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', strtotime($post['dateFrom']));
-        $rentedItem = $this->Reservation->countRentedItem($post['itemId'], $date);
-        if (
-          (!empty($post['itemQty']) && $post['itemQty'] > $rentedItem['rented']) ||
-          ($rentedItem['rented'] >= $item[$this->Item->getQty()])
-        ) {
-          $res['available'] = FALSE;
-          $res['message'] = "Not available yet";
-        } else {
-          $res['available'] = TRUE;
-        }
-        $res['result'] = TRUE;
-      }
+      $date = empty($post['dateFrom']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', strtotime($post['dateFrom']));
+      $itemQty = empty($post['itemQty']) ? '' : $post['itemQty'];
+      $res = $this->_checkItemAvailable($post['itemId'], $itemQty, $date);
     }
     echo json_encode($res);
   }
 
   // PRIVATE METHODS
-  
+  private function _checkItemAvailable($itemId, $itemQty = "", $from = "", $to = "") {
+    $this->load->model('Reservation');
+    $this->load->model('Item');
+    $item = $this->Item->findById($itemId);
+    $res['result'] = FALSE;
+    $res['available'] = FALSE;
+    if (empty($item)) {
+      $res['message'] = 'Item not exist';
+    } else {
+      $rentedItem = $this->Reservation->countRentedItem($itemId, $from, $to);
+      if (
+        (!empty($rentedItem['rented'])) && (
+          (!empty($itemQty) && $itemQty > $rentedItem['rented']) ||
+          ($rentedItem['rented'] >= $item[$this->Item->getQty()])
+        )
+      ) {
+        $res['message'] = "Not available yet"; 
+        //. $rentedItem['rented'] . '-' . $item[$this->Item->getQty()] . '@' . $itemQty;
+      } else {
+        $res['available'] = TRUE;
+      }
+      $res['result'] = TRUE;
+    }
+    return $res;
+  }
+
   private function _addToResBalance($resId, $payment) {
     $this->load->model('Reservation');
           
