@@ -122,7 +122,7 @@ class Rental extends CI_Controller {
       );
       $data = array(
         'to' => $post['to'],
-        'total' => $post['total'],
+        'total' => $total,
         'details' => $post['details'],
         'subscriber' => $post['subscriber'],
         'status' => $post['status']
