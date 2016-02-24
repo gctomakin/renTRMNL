@@ -84,16 +84,13 @@ class Reservations extends CI_Controller {
           $itemReserved[] = "Item # " . $detail['id'];
         }
         if (empty($error)) {
-          $this->load->library('MyPusher');
-          $notification = array(
-            'usertype' => 'lessor',
-            'date' => date('Y/m/d'),
-            'receiver' => $post['subscriber'],
-            'notification' => 'New reservation of your items <br>' . implode(', ', $itemReserved),
-            'sender' => $this->session->userdata('lessee_fname'),
-            'link' => site_url('lessor/reservations/pending')
+          $message = 'New reservation of your items <br>' . implode(', ', $itemReserved);
+          $this->_notification('lessor', 
+            $post['subscriber'],
+            $message,
+            $this->session->userdata('lessee_fname'),
+            site_url('lessor/reservations/pending')
           );
-          $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
           $res['resid'] = $id;
@@ -109,19 +106,55 @@ class Reservations extends CI_Controller {
   }
 
   public function cancel() {
-  	echo $this->_changeStatus('cancel');
+  	$res = $this->_changeStatus('cancel');
+    if ($res['result']) {
+      $this->_notification('lessor',
+        $res['reservation']['subscriber_id'],
+        $res['message'],
+        $this->session->userdata('lessee_fname'),
+        site_url('lessor/reservations/pending')
+      );
+    }
+    echo json_encode($res);
   }
 
   public function approve() {
-    echo $this->_changeStatus('approve');
+    $res = $this->_changeStatus('approve');
+    if ($res['result']) {
+      $this->_notification('lessee',
+        $res['reservation']['lessee_id'],
+        $res['message'],
+        $this->session->userdata('lessor_fullname'),
+        site_url('lessee/reserved')
+      );
+    }
+    echo json_encode($res);
   }
 
   public function disapprove() {
-    echo $this->_changeStatus('disapprove');
+    $res = $this->_changeStatus('disapprove');
+    if ($res['result']) {
+      $this->_notification('lessee',
+        $res['reservation']['lessee_id'],
+        $res['message'],
+        $this->session->userdata('lessor_fullname'),
+        site_url('lessee/reserved')
+      );
+    }
+    echo json_encode($res);
   }
 
   public function returnStatus() {
-    echo $this->_changeStatus('return');
+    $res = $this->_changeStatus('return');
+    if ($res['result']) {
+      $this->_notification('lessor',
+        $res['reservation']['subscriber_id'],
+        $res['message'],
+        $this->session->userdata('lessee_fname'),
+        site_url('lessor/reservations/approve')
+      );
+    }
+    echo json_encode($res);
   }
 
   public function close() {
@@ -146,17 +179,17 @@ class Reservations extends CI_Controller {
     if (empty($post['id']) || !is_numeric($post['id'])) {
       $res['message'] = 'Invalid Parameter';
     } else {
-      $reservation = $this->Reservation->findById($post['id']);
-      if (empty($reservation)) {
+      $res['reservation'] = $this->Reservation->findById($post['id']);
+      if (empty($res['reservation'])) {
         $res['message'] = 'Reservation not found';
       } else {
         if (
           $status == 'cancel' &&
-          $reservation[$this->Reservation->getStatus()] == 'payment pending'
+          $res['reservation'][$this->Reservation->getStatus()] == 'payment pending'
         ) {
           $status = 'payment cancel';
         }
-        if ($status == 'return' && $reservation[$this->Reservation->getTotalBalance()] > 0) {
+        if ($status == 'return' && $res['reservation'][$this->Reservation->getTotalBalance()] > 0) {
           $res['message'] = 'Cannot return this rental if theres balance left';
         } else {
           $this->Reservation->setId($post['id']);
@@ -171,7 +204,7 @@ class Reservations extends CI_Controller {
         }
       }
     }
-    return json_encode($res);
+    return $res;
   }
 
   public function detail() {
@@ -185,12 +218,26 @@ class Reservations extends CI_Controller {
       if (empty($details)) {
         $res['message'] = 'Reservation Detail not found';
       } else {
+        $this->load->model('Item');
         $content['details'] = array_map(array($this, '_processItem'), $details);
         $res['result'] = TRUE;
         $res['view'] = $this->load->view('pages/reservations/detail', $content, TRUE);
       }
     }
     echo json_encode($res);
+  }
+
+  private function _notification($userType, $receiver, $message, $sender, $link) {
+    $this->load->library('MyPusher');
+    $notification = array(
+      'usertype' => $userType,
+      'date' => date('Y/m/d'),
+      'receiver' => $receiver,
+      'notification' => $message,
+      'sender' => $sender,
+      'link' => $link
+    );
+    $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification); 
   }
 
   private function _processItem($obj) {
