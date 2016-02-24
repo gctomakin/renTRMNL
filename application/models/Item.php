@@ -22,6 +22,8 @@ class Item extends CI_Model{
 	private $limit = 5;
 	private $offset = 0;
 
+	private $startDate = "";
+
 	// Alias
 	private $itemAlias = 'i';
 	private $shopAlias = 's';
@@ -32,6 +34,7 @@ class Item extends CI_Model{
 
 	public function __construct() {
 		parent::__construct();
+		$this->startDate = date('Y-m-d H:i:s');
 	}
 
 	public function create($data) {
@@ -307,6 +310,10 @@ class Item extends CI_Model{
 		$this->limit = $limit;
 	}
 
+	public function setStartDate($date) {
+		$this->startDate = date('Y-m-d H:i:s', strtotime($date));
+	}
+
 	public function clearCache() {
 		$this->db->cache_delete('lessor','items');
 		$this->db->cache_delete('lessee','items');
@@ -345,7 +352,7 @@ class Item extends CI_Model{
       $obj = (object)$obj;
     }
 		$this->load->model('Reservation');
-		$rentedQty = $this->Reservation->countRentedItem($obj->item_id);
+		$rentedQty = $this->Reservation->countRentedItem($obj->item_id, $this->startDate);
     $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
     $this->load->library('RentalModes');
     
@@ -363,7 +370,9 @@ class Item extends CI_Model{
       $this->subscriberId => $obj->subscriber_id,
       $this->name => $obj->item_name,
       'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode),
-      'rented_qty' => $rentedQty['rented']
+      'rented_qty' => $rentedQty['rented'],
+      'item_qty_left' => $obj->item_qty - $rentedQty['rented'],
+      'startDate' => $this->startDate
     );
   }
 
