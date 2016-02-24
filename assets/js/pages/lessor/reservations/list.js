@@ -18,7 +18,7 @@ $('.btn-approve').on('click', function() {
 	var id = $(this).data('rev-id');
 	if (confirm('Are you sure to approve this reservation?')) {
 		proccessAction(approveUrl, {id:id}).then(function(status) {
-			$('[data-reservation="'+ id +'"]').find('.status').text('approve');
+			$('[data-reservation="'+ id +'"]').fadeOut('fast');
 		});
 	}
 });
@@ -27,7 +27,7 @@ $('.btn-disapprove').on('click', function() {
 	var id = $(this).data('rev-id');
 	if (confirm('Are you sure to disapprove this reservation?')) {
 		proccessAction(disapproveUrl, {id:id}).then(function(status) {
-			$('[data-reservation="'+ id +'"]').find('.status').text('disapprove');
+			$('[data-reservation="'+ id +'"]').fadeOut('fast');
 		});
 	}
 });
