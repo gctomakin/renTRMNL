@@ -168,7 +168,8 @@ class Reservations extends CI_Controller {
         )
       );
     } else {
-      echo $this->_changeStatus('close');
+      $res = $this->_changeStatus('close');
+      echo json_encode($res);
     }
   }
 
