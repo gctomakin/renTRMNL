@@ -19,27 +19,26 @@ $(document).ready(function() {
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {
 		var d = moment(endDate).diff(startDate, 'days');
 		daysDiff = d;
+			// console.log(formItems);
 		processItem().then(function() {
 			$('#item-detail-table > tbody').html("");
 			var message = "";
 			var formItemsTemp = formItems;
 			formItems = [];
-			for (key in formItemsTemp) {
-				var theItem = findItem(formItemsTemp[key]['id']);
-				// console.log(theItem);
+			for (keyTemp in formItemsTemp) {
+				var theItem = findItem(formItemsTemp[keyTemp]['id']);
 				if (theItem['item_qty_left'] == 0) {
 					message += theItem['item_name'] + ", ";
 				} else {
-					formItemsTemp[key]['qty'] = (formItemsTemp[key]['qty'] <= theItem['item_qty_left']) ? formItemsTemp[key]['qty'] : theItem['item_qty_left'];  
-					var amount = (daysDiff / formItemsTemp[key]['rental_mode']) * formItemsTemp[key]['rate'];
+					formItemsTemp[keyTemp]['qty'] = (formItemsTemp[keyTemp]['qty'] <= theItem['item_qty_left']) ? formItemsTemp[keyTemp]['qty'] : theItem['item_qty_left'];  
+					var amount = (daysDiff / formItemsTemp[keyTemp]['rental_mode']) * formItemsTemp[keyTemp]['rate'];
 					amount = Math.ceil(amount * 10) / 10;
-					var total = amount * formItemsTemp[key]['qty'];
-					formItemsTemp[key]['total'] = total;
-					formItemsTemp[key]['total_format'] = formatNumber(total); 
-					formItemsTemp[key]['amount'] = formatNumber(amount); 
-					// console.log(formItemsTemp[key]);
-					$('#item-detail-table > tbody').append(itemDetailTemplate(formItemsTemp[key]));	
-					formItems.push(formItemsTemp[key]);
+					var total = amount * formItemsTemp[keyTemp]['qty'];
+					formItemsTemp[keyTemp]['total'] = total;
+					formItemsTemp[keyTemp]['total_format'] = formatNumber(total); 
+					formItemsTemp[keyTemp]['amount'] = formatNumber(amount); 
+					$('#item-detail-table > tbody').append(itemDetailTemplate(formItemsTemp[keyTemp]));	
+					formItems.push(formItemsTemp[keyTemp]);
 				}
 			}
 			if (message != "") {
