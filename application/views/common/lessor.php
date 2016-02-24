@@ -20,7 +20,8 @@ $mainStyle = empty($style) ? array() : $style;
 $pageStyle = array(
 	'new-bootstrap.min',
 	'metisMenu.min',
-	'sb-admin-2'
+	'sb-admin-2',
+	'navs'
 );
 
 // Merging
