@@ -41,6 +41,20 @@ class Reservations extends CI_Controller {
   public function save() {
     $res = $this->_validate();
     $post = $this->input->post();
+    // TESTING
+    // $this->load->library('MyPusher');
+    // $notification = array(
+    //   'usertype' => 'lessor',
+    //   'date' => date('Y/m/d'),
+    //   'receiver' => $post['subscriber'],
+    //   'notification' => 'New reservation of your item : ', //. implode(', ', $itemReserved),
+    //   'sender' => $this->session->userdata('lessee_fname'),
+    //   'link' => site_url('lessor/reservations/pending')
+    // );
+    // $this->mypusher->Message('reservation-channel', 'reservation-event', $notification);
+    // $res['message'] = "DONE";
+    // echo json_encode($res);
+    // exit();
   	if ($res['result'] && empty($post['forRent'])) { 
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
       $from = empty($post['from']) ? date('Y-m-d H:i:s') : $post['from'];
@@ -58,6 +72,7 @@ class Reservations extends CI_Controller {
 			$res['result'] = FALSE;
 			if ($id > 0) {
         $error = array();
+        $itemReserved = array();
         foreach ($post['details'] as $detail) {
           $this->ReservationDetail->setRentalAmt($detail['amount']);
           $this->ReservationDetail->setQty($detail['qty']);
@@ -65,9 +80,20 @@ class Reservations extends CI_Controller {
           $this->ReservationDetail->setReserveId($id);
           if ($this->ReservationDetail->create() <= 0) {
            $error[] = 'Error on item # ' . $detail['id'];
-          } 
+          }
+          $itemReserved[] = "Item # " . $detail['id'];
         }
         if (empty($error)) {
+          $this->load->library('MyPusher');
+          $notification = array(
+            'usertype' => 'lessor',
+            'date' => date('Y/m/d'),
+            'receiver' => $post['subscriber'],
+            'notification' => 'New reservation of your items <br>' . implode(', ', $itemReserved),
+            'sender' => $this->session->userdata('lessee_fname'),
+            'link' => site_url('lessor/reservations/pending')
+          );
+          $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
           $res['resid'] = $id;
