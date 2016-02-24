@@ -4,24 +4,30 @@ var endDate;
 $(document).ready(function() {
 	// SET UP DATE
 	startDate = moment().format('YYYY-MM-DD');
-  endDate = moment().format('YYYY-MM-DD');
+  endDate = moment().add(1, 'days').format('YYYY-MM-DD');
   
 	var cb = function (start, end, label) {
     //console.log(start.toISOString(), end.toISOString(), label);
+    if (end.format('MMMM D, YYYY') == start.format('MMMM D, YYYY')) {
+      end.add(1, 'days');
+      // picker.endDate.add(1, 'days');
+      //endDate.add(1, 'days');
+      errorMessage('End date must be greater than Start date');
+    }
     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
   }
   console.log($('#min-date').val());
   var optionSet1 = {
     startDate: moment(),
-    endDate: moment(),
+    endDate: moment().add(1, 'days'),
     minDate: $('#min-date').val(),
     showDropdowns: true,
     showWeekNumbers: true,
     timePicker: false,
     timePickerIncrement: 1,
     timePicker12Hour: true,
-    ranges: { 'Tomorow': [moment().add(1, 'days'), moment().add(1, 'days')] },
+    ranges: { 'Tomorow': [moment().add(1, 'days'), moment().add(2, 'days')] },
     opens: 'left',
     buttonClasses: ['btn btn-default'],
     applyClass: 'btn-small btn-primary',
@@ -39,7 +45,7 @@ $(document).ready(function() {
       firstDay: 1
     }
 	};
-	$('#reportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+	$('#reportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().add(1, 'days').format('MMMM D, YYYY'));
   $('#reportrange').daterangepicker(optionSet1, cb);
   $('#reportrange').on('show.daterangepicker', function () {
     console.log("show event fired");
