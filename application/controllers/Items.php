@@ -158,6 +158,7 @@ class Items extends CI_Controller {
 				$res['result'] = TRUE;
 				$time = date('H:i:s');
 				$this->Item->setStartDate($post['start'] . " $time");
+				$this->Item->setEndDate($post['to'] . " $time");
 				$res['items'] = array_map(array($this->Item, 'processItem'), $shopItems);
 			}
 		}
