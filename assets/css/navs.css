@@ -44,3 +44,16 @@
 .navbar-lessee .navbar-brand {
 	color: #fff;
 }
+
+/* LESSOR NAVBAR */
+.navbar-lessor .navbar-top-links a {
+	color: #555;
+}
+
+.navbar-lessor .navbar-top-links a.dropdown-toggle:hover {
+	color: #444;
+}
+
+.navbar-lessor .navbar-top-links .dropdown-menu li a:hover span {
+	color: #eee!important;
+}
