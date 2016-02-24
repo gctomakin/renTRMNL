@@ -9,29 +9,44 @@ $(document).ready(function() {
 	// Getting mode
 	$.post(modeUrl, {}, function(data) {
 		modes = data;
+		processItem().then(function() {
+			addDetail($('#item-id').val());
+		});
 	}, 'JSON');
 
 	var itemsTemplate = _.template($('#item-list-template').html());
-	processItem().then(function() {
-		addDetail($('#item-id').val());
-	});
 
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {
 		var d = moment(endDate).diff(startDate, 'days');
-		daysDiff = d + 1;
-		processItem();
-		$('#item-detail-table > tbody').html("");
-		for (key in formItems) {
-			var amount = (daysDiff / formItems[key]['rental_mode']) * formItems[key]['rate'];
-			amount = Math.ceil(amount * 10) / 10;
-			var total = amount * formItems[key]['qty'];
-			formItems[key]['total'] = total;
-			formItems[key]['total_format'] = formatNumber(total); 
-			formItems[key]['amount'] = formatNumber(amount); 
-			console.log(formItems[key]);
-			$('#item-detail-table > tbody').append(itemDetailTemplate(formItems[key]));	
-		}
-		computeTotal();
+		daysDiff = d;
+		processItem().then(function() {
+			$('#item-detail-table > tbody').html("");
+			var message = "";
+			var formItemsTemp = formItems;
+			formItems = [];
+			for (key in formItemsTemp) {
+				var theItem = findItem(formItemsTemp[key]['id']);
+				// console.log(theItem);
+				if (theItem['item_qty_left'] == 0) {
+					message += theItem['item_name'] + ", ";
+				} else {
+					formItemsTemp[key]['qty'] = (formItemsTemp[key]['qty'] <= theItem['item_qty_left']) ? formItemsTemp[key]['qty'] : theItem['item_qty_left'];  
+					var amount = (daysDiff / formItemsTemp[key]['rental_mode']) * formItemsTemp[key]['rate'];
+					amount = Math.ceil(amount * 10) / 10;
+					var total = amount * formItemsTemp[key]['qty'];
+					formItemsTemp[key]['total'] = total;
+					formItemsTemp[key]['total_format'] = formatNumber(total); 
+					formItemsTemp[key]['amount'] = formatNumber(amount); 
+					// console.log(formItemsTemp[key]);
+					$('#item-detail-table > tbody').append(itemDetailTemplate(formItemsTemp[key]));	
+					formItems.push(formItemsTemp[key]);
+				}
+			}
+			if (message != "") {
+				errorMessage('Item ' + message + 'has been remove to details due to unavailable quantity');
+			}
+			computeTotal();
+		});
   });
 
 	$('#reservation-form').submit(function(e) {
@@ -92,6 +107,7 @@ $(document).ready(function() {
 			process = getShopItems($('#shop-id').val(), startDate, endDate);
 		}
 		process.then(function(data) {
+			// console.log(items);
 			var itemData = {listItems: items};
 			$('#item-list').html("");
 			$('#item-list').append(itemsTemplate(itemData));
@@ -139,6 +155,8 @@ function addDetail(id) {
 		errorMessage('Item Not Found');
 	} else if (isExistFormItem(id)) {
 		errorMessage('Item already exist in detail');
+	} else if (item['item_qty_left'] <= 0) {
+		errorMessage('No more quantity left for this Item, change date for reservation');
 	} else {
 		// console.log(item['item_rental_mode']);
 		var amount = ((daysDiff / parseFloat(item['item_rental_mode'])) * parseFloat(item['item_rate']));
