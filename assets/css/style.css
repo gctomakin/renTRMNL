@@ -177,7 +177,8 @@
 /* .modal-fullscreen */
 
 .modal-fullscreen {
-  background: transparent;
+  /*background: transparent;*/
+  background: #fff;
 }
 .modal-fullscreen .modal-content {
   background: transparent;
@@ -232,4 +233,16 @@
 
 .table-small {
   font-size: 1rem;
+}
+
+.nav-badge {
+  padding: 2px 5px!important;
+  font-size: 1rem!important;
+  left: 0px;
+  right:5px;
+  margin: 0 auto;
+  position: absolute;
+  width: 20px;
+  bottom: 5px;
+  display: none;
 }
