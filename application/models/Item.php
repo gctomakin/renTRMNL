@@ -23,6 +23,7 @@ class Item extends CI_Model{
 	private $offset = 0;
 
 	private $startDate = "";
+	private $endDate = "";
 
 	// Alias
 	private $itemAlias = 'i';
@@ -35,6 +36,7 @@ class Item extends CI_Model{
 	public function __construct() {
 		parent::__construct();
 		$this->startDate = date('Y-m-d H:i:s');
+		// $this->endDate = date('Y-m-d H:i:s');
 	}
 
 	public function create($data) {
@@ -314,6 +316,10 @@ class Item extends CI_Model{
 		$this->startDate = date('Y-m-d H:i:s', strtotime($date));
 	}
 
+	public function setEndDate($date) {
+		$this->endDate = date('Y-m-d H:i:s', strtotime($date));
+	}
+
 	public function clearCache() {
 		$this->db->cache_delete('lessor','items');
 		$this->db->cache_delete('lessee','items');
@@ -352,7 +358,7 @@ class Item extends CI_Model{
       $obj = (object)$obj;
     }
 		$this->load->model('Reservation');
-		$rentedQty = $this->Reservation->countRentedItem($obj->item_id, $this->startDate);
+		$rentedQty = $this->Reservation->countRentedItem($obj->item_id, $this->startDate, $this->endDate);
     $img = $obj->item_pic == NULL ? 'http://placehold.it/250x150' : 'data:image/jpeg;base64,' . base64_encode($obj->item_pic);
     $this->load->library('RentalModes');
     
