@@ -91,7 +91,7 @@
           <p id="confirm-item-details"></p>  
           <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
           <label for="end-date">Rent Until</label>
-          <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d'); ?>">
+          <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d', strtotime('+1 days')); ?>">
           <input type="hidden" id="startDate" value="<?php echo date('Y-m-d'); ?>">
         </div>
       </div>
