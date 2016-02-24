@@ -37,15 +37,28 @@
 
 </head>
 <body <?php echo empty($bodyId) ? '' : "id='$bodyId'" ; ?> >
-<?php if($this->session->has_userdata('lessee_id')):?>
-<input type="hidden" id="sessionId" value="<?php echo $this->session->has_userdata('lessee_id'); ?>"/>
-<input type="hidden" id="userType" value="lessee"/>
-<?php elseif($this->session->has_userdata('lessor_id')):?>
-<input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('lessor_id'); ?>"/>
-<input type="hidden" id="userType" value="lessor"/>
-<?php endif; ?>
+  <?php if($this->session->has_userdata('lessee_id')):?>
+  <input type="hidden" id="sessionId" value="<?php echo $this->session->has_userdata('lessee_id'); ?>"/>
+  <input type="hidden" id="userType" value="lessee"/>
+  <?php elseif($this->session->has_userdata('lessor_id')):?>
+  <input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('lessor_id'); ?>"/>
+  <input type="hidden" id="userType" value="lessor"/>
+  <?php endif; ?>
 	<?php echo empty($content) ? '' : $content; ?>
 
+  <!-- COMMON TEMPLATE -->
+  <script type="text/template" id="top-notify-template">
+    <li>
+      <a href="<%= link %>">
+        <div>
+          <i class="fa fa-exclamation fa-fw"></i> <%= notification %> 
+          <br><small> from - <%= sender %></small>
+          <span class="pull-right text-muted small"><%= date %></span>
+        </div>
+      </a>
+    </li>
+    <li class="divider"></li>
+  </script>
 
 	<!-- DEFAULT SCRIPTS -->
   <!-- Bootstrap Core JavaScript -->
