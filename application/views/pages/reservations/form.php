@@ -127,7 +127,7 @@
 	  		<h4><%-listItem.item_desc%></h4>
 	  		<dl>
 	        <dt>₱ <%-listItem.item_rate%> / <%-listItem.mode_label%></dt>
-	        <dt><%-listItem.item_qty%> pcs</dt>
+	        <dt><%-listItem.item_qty_left%> pcs</dt>
 	      </dl>
 	  	</div>
 	  	<div class="menu">
