@@ -223,14 +223,19 @@ class Reservation extends CI_Model{
 		return $result['total'];
 	}
 
-	public function countRentedItem($itemId, $date = "") {
+	public function countRentedItem($itemId, $date = "", $endDate = "") {
 		$date = empty($date) ? date('Y-m-d H:i:s') : $date;
 		$joinDetail = $this->_joinReservationDetail();
 		$where = "{$this->rdAlias}.{$this->ReservationDetail->getItemId()} = $itemId AND "; 
 		$where .= "({$this->rAlias}.{$this->status} = 'approve' OR "; 
 		$where .= "{$this->rAlias}.{$this->status} = 'rent') AND "; 
-		$where .= "('$date' BETWEEN {$this->rAlias}.{$this->dateRented} AND ";
+		$where .= "(('$date' BETWEEN {$this->rAlias}.{$this->dateRented} AND ";
 		$where .= "{$this->rAlias}.{$this->dateReturned})";
+		if (!empty($endDate)) {
+			$where .= " OR ('$endDate' BETWEEN {$this->rAlias}.{$this->dateRented} AND ";
+			$where .= "{$this->rAlias}.{$this->dateReturned})";
+		}
+		$where .=")";
 		$query = $this->db
 			->select("SUM({$this->rdAlias}.{$this->ReservationDetail->getQty()}) as rented")
 			->from($this->table . " as {$this->rAlias}")
