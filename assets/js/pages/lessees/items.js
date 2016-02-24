@@ -145,7 +145,7 @@ $(document).ready(function(){
 });
 
 function proceedPay(reservation, type) {
-  successMessage('Please wait while connecting to paypal');
+  successMessage('Please wait processing transaction');
   reservation.type = type;
   $.post(rentItemUrl, reservation, function(data) {
     if (data['result']) {
