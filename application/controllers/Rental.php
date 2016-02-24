@@ -223,6 +223,18 @@ class Rental extends CI_Controller {
         $this->RentalPayment->setStatus('pending');
         if ($this->RentalPayment->create() > 0) {
           $content['message'] = 'Please wait.. while reservation payment for rental is on process..';
+          $this->load->library('MyPusher');
+          $message = 'Rental Payment for Reservation # '. $paypal['reservation_id'];
+          $message .= ' <br> <b>' . $paypal['reservation_type'] . ' Payment</b>';
+          $notification = array(
+            'usertype' => 'lessor',
+            'date' => date('Y/m/d'),
+            'receiver' => $reservation[$this->Reservation->getSubscriberId()],
+            'notification' => $message,
+            'sender' => $this->session->userdata('lessee_fname'),
+            'link' => site_url('lessor/payments/pending')
+          );
+          $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
         } else {
           $content['message'] = 'Internal Server Error: Reservation Payment';
         } 
