@@ -128,7 +128,7 @@ $(document).ready(function(){
         status: 'rent',
         forRent: true
       };
-      // proceedPay(detail, 'half');
+      console.log(forRent);
       $.post(reservationUrl, forRent, function(data) {
         // successMessage('Your rental needs to be confirm by the lessor');
         if (data['result']) {
@@ -162,6 +162,6 @@ function proceedPay(reservation, type) {
 }
 function closePaypal()  {
   dgFlow.closeFlow();
-  // top.close();
+  top.close();
   location.reload();
 }
