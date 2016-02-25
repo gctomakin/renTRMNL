@@ -115,7 +115,7 @@
                 <hr class="light">
                 <?php if($this->session->flashdata('error')) { echo '<div class="alert alert-danger">'.$this->session->flashdata('error').'</div>'; }?>
                 <?php if($this->session->flashdata('success')){ echo '<div class="alert alert-success"><strong>Successfully</strong> Signed Up!</div>';} ?>
-                <form method="POST" action="/accounts/signup" id="lessee-form">
+                <form method="POST" action="<?php echo site_url('accounts/signup'); ?>" id="lessee-form">
                   <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" name="username" class="form-control" id="username">
