@@ -102,7 +102,7 @@
     <div class="container text-center">
         <div class="call-to-action">
             <h2>Free Download at renTRMNL!</h2>
-            <a href="#" class="btn btn-default btn-xl wow tada">Download Now!</a>
+            <a href="<?php echo site_url('/rentrmnl/android/download'); ?>" class="btn btn-default btn-xl wow tada">Download Now!</a>
         </div>
     </div>
 </aside>
