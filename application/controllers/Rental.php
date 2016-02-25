@@ -266,9 +266,9 @@ class Rental extends CI_Controller {
       if (empty($payment)) {
         $res['message'] = 'Payment not found';
       } else {
+        $resId = $payment[$this->RentalPayment->getReserveId()];
         if ($status == 'cancel') {
           // UPDATE Reservation return balance from payment
-          $resId = $payment[$this->RentalPayment->getReserveId()];
           $amt = $payment[$this->RentalPayment->getAmount()];
           $res['message'] = $this->_addToResBalance($resId, $amt);       
         }
@@ -279,6 +279,18 @@ class Rental extends CI_Controller {
           if ($this->RentalPayment->update()) {
             $res['result'] = TRUE;
             $res['message'] = 'Payment has been ' . ucfirst($status);
+            $this->load->model('Reservation');
+            $reservation = $this->Reservation->findById($resId);
+            $this->load->library('MyPusher');
+            $notification = array(
+              'usertype' => 'lessee',
+              'date' => date('Y/m/d'),
+              'receiver' => $reservation[$this->Reservation->getLesseeId()],
+              'notification' => "Payment for Reservation # $resId",
+              'sender' => $this->session->userdata('lessor_fullname'),
+              'link' => site_url('lessee/reserved')
+            );
+            $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
           } else {
             $res['message'] = 'Internal Server Error';
           }
@@ -365,6 +377,7 @@ class Rental extends CI_Controller {
     $this->Reservation->setId($resId);
     $this->Reservation->setTotalBalance($balance);
     $this->Reservation->setStatus('approve');
+
     return $this->Reservation->update() ? '' : 'Internal Server Error: Reservation Update';
   }
 
