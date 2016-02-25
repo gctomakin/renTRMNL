@@ -155,7 +155,7 @@
   </div>
   <div class="text-center">
     <hr>
-    <a href="/">Go back to Index</a>
+    <a href="<?php echo site_url('/'); ?>">Go back to Index</a>
   </div>
 </div>
 

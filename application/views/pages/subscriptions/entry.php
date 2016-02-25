@@ -81,7 +81,7 @@
 	</div>
   <div class="text-center">
     <hr>
-    <a href="/logout">Logout</a>
+    <a href="<?php echo site_url('/logout') ?>">Logout</a>
   </div>
 </div>
 
