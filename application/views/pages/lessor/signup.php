@@ -44,7 +44,7 @@
       <h2 class="StepTitle text-center">Step 1 Register Your Account</h2>
       <div class="row-centered">
         <div class="col-md-6 col-centered text-center">
-          <form method="POST" class="form-horizontal" action="/accounts/signup" id="lessor-form">
+          <form method="POST" class="form-horizontal" action="<?php echo site_url('accounts/signup'); ?>" id="lessor-form">
             <div class="form-group">
               <label class="control-label col-md-3" for="username">Username :</label>
               <div class="col-md-8">
