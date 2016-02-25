@@ -128,7 +128,7 @@ class Rental extends CI_Controller {
       );
       $data = array(
         'to' => $post['to'],
-        'total' => $total,
+        'total' => $full,
         'details' => $post['details'],
         'subscriber' => $post['subscriber'],
         'status' => $post['status']
@@ -145,8 +145,6 @@ class Rental extends CI_Controller {
 
   public function returnItemPaypal() {
     $paypal = $this->session->flashdata();
-    // print_r($paypal);
-    // exit();
     if (empty($paypal['is_paypal'])) {
       redirect('lessees');
       exit();
