@@ -66,6 +66,18 @@ top_notify_channel.bind('top-notify-event', function(data) {
   return false;
 });
 
+top_notify_channel.bind('top-notify-all-event', function(data) {
+  if(data.usertype == user_type){
+    var badge = $('#top-notification').find('.nav-badge');
+    var count = badge.text();
+    badge.text(parseFloat(count) + 1);
+    badge.fadeIn('fast');
+    var tmpl = top_template({link:data.link, sender: "System", notification: data.notification, date: data.date});
+    $('#top-notification-list').append(tmpl);
+  }
+  return false;
+})
+
 $('#top-notification').on('click', function() {
   $(this).find('.nav-badge').text(0);
   $(this).find('.nav-badge').fadeOut('fast');
