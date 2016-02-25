@@ -43,6 +43,9 @@
   <?php elseif($this->session->has_userdata('lessor_id')):?>
   <input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('lessor_id'); ?>"/>
   <input type="hidden" id="userType" value="lessor"/>
+  <?php elseif($this->session->has_userdata('admin_id')): ?>
+  <input type="hidden" id="sessionId" value="<?php echo $this->session->userdata('admin_id'); ?>"/>
+  <input type="hidden" id="userType" value="admin"/>
   <?php endif; ?>
 	<?php echo empty($content) ? '' : $content; ?>
 
@@ -59,7 +62,13 @@
     </li>
     <li class="divider"></li>
   </script>
-
+  <script type="text/template" id="notify-template">
+    <a href="#" class="list-group-item notify-msg-show">
+      <i class="fa fa-comment fa-fw"></i> <%= subject %>
+      <span class="pull-right text-muted small"><small><%= date %></small></span>
+    </a>
+    <p class="notify-msg" hidden><%= message %></p>
+  </script>
 	<!-- DEFAULT SCRIPTS -->
   <!-- Bootstrap Core JavaScript -->
   <script src="<?php echo site_url("bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>"></script>
