@@ -288,6 +288,8 @@ class Items extends CI_Controller {
 			$validate = $this->myfile->validateImage(); // Validate Image
 			if (!$validate['result']) {
 				$message = implode(', ', $validate['message']); // Specify Image validate errors
+			} else {
+				$message = '';
 			}
 		}
 		return $message;
