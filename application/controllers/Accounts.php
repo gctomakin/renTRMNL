@@ -101,7 +101,7 @@ class Accounts extends CI_Controller {
 	      		}
 	      		$this->load->library('MyPusher');
 				    $notification = array(
-				      'usertype' => $post['user_type'],
+				      'usertype' => 'admin',
 				      'date' => date('Y/m/d'),
 				      'notification' => "New {$post['user_type']} signup",
 				      'link' => site_url('admin/monitor/' . $post['user_type'])
