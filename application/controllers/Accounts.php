@@ -99,6 +99,14 @@ class Accounts extends CI_Controller {
 	      		if ($post['user_type'] == 'lessor') {
 	      			$this->_signIn($post['username'], $post['password']);
 	      		}
+	      		$this->load->library('MyPusher');
+				    $notification = array(
+				      'usertype' => $post['user_type'],
+				      'date' => date('Y/m/d'),
+				      'notification' => "New {$post['user_type']} signup",
+				      'link' => site_url('admin/monitor/' . $post['user_type'])
+				    );
+				    $this->mypusher->Message('top-notify-channel', 'top-notify-all-event', $notification);
 	      	} else {
 	      		$res['message'] = 'Internal Server Error # 2';		
 	      	}
