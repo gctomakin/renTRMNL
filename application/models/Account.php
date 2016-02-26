@@ -44,6 +44,11 @@ class Account extends CI_Model{
     return $query->row_array();
   }
 
+  public function findByUserId($userId) {
+    $query = $this->db->get_where($this->table, array($this->userId => $userId));
+    return $query->row_array();
+  }
+
   // GETTERS
   public function getId() { return $this->id; }
   public function getUsername() { return $this->username; }

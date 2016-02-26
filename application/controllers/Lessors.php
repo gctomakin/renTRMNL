@@ -479,6 +479,14 @@ class Lessors extends CI_Controller {
             $this->Subscriber->getId() => $lessorId
           );
           if ($this->Subscriber->update($data)) {
+            $this->load->model('Account');
+            $account = $this->Account->findByUserId($lessorId);
+            $accountData = array(
+              $this->Account->getId() => $account[$this->Account->getId()],
+              $this->Account->getUsername() => $post['username'],
+              $this->Account->getPassword() => $data[$this->Subscriber->getPassword()]
+            );
+            $this->Account->update($accountData);
             $res['message'] = 'Account Updated';  
             $res['result'] = TRUE;
           } else {
