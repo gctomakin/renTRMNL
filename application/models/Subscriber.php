@@ -129,6 +129,10 @@ class Subscriber extends CI_Model{
 		return $result['total'];
 	}
 
+	public function countTotal() {
+		return $this->db->from($this->table)->count_all_results();
+	}
+
 	public function findByDate($from, $to = "", $status = "") {
 		$where = array("DATE({$this->date}) >=" => $from);
 		if (!empty($to)) {

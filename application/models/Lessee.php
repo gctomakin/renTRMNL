@@ -369,6 +369,10 @@ class Lessee extends CI_Model
     return $result['total'];
   }
 
+  public function countTotal() {
+    return $this->db->from($this->lessees_table)->count_all_results();
+  }
+
   public function findByDate($from, $to = "", $status = "") {
     $where = array("DATE(date_registered) >=" => $from);
     if (!empty($to)) {

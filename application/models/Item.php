@@ -123,6 +123,10 @@ class Item extends CI_Model{
 		return $query->result();
 	}
 
+	public function countTotal() {
+		return $this->db->from($this->table)->count_all_results();
+	}
+
 	private function _selectItem() {
 		$select = array(
 			$this->id, $this->rate,

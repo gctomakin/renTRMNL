@@ -58,6 +58,14 @@ class RentalShop extends CI_Model{
 		return $this->db->from($this->table)->count_all_results();
 	}
 
+	public function allForMonitor() {
+		$this->load->model('Item');
+		$select = "rs.*, (SELECT count(1) FROM {$this->Item->getTable()} as i ";
+		$select .= "WHERE i.shop_id = rs.shop_id) as total_item";
+		$query = $this->db->select($select)->from($this->table . ' as rs')->get();
+		return $query->result();
+	}
+
 	public function findBySubscriberId($lessorId, $key = "", $order = "ASC") {
 		$where = array($this->subscriberId => $lessorId);
 		$data['count'] = $this->db->from($this->table)->where($where)->like($this->name, $key)->count_all_results();
@@ -155,4 +163,5 @@ class RentalShop extends CI_Model{
     }
     return $data;
   }
+
 }
