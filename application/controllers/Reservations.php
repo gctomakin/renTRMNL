@@ -41,20 +41,6 @@ class Reservations extends CI_Controller {
   public function save() {
     $res = $this->_validate();
     $post = $this->input->post();
-    // TESTING
-    // $this->load->library('MyPusher');
-    // $notification = array(
-    //   'usertype' => 'lessor',
-    //   'date' => date('Y/m/d'),
-    //   'receiver' => $post['subscriber'],
-    //   'notification' => 'New reservation of your item : ', //. implode(', ', $itemReserved),
-    //   'sender' => $this->session->userdata('lessee_fname'),
-    //   'link' => site_url('lessor/reservations/pending')
-    // );
-    // $this->mypusher->Message('reservation-channel', 'reservation-event', $notification);
-    // $res['message'] = "DONE";
-    // echo json_encode($res);
-    // exit();
   	if ($res['result'] && empty($post['forRent'])) { 
   		$this->Reservation->setDate(date('Y-m-d H:i:s'));
       $from = empty($post['from']) ? date('Y-m-d H:i:s') : $post['from'];
@@ -154,7 +140,7 @@ class Reservations extends CI_Controller {
         site_url('lessor/reservations/approve')
       );
       $message = "Reservation / Rental # {$res['reservation']['reserve_id']} is ready for return";
-      $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
+      $res['sms'] = $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
     }
     echo json_encode($res);
   }
