@@ -171,7 +171,9 @@ class Rental extends CI_Controller {
     $content['message'] = "";
     if ($id > 0) {
       $this->load->model('ReservationDetail');
+      $this->load->model('Item');
       $error = array();
+      $itemRented = array();
       foreach ($paypal['reservation']['details'] as $detail) {
         $this->ReservationDetail->setRentalAmt($detail['amount']);
         $this->ReservationDetail->setQty($detail['qty']);
@@ -179,23 +181,30 @@ class Rental extends CI_Controller {
         $this->ReservationDetail->setReserveId($id);
         if ($this->ReservationDetail->create() <= 0) {
          $error[] = 'Error on item # ' . $detail['id'];
-        } 
+        }
+        $item = $this->Item->findById($detail['id'], array($this->Item->getName()));
+        $itemRented[] = $item[$this->Item->getName()];
       }
       if (empty($error)) {
+        $this->load->model('Subscriber');
+        $message = 'Your Item ' . implode(', ', $itemRented) . ' is/are rented.';
+        $this->Subscriber->sendSMSToSubId($paypal['reservation']['subscriber'], $message);
+
         $this->session->set_flashdata('is_paypal', TRUE);
         $this->session->set_flashdata('reservation_id', $id);
         $this->session->set_flashdata('reservation_payment', $paypal['reservation_payment']);
         $this->session->set_flashdata('reservation_type', $paypal['reservation_type']);
         $this->returnPaypal();
-        exit();
       } else {
         $content['message'] = "ERROR ON RESERVATION DETAIL";
       }
     } else {
       $content['message'] = "ERROR ON RESERVATION";
     }
-    $data['content'] = $this->load->view('pages/paypal/return', $content, TRUE);
-    $this->load->view('common/plain', $data);
+    if (!empty($content['message'])) {
+      $data['content'] = $this->load->view('pages/paypal/return', $content, TRUE);
+      $this->load->view('common/plain', $data);
+    }
   }
 
   public function returnPaypal() {
