@@ -77,6 +77,7 @@ $route['admin/reports/users'] = 'admins/reportsUsers';
 $route['admin/monitor/lessee'] = 'admins/monitorLessee';
 $route['admin/monitor/lessor'] = 'admins/monitorLessor';
 $route['admin/monitor/items'] = 'admins/monitorItem';
+$route['admin/monitor/shops'] = 'admins/monitorShops';
 
 
 /** Admin Actions*/
