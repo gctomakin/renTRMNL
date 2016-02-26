@@ -43,7 +43,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="<?php echo site_url("lessee/inbox");?>"><i class="fa fa-inbox fa-fw"></i> Inbox</a>
+                    <a href="<?php echo site_url("lessee/message");?>"><i class="fa fa-inbox fa-fw"></i> Messsage</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample<span class="fa arrow"></span></a>

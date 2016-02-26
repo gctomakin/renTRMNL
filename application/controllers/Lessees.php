@@ -300,13 +300,44 @@ class Lessees extends CI_Controller
     $this->load->view('common/lessee', $data);
   }
 
-  public function inboxPage()
+  public function messagePage()
   {
-      $data['title']      = 'INBOX';
+      $data['title']      = 'MESSAGE';
       $content['myshops'] = $this->Lessee->myInterests();
       $content['lessors'] = $this->Subscriber->all($select = "*",$status="active");
-      $data['content']    = $this->load->view('pages/lessee/inbox', $content, TRUE);
+      $content['lessor'] = $this->Subscriber->findId($this->input->get('lessor'));
+      $content['isDisable'] = empty($content['lessor']) ? 'disabled' : '';
+      $data['content']    = $this->load->view('templates/message/detail', '', TRUE);
+      $data['content']    .= $this->load->view('pages/lessee/message', $content, TRUE);
+      $data['script'] = array(
+        'pages/lessees/message',
+        'libs/pnotify.core',
+        'libs/pnotify.buttons',
+        'libs/select2.min'
+      );
+      $data['style'] = array('libs/select2.min', 'libs/pnotify');
       $this->load->view('common/lessee', $data);
+  }
+
+  public function lessorsList() {
+    $this->isAjax();
+    $this->load->model('Subscriber');
+    $select = array(
+      $this->Subscriber->getId(),
+      $this->Subscriber->getFname(),
+      $this->Subscriber->getLname()
+    );
+    // $str = ;
+    $lessors = $this->Subscriber->all(implode(', ', $select), 'active');
+    $data = array_map(array($this, '_selectLessor'), $lessors);
+    echo json_encode($data);
+  }
+
+  private function _selectLessor($data) {
+    return array(
+      'id' => $data->subscriber_id,
+      'text' => $data->subscriber_lname . ', ' . $data->subscriber_fname
+    );
   }
 
   public function shopsPage($page = 1) {
