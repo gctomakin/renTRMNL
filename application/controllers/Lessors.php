@@ -413,6 +413,8 @@ class Lessors extends CI_Controller {
     } else {
       if (!is_numeric($post['contact'])) {
         $res['message'] = 'Contact must be numeric';
+      } else if (strlen($post['contact']) != 11) {
+        $res['message'] = 'Contact must only consist of 11 digits starts with 09';
       } else {
         $data = array(
           $this->Subscriber->getId() => $this->session->userdata('lessor_id'),
