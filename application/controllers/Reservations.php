@@ -153,6 +153,8 @@ class Reservations extends CI_Controller {
         $this->session->userdata('lessee_fname'),
         site_url('lessor/reservations/approve')
       );
+      $message = "Reservation / Rental # {$res['reservation']['reserve_id']} is ready for return";
+      $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
     }
     echo json_encode($res);
   }
@@ -274,4 +276,13 @@ class Reservations extends CI_Controller {
   	
   	return $res;
   }
+
+  private function _sendSMSToSubId($subId, $message) {
+    $this->load->library('ITextMo');
+    $this->load->model('Subscriber');
+    $subs = $this->Subscriber->findId($subId);
+    $number = $subs[$this->Subscriber->getTelno()];
+    return empty($number) ? -1 : $this->itextmo->itexmo($number, $message);
+  }
+
 }
