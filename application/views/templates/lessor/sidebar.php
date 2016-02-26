@@ -57,6 +57,9 @@
                     <a href="<?php echo site_url('lessor/subscriptions') ?>"><i class="fa fa-info fa-fw"></i> Subscriptions</a>
                 </li>
                 <li>
+                    <a href="<?php echo site_url('lessor/message') ?>"><i class="fa fa-inbox fa-fw"></i> Messages</a>
+                </li>
+                <li>
                     <!-- /.nav-second-level -->
                     &nbsp;
                     <!-- notification -->
@@ -74,14 +77,6 @@
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                    <!-- <script type="text/template" id="notify-template">
-                     <a href="#" class="list-group-item notify-msg-show">
-                         <i class="fa fa-comment fa-fw"></i> <%= subject %>
-                         <span class="pull-right text-muted small"><small><em><%= date %></em></small>
-                         </span>
-                     </a>
-                     <p class="notify-msg" hidden><%= message %></p>
-                    </script> -->
                     <!-- notification end -->
                 </li>
             </ul>
