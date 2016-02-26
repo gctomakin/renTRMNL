@@ -107,6 +107,8 @@ $route['lessor/items/rented/(:num)']	= 'lessors/rentedItems/$1';
 $route['lessor/items/report']				= 'lessors/itemReport';
 $route['lessor/account'] 						= 'lessors/account';
 $route['lessor/signup'] 						= 'lessors/signup';
+$route['lessor/profile/edit'] 						= 'lessors/profileEdit';
+$route['lessor/profile/save'] 						= 'lessors/profileSave';
 $route['subscriptions/pending'] 		= 'lessors/pendingSubscription';
 
 /** Lessees Pages*/
