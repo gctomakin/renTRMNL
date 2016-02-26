@@ -253,4 +253,12 @@ class Subscriber extends CI_Model{
 		$this->db->cache_delete('lessor','account');
 		$this->db->cache_delete('lessors','signin');
 	}
+
+	public function sendSMSToSubId($subId, $message) {
+		$this->load->library('ITextMo');
+		// $this->load->model('Subscriber');
+		$subs = $this->findId($subId);
+		$number = $subs[$this->telno];
+		return empty($number) ? -1 : $this->itextmo->itexmo($number, $message);
+	}
 }
