@@ -53,6 +53,7 @@
                         <li><a href="<?php echo site_url('admin/monitor/lessee'); ?>">Lessees</a></li>
                         <li><a href="<?php echo site_url('admin/monitor/lessor'); ?>">Lessors</a></li>
                         <li><a href="<?php echo site_url('admin/monitor/items'); ?>">Items</a></li>
+                        <li><a href="<?php echo site_url('admin/monitor/shops'); ?>">Shops</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
