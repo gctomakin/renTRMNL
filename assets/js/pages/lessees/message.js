@@ -3,11 +3,13 @@ $(document).ready(function() {
 
 	$('#message-form').submit(function(e) {
 		e.preventDefault();
-		var body = $('#body-convo');
 		var text = $('#text-convo');
-		body.append(detailTemplate({name: 'Me', message: text.val(), 'position': 'pull-right'}));
-		body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
-		text.val('');
+		if (text.val() != '') {
+			var body = $('#body-convo');
+			body.append(detailTemplate({name: 'Me', message: text.val(), 'position': 'pull-right'}));
+			body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
+			text.val('');
+		}
 		text.focus();
 	});
 
