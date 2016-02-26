@@ -181,7 +181,7 @@ class CI_Controller {
     $lessorId = $this->session->userdata('lessor_id');
     $subs = $this->Subscription->findLastBySubscriberId($lessorId);
     $lessor = $this->Subscriber->findId($lessorId);
-    if (empty($subs)) {
+    if (empty($subs) || $subs[$this->Subscription->getStatus()] == 'disapprove') {
       redirect('subscriptions/entry');
       exit();
     } else if (
