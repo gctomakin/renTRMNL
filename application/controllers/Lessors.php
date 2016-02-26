@@ -388,6 +388,48 @@ class Lessors extends CI_Controller {
     $this->load->view('common/plain', $data);
   }
 
+  public function profileEdit() {
+    $data = $this->_commonAsset();
+    $data['title'] = 'Lessor Profile Edit';
+    $content['lessor'] = $this->Subscriber->findId($this->session->userdata('lessor_id'));
+    $data['content'] = $this->load->view('pages/lessor/profile/edit', $content, TRUE);
+    $data['script'][] = 'pages/lessor/profile';
+    $this->load->view('common/lessor', $data);
+  }
+
+  public function profileSave() {
+    $this->isAjax();
+    $post = $this->input->post();
+    $res['result'] = FALSE;
+
+    if (
+      empty($post['fname']) ||
+      empty($post['mi']) ||
+      empty($post['lname']) ||
+      empty($post['address']) ||
+      empty($post['contact'])
+    ) {
+      $res['message'] = 'Fill everything before saving';
+    } else {
+      if (!is_numeric($post['contact'])) {
+        $res['message'] = 'Contact must be numeric';
+      } else {
+        $data = array(
+          $this->Subscriber->getId() => $this->session->userdata('lessor_id'),
+          $this->Subscriber->getFname() => $post['fname'],
+          $this->Subscriber->getMi() => $post['mi'],
+          $this->Subscriber->getLname() => $post['lname'],
+          $this->Subscriber->getAddress() => $post['address'],
+          $this->Subscriber->getTelno() => $post['contact']
+        );
+        $this->Subscriber->update($data);
+        $res['message'] = 'Lessor Profile Saved';
+        $res['result'] = TRUE;
+      }
+    }
+    echo json_encode($res);
+  }
+
   private function _commonAsset() {
     $data['script'] = array('libs/pnotify.core', 'libs/pnotify.buttons');
     $data['style'] = array('libs/pnotify');
