@@ -110,6 +110,7 @@ $route['lessor/account'] 						= 'lessors/account';
 $route['lessor/signup'] 						= 'lessors/signup';
 $route['lessor/profile/edit'] 						= 'lessors/profileEdit';
 $route['lessor/profile/save'] 						= 'lessors/profileSave';
+$route['lessor/message'] 						= 'lessors/message';
 $route['subscriptions/pending'] 		= 'lessors/pendingSubscription';
 
 /** Lessees Pages*/
