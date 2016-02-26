@@ -12,8 +12,8 @@
           </a> 
       </div>
       <div class="col-lg-2">
-      <% if (typeof(img) !== "undefined") { %>
-        <img src="http://placehold.it/50x50" class="thumbnail" data-toggle="popover" data-placement="right" title="<%= name %>" style="width:50px; height:50px;"><br/>
+      <% if (typeof(image) !== "undefined") { %>
+        <img src="<%=image%>" class="thumbnail" data-toggle="popover" data-placement="right" title="<%= name %>" style="width:50px; height:50px;"><br/>
       <% } %>
       </div>
       <!-- {/if} -->
