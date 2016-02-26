@@ -86,6 +86,16 @@ class Subscriptions extends CI_Controller {
 					);
 					$subId = $this->Subscription->create($data);
 					if ($subId > 0) {
+						$message = "New Subscription # $subId from" . $this->session->userdata('lessor_fullname');
+						$this->load->library('MyPusher');
+				    $notification = array(
+				      'usertype' => 'admin',
+				      'date' => date('Y/m/d'),
+				      'notification' => $message,
+				      'link' => site_url('admin/subscriptions/pending')
+				    );
+				    $this->mypusher->Message('top-notify-channel', 'top-notify-all-event', $notification);
+
 						$data['plan_name'] = $plan['plan_name'];
 						$info['sub'] = $data;
 						$res['view'] = $this->load->view('pages/subscriptions/information', $info, TRUE);
@@ -137,13 +147,14 @@ class Subscriptions extends CI_Controller {
 					$this->Subscription->getId() => $post['id'],
 					$this->Subscription->getStatus() => $status 
 				);
+				$this->load->model('Subscriber');
+					
 				if ($status == 'active') {
 					$from = date('Y-m-d H:i:s');
 					$to = date('Y-m-d H:i:s', strtotime('+' . $subs['plan_duration'] . 'days'));
 					$data[$this->Subscription->getStartDate()] = $from;
 					$data[$this->Subscription->getEndDate()] = $to;
 
-					$this->load->model('Subscriber');
 					$subData = array(
 						$this->Subscriber->getId() => $subs[$this->Subscription->getSubscriberId()],
 						$this->Subscriber->getStatus() => $status
@@ -155,6 +166,9 @@ class Subscriptions extends CI_Controller {
 					$res['result'] = TRUE;
 					$status = $status == 'active' ? 'Activated' : ucfirst($status) . "d";
 					$res['message'] = "Subscription is " . $status;
+					$txtMessage = "Your Subscription # {$post['id']} has been $status.";
+					$subId = $subs[$this->Subscription->getSubscriberId()];
+					$this->Subscriber->sendSMSToSubId($subId, $txtMessage);
 				} else {
 					$res['message'] = 'Internal Server Error';
 				}
