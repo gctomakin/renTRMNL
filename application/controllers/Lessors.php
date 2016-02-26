@@ -432,6 +432,27 @@ class Lessors extends CI_Controller {
     echo json_encode($res);
   }
 
+  public function message() {
+    $this->load->model('Lessee');
+    $data = $this->_commonAsset();
+    $data['title'] = 'MESSAGE';
+    $content['lessees'] = $this->Lessee->all()->result();
+
+    $this->Lessee->setId($this->input->get('lessee'));
+
+    $content['lessee'] = $this->Lessee->findById();
+    $content['isDisable'] = empty($content['lessee']) ? 'disabled' : '';
+       
+    $data['content'] = $this->load->view('templates/message/detail', '', TRUE);
+    $data['content'] .= $this->load->view('pages/lessor/message', $content, TRUE);
+
+    $data['style'][] = 'libs/select2.min';
+    $data['script'][] = 'libs/select2.min';
+    $data['script'][] = 'pages/lessor/message';
+
+    $this->load->view('common/lessor', $data);
+  }
+
   private function _commonAsset() {
     $data['script'] = array('libs/pnotify.core', 'libs/pnotify.buttons');
     $data['style'] = array('libs/pnotify');
