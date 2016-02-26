@@ -170,7 +170,10 @@ class Item extends CI_Model{
 		return $data;
 	}
 
-	public function findById($id) {
+	public function findById($id, $select = "") {
+		if (!empty($select)) {
+			$this->db->select(implode(', ', $select));
+		}
 		$query = $this->db->get_where($this->table, array($this->id => $id));
 		return $query->row_array();
 	}
