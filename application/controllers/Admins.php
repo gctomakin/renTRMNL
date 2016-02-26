@@ -16,8 +16,15 @@ class Admins extends CI_Controller {
 
   public function index()
   {
+    $this->load->model('Item');
+    $this->load->model('Lessee');
+    $this->load->model('Subscriber');
     $data['title'] = 'DASHBOARD';
-    $data['content'] = $this->load->view('pages/admin/dashboard', '', TRUE);
+    $content['total_items'] = $this->Item->countTotal();
+    $content['total_lessee'] = $this->Lessee->countTotal();
+    $content['total_lessor'] = $this->Subscriber->countTotal();
+    $content['total_shop'] = $this->RentalShop->allCount();
+    $data['content'] = $this->load->view('pages/admin/dashboard', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
@@ -425,6 +432,15 @@ class Admins extends CI_Controller {
     $data['title'] = 'MONITOR ITEM';
     $content['items'] = array_map(array($this, '_mapItems'), $this->Item->allForMonitor());
     $data['content'] = $this->load->view('pages/admin/monitor/item', $content, TRUE);
+    $this->load->view('common/admin', $data);
+  }
+
+  public function monitorShops() {
+    $this->load->model('RentalShop');
+    $data = $this->_commonListAsset();
+    $data['title'] = 'MONITOR RENTAL SHOPS';
+    $content['shops'] = $this->RentalShop->allForMonitor();
+    $data['content'] = $this->load->view('pages/admin/monitor/shops', $content, TRUE);
     $this->load->view('common/admin', $data);
   }
 
