@@ -128,7 +128,7 @@ $route['lessee/shops/category/(:num)/(:num)'] = 'lessees/shopsCategoryPage/$1/$2
 $route['lessee/reserved']        			 = 'lessees/reservedPage';
 $route['lessee/rent']        		 = 'lessees/itemRentPage';
 /** Lessees Actions*/
-$route['lessee/inbox']                 = 'lessees/inboxPage';
+$route['lessee/message']                 = 'lessees/messagePage';
 $route['lessee/shops']                 = 'lessees/shopsPage';
 $route['lessee/shops/(:num)']          = 'lessees/shopsPage/$1';
 $route['lessee/send']                  = 'lessees/sendMessage';
