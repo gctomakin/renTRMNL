@@ -5,12 +5,14 @@
       <form id="message-form" class="form-horizontal">
         <div class="form-group">
           <select id="receiver" name="receiver" class="form-control input-lg">
+          <?php 
+            $lessorname = empty($lessor) ? 'No' : $lessor['subscriber_lname'] . ', ' . $lessor['subscriber_fname'];
+            if (!empty($lessor)) {
+          ?>
             <option value="<?php echo $lessor['subscriber_id']; ?>">
-              <?php 
-                $lessorname = $lessor['subscriber_lname'] . ', ' . $lessor['subscriber_fname'];
-                echo $lessorname;
-              ?>
+              <?php echo $lessorname; ?>
             </option>
+          <?php } ?>
           </select>
         </div>
         <div class="form-group">
