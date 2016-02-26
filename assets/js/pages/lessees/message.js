@@ -18,7 +18,11 @@ $(document).ready(function() {
 		$('#name-convo').text($('#receiver :selected').text());
 		$('#btn-convo').prop('disabled', false);
 		$('#text-convo').prop('disabled', false);
+		$('#body-convo').html('');
 		$('#text-convo').text('');
+		setTimeout(function() {
+			$('#text-convo').focus();
+		}, 200);
 	});
 
 	$('#receiver').select2({
