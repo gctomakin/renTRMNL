@@ -6,7 +6,12 @@ $(document).ready(function() {
 		var text = $('#text-convo');
 		if (text.val() != '') {
 			var body = $('#body-convo');
-			body.append(detailTemplate({name: 'Me', message: _.escape(text.val()), 'position': 'pull-right'}));
+			body.append(detailTemplate({
+				name: 'Me',
+				message: _.escape(text.val()),
+				position: 'pull-right',
+				date: moment().format('MM/DD/YYYY HH:mm:SS')
+			}));
 			body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
 			text.val('');
 		}
