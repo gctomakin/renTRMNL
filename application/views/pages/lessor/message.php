@@ -2,6 +2,7 @@
   <div class="row no-gutter">
     <div class="col-md-12">
       <form id="message-form" class="form-horizontal">
+        <input type="hidden" id="message" value="<?php echo empty($message) || empty($lessee) ? '' : $message ?>">
         <div class="form-group">
           <select id="receiver" name="receiver" class="form-control input-lg">
           <?php if ($isDisable) { ?>
