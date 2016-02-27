@@ -448,6 +448,7 @@ class Lessors extends CI_Controller {
 
     $data['style'][] = 'libs/select2.min';
     $data['script'][] = 'libs/select2.min';
+    $data['script'][] = 'libs/moment.min2';
     $data['script'][] = 'pages/lessor/message';
 
     $this->load->view('common/lessor', $data);
