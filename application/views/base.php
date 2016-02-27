@@ -62,6 +62,20 @@
     </li>
     <li class="divider"></li>
   </script>
+  <script type="text/template" id="top-message-notify-template">
+    <li>
+      <a href="<%=link%>">
+        <div>
+          <strong><%=name%></strong>
+          <span class="pull-right text-muted">
+              <em><%=date%></em>
+          </span>
+        </div>
+        <div><%=message%></div>
+      </a>
+    </li>
+    <li class="divider"></li>
+  </script>
   <script type="text/template" id="notify-template">
     <a href="#" class="list-group-item notify-msg-show">
       <i class="fa fa-comment fa-fw"></i> <%= subject %>
@@ -69,7 +83,36 @@
     </a>
     <p class="notify-msg" hidden><%= message %></p>
   </script>
-	<!-- DEFAULT SCRIPTS -->
+  <script type="text/template" id="message-detail-template">
+    <div class="col-lg-12" id="">
+      <blockquote class='<%= position %>' style='width:100%; display:block; border-bottom: 1px #bbb solid; margin-bottom: 20px;'>
+        <div class="col-lg-12">
+            <span style="color:#444;"><%= name %></span>
+            <a href="javascript:;" style="display: none;">
+              <span>
+                <i title='Delete Message' data-placement="left"
+                   class="fa fa-1x fa-remove <%= position %>">
+                </i>
+              </span>
+            </a> 
+        </div>
+        <div class="col-lg-2">
+        <% if (typeof(image) !== "undefined") { %>
+          <img src="<%=image%>" class="thumbnail" data-toggle="popover" data-placement="right" title="<%= name %>" style="width:140px; height:100px;"><br/>
+        <% } %>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+          <p style='word-wrap: break-word; height: 70px;' height='70px' class='dotdotdotWrapper'>
+            <%= message %>
+          </p>
+          <span style='font-size:10px;'>
+          <small><%= date %></small>
+          </span>
+        </div>
+      </blockquote>
+    </div>
+  </script>
+  <!-- DEFAULT SCRIPTS -->
   <!-- Bootstrap Core JavaScript -->
   <script src="<?php echo site_url("bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>"></script>
   <!-- Misc Libs -->
