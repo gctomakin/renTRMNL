@@ -310,8 +310,7 @@ class Lessees extends CI_Controller
       $content['isDisable'] = empty($content['lessor']) ? 'disabled' : '';
       $content['message'] = $this->input->get('message');
       
-      $data['content']    = $this->load->view('templates/message/detail', '', TRUE);
-      $data['content']    .= $this->load->view('pages/lessee/message', $content, TRUE);
+      $data['content'] = $this->load->view('pages/lessee/message', $content, TRUE);
       $data['script'] = array(
         'libs/moment.min2',
         'libs/pnotify.core',

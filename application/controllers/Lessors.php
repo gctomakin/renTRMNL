@@ -444,8 +444,8 @@ class Lessors extends CI_Controller {
     $content['isDisable'] = empty($content['lessee']) ? 'disabled' : '';
     $content['message'] = $this->input->get('message');
     
-    $data['content'] = $this->load->view('templates/message/detail', '', TRUE);
-    $data['content'] .= $this->load->view('pages/lessor/message', $content, TRUE);
+    // $data['content'] = $this->load->view('templates/message/detail', '', TRUE);
+    $data['content'] = $this->load->view('pages/lessor/message', $content, TRUE);
 
     $data['style'][] = 'libs/select2.min';
     $data['script'][] = 'libs/select2.min';
