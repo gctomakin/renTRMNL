@@ -28,10 +28,10 @@
             <div class="panel-body" id="body-convo" style="background:#eee; height: 350px; overflow-y: scroll;" id="">
             </div>
             <div class="panel-footer" style="background:rgba(0,0,0, .5);">
-              <div class="col-lg-10">
+              <div class="col-xs-10">
                 <textarea <?php echo $isDisable; ?> id="text-convo" style="height:68px;" class="form-control" rows="3" id="textArea"></textarea>
               </div>
-              <div class="col-lg-2">
+              <div class="col-xs-2">
                 <button id="btn-convo" <?php echo $isDisable; ?> class="btn btn-default btn-lg col-md-12" style="vertical-align: middle;">
                   <i class="fa-2x fa fa-send"></i>
                 </button>
@@ -46,4 +46,5 @@
 </div>
 <script type="text/javascript">
   var lessorListUrl = "<?php echo site_url('lessees/lessorsList'); ?>";
+  var messageSendUrl = "<?php echo site_url('messages/send'); ?>";
 </script>
