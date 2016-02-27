@@ -17,19 +17,22 @@ class Messages extends CI_Controller {
 			empty($post['from']) ||
 			empty($post['toType']) ||
 			empty($post['fromType']) ||
-			empty($post['message'])
+			empty($post['message']) ||
+			empty($post['name'])
 		) {
 			$res['message'] = 'Invalid Parameter';
 		} else if (!is_numeric($post['to']) || !is_numeric($post['from'])) {
 			$res['message'] = 'To and From must be numeric';
 		} else if (
-			$post['toType'] != 'lessor' || $post['toType'] != 'lessee' ||
-			$post['fromType'] != 'lessor' || $post['fromType'] != 'lessee'
+			!(
+				$post['toType'] == 'lessor' || $post['toType'] == 'lessee' ||
+				$post['fromType'] == 'lessor' || $post['fromType'] == 'lessee'
+			)
 		) {
 			$res['message'] = 'To and from type is invalid';
 		} else {
-			$link = if ($fromType == 'lessor') ?
-				site_url('lessor/message?lessor=' . $post['from']) :
+			$link = ($post['fromType'] == 'lessor') ?
+				site_url('lessee/message?lessor=' . $post['from']) :
 				site_url('lessor/message?lessee=' . $post['from']);
 			$link .= '&message=' . urlencode($post['message']);
 			
@@ -41,9 +44,10 @@ class Messages extends CI_Controller {
 	      'fromType' => $post['fromType'],
 	      'date' => date('M/d/Y H:i:s'),
 	      'message' => $post['message'],
-	      'link' => $link
+	      'link' => $link,
+	      'name' => $post['name']
 	    );
-	    $this->mypusher->Message('message-channel', 'message-event', $data);
+	    $this->mypusher->Message('chat-channel', 'chat-event', $data);
 			$res['result'] = TRUE;
 		}
 		echo json_encode($res);
