@@ -310,10 +310,11 @@ class Lessees extends CI_Controller
       $data['content']    = $this->load->view('templates/message/detail', '', TRUE);
       $data['content']    .= $this->load->view('pages/lessee/message', $content, TRUE);
       $data['script'] = array(
-        'pages/lessees/message',
+        'libs/moment.min2',
         'libs/pnotify.core',
         'libs/pnotify.buttons',
-        'libs/select2.min'
+        'libs/select2.min',
+        'pages/lessees/message'
       );
       $data['style'] = array('libs/select2.min', 'libs/pnotify');
       $this->load->view('common/lessee', $data);
