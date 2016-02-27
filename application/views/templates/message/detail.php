@@ -21,8 +21,8 @@
         <p style='word-wrap: break-word; height: 70px;' height='70px' class='dotdotdotWrapper'>
           <%= message %>
         </p>
-        <span style='font-size:8px;'>
-        <small>10/20/32</small>
+        <span style='font-size:10px;'>
+        <small><%= date %></small>
         </span>
       </div>
     </blockquote>
