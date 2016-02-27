@@ -13,6 +13,11 @@ var session_id = $('#sessionId').val();
 var user_type = $('#userType').val();
 var template = _.template($("#notify-template").html());
 
+// CHAT
+var chat_channel = pusher.subscribe('chat-channel');
+var chat_template = _.template($('#top-message-notify-template').html());
+var detailTemplate = _.template($('#message-detail-template').html());
+
 // Reservation
 var top_template = _.template($("#top-notify-template").html());
 var top_notify_channel = pusher.subscribe('top-notify-channel');
@@ -76,9 +81,39 @@ top_notify_channel.bind('top-notify-all-event', function(data) {
     $('#top-notification-list').append(tmpl);
   }
   return false;
-})
+});
 
-$('#top-notification').on('click', function() {
+chat_channel.bind('chat-event', function(data) {
+  console.log(data);
+  if(data.to == session_id && data.toType == user_type) {
+    var receiver = $('#receiver :selected').val();
+    if (data.to == receiver) {
+      var body = $('#body-convo');
+      body.append(detailTemplate({
+        name: data.name,
+        message: _.escape(data.message),
+        position: 'pull-left',
+        date: data.date,
+        image: 'http://placehold.it/150x90'
+      }));
+      body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
+    } else {
+      var badge = $('#top-message-notification').find('.nav-badge');
+      var count = badge.text();
+      badge.text(parseFloat(count) + 1);
+      badge.fadeIn('fast');
+      var tmpl = chat_template({
+        name: data.name,
+        date: data.date,
+        message: data.message,
+        link: data.link
+      });
+      $('#top-message-notification-list').append(tmpl);   
+    }
+  }
+});
+
+$('#top-notification, #top-message-notification').on('click', function() {
   $(this).find('.nav-badge').text(0);
   $(this).find('.nav-badge').fadeOut('fast');
 });
