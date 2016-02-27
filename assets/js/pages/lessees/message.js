@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	var detailTemplate = _.template($('#message-detail-template').html());
 
 	$('#message-form').submit(function(e) {
 		e.preventDefault();
@@ -13,6 +12,20 @@ $(document).ready(function() {
 				date: moment().format('MM/DD/YYYY HH:mm:SS')
 			}));
 			body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
+			$.post(messageSendUrl, {
+				to: $('#receiver :selected').val(),
+				from: session_id,
+				toType: 'lessor',
+				fromType: 'lessee',
+				name: $('#receiver :selected').text(),
+				message: text.val()
+			}, function(data) {
+				if (data['result']) {
+					console.log(data);		
+				} else {
+					errorMessage(data['message']);
+				}
+			}, 'JSON');
 			text.val('');
 		}
 		text.focus();
@@ -57,7 +70,7 @@ $(document).ready(function() {
 			message: _.escape(message),
 			position: 'pull-left',
 			date: moment().format('MM/DD/YYYY HH:mm:SS'),
-			image : 'http://placehold.it/50x50'
+			image : 'http://placehold.it/140x100'
 		}));
 		body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");	
 	}
