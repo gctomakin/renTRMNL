@@ -303,10 +303,13 @@ class Lessees extends CI_Controller
   public function messagePage()
   {
       $data['title']      = 'MESSAGE';
+      
       $content['myshops'] = $this->Lessee->myInterests();
       $content['lessors'] = $this->Subscriber->all($select = "*",$status="active");
       $content['lessor'] = $this->Subscriber->findId($this->input->get('lessor'));
       $content['isDisable'] = empty($content['lessor']) ? 'disabled' : '';
+      $content['message'] = $this->input->get('message');
+      
       $data['content']    = $this->load->view('templates/message/detail', '', TRUE);
       $data['content']    .= $this->load->view('pages/lessee/message', $content, TRUE);
       $data['script'] = array(

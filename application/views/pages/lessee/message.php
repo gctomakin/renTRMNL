@@ -38,6 +38,7 @@
           </div>
         </div>
       </form>
+      <input type="hidden" id="message" value="<?php echo empty($message) || empty($lessor) ? '' : $message ?>">
     </div>
     <!-- <div class="col-sm-3 col-md-2">
        <a href="#" class="btn btn-primary btn-sm btn-block" role="button" data-toggle="modal" data-target="#compose-message-modal">COMPOSE</a>

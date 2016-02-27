@@ -19,7 +19,7 @@ $(document).ready(function() {
 	});
 
 	$('#receiver').change(function() {
-		console.log($('#receiver :selected').text());
+		// console.log($('#receiver :selected').text());
 		$('#name-convo').text($('#receiver :selected').text());
 		$('#btn-convo').prop('disabled', false);
 		$('#text-convo').prop('disabled', false);
@@ -48,4 +48,18 @@ $(document).ready(function() {
 	    }
 		}
 	});
+
+	var message = $('#message').val();
+	if (message != '') {
+		var body = $('#body-convo');
+		body.append(detailTemplate({
+			name: $('#receiver :selected').text(),
+			message: _.escape(message),
+			position: 'pull-left',
+			date: moment().format('MM/DD/YYYY HH:mm:SS'),
+			image : 'http://placehold.it/50x50'
+		}));
+		body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");	
+	}
+
 }); 
