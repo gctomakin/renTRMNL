@@ -162,10 +162,9 @@ class Main extends CI_Controller {
             
       $shops = $this->ItemCategory->findShopByCategory($category);
       $content['shops'] = $this->RentalShop->processGroupShop($shops['data'], $category);
-
       // Configuring Pagination
       $config['base_url'] = site_url('main/listByCategory/' + $category + '/');
-      $config['total_rows'] = $shops['count'];
+      $config['total_rows'] = count($shops['count']);
       $config['per_page'] = $this->ItemCategory->getLimit();
       $this->pagination->initialize($config);
 
