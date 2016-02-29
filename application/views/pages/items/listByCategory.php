@@ -5,6 +5,9 @@
       No Shop and item found for this category.
     </div>
     <?php } else { ?>
+      <div class="col-md-12 text-center">
+        <p><?php echo empty($category['category_desc']) ? '' : '"'.$category['category_desc'].'"'; ?></p>
+      </div>
       <?php foreach($shops as $shop):?>
       <div class="col-md-5">
         <a href="#">
@@ -15,6 +18,8 @@
         <h3><?php echo $shop['detail']['shop_name'] . ' - ' . $shop['detail']['shop_branch']; ?></h3>
         <h4><?php echo $shop['detail']['address']; ?></h4>
         <p><?php echo $shop['detail']['shop_desc']; ?></p>
+      </div>
+      <div class="col-md-12" style="font-size: 12px;">
         <table class="table table-hover list-category-table">
           <thead>
             <tr>
@@ -28,7 +33,7 @@
             <?php foreach ($shop['items'] as $item) { ?>
             <tr>
               <td>
-                <img src="<?php echo $item['item_pic']; ?>" alt="" style="width: 50px; height: 50px;">
+                <img src="<?php echo $item['item_pic']; ?>" alt="" style="width: 25px; height: 25px;">
               </td>
               <td>
                 <a target="_blank" href="<?php echo site_url('/lessee/items?id=' . $item['item_id']); ?>">
