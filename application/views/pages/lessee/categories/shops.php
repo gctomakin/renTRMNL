@@ -34,7 +34,9 @@
               <div class="btn-group" role="group" aria-label="Shop Actions">
               <button class="btn btn-info map-modal-trigger" data-shop-name="<?php echo $shop->shop_name; ?>" data-address="<?php echo $shop->address; ?>" data-shop-id="<?php echo $shop->shop_id; ?>"><span class="fa fa-info"> More Info</span></button>
               <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $shop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
-              <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $shop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
+              <!-- <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $shop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a> -->
+              <a class="btn btn-warning" href="<?php echo site_url('/lessee/message?lessor=' . $shop->subscriber_id); ?>" target="_blank" data-subscriber-id="<?php echo $shop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
+
               <a class="btn btn-primary my-shop-trigger" data-shop-id="<?php echo $shop->shop_id; ?>" data-shop-name="<?php echo $shop->shop_name; ?>" href="<?php echo $action; ?>" <?php echo (in_array($shop->shop_id,$myshops)) ? 'disabled=disabled' : ''; ?>><span class="fa fa-plus-circle"> <?php echo (in_array($shop->shop_id,$myshops)) ? 'Added ' : 'My Shop '; ?></span></a>
               </div>
           </div>

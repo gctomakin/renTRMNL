@@ -41,7 +41,7 @@
               <div class="btn-group" role="group" aria-label="Shop Actions">
               <button class="btn btn-info map-modal-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-address="<?php echo $myshop->address; ?>" data-shop-id="<?php echo $myshop->shop_id; ?>"><span class="fa fa-info"> More Info</span></button>
               <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $myshop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
-              <a class="btn btn-warning message-trigger" href="#" data-subscriber-id="<?php echo $myshop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
+              <a class="btn btn-warning" href="<?php echo site_url('/lessee/message?lessor=' . $myshop->subscriber_id); ?>" target="_blank" data-subscriber-id="<?php echo $myshop->subscriber_id; ?>"><span class="fa fa-envelope"> Message</span></a>
               <a class="btn btn-danger delete-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-id="<?php echo $myshop->myshop_id; ?>" href="<?php echo site_url("lessee/myshops/delete/".$myshop->myshop_id); ?>" role="button"><span class="fa fa-trash"> Delete</span></a>
           </div>
       </div>
