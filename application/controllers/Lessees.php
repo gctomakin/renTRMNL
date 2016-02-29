@@ -294,7 +294,7 @@ class Lessees extends CI_Controller
       'libs/pnotify.core',
       'libs/pnotify.buttons',
       'libs/jquery.dataTables',
-      'pages/lessees/items'
+      'pages/lessees/rented'
     );
     $data['style'] = array('libs/dataTables.min', 'libs/pnotify');
     $this->load->view('common/lessee', $data);

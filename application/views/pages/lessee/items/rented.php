@@ -24,8 +24,8 @@
     					<td><?php echo $item['duration']; ?></td>
     					<td><?php echo $item['shop']; ?></td>
     					<td>
-    						<button class="btn btn-xs btn-primary">return</button>
-    						<button class="btn btn-xs btn-default">view transaction</button>
+    						<button class="btn btn-success btn-xs btn-return" data-rev-id="<?php echo $item['reserve_id']; ?>">return</button>
+    						<button class="btn btn-default btn-xs btn-reservation" data-rev-id="<?php echo $item['reserve_id']; ?>">view transaction</button>
     					</td>
     				</tr>
     				<?php } ?>
@@ -35,3 +35,23 @@
   	</div>
 	</div>
 </div>
+<div class="modal modal-fullscreen fade" tabindex="-1" id="reservation-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" >Payment's Details</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<script>
+  var reservationUrl = "<?php echo site_url('reservations/view'); ?>";
+  var returnUrl = "<?php echo site_url('reservations/returnStatus'); ?>"
+</script>
