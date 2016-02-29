@@ -15,7 +15,7 @@
               <img src="<?php echo $img; ?>" class="img-responsive" alt="" style="width:430px; height: 230px;">
               <h3><?php echo $category->category_type;?></a></h3>
             </a>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            <p style="height: 50px;"><?php echo $category->category_desc; ?>.</p>
         </div>
       <?php endforeach;?>
     <?php endif; ?>
