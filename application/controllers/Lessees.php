@@ -359,7 +359,8 @@ class Lessees extends CI_Controller
 
     $offset = ($page - 1) * $this->RentalShop->getLimit();
     $this->RentalShop->setOffset($offset); // Setting Rentalshop offset rows
-     
+    $this->RentalShop->setId($this->input->get('id'));
+
     // Configuring Pagination
     $config['base_url'] = site_url('lessee/shops/');
     $config['total_rows'] = $this->RentalShop->allCount();
