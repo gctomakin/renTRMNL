@@ -8,7 +8,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">renTRMNL</a>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <img src="<?php echo site_url('assets/img/rentrmnllogo.png'); ?>" alt="" style="width: 100%; height: 200%; margin-top: -10px;">
+            </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
