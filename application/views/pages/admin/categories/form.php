@@ -13,6 +13,10 @@
           <input type="text" name="category" value="<?php echo $type; ?>" class="form-control" id="category">
         </div>
         <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" class="form-control" name="description"><?php echo empty($category['category_desc']) ? '' : $category['category_desc']; ?></textarea>
+        </div>
+        <div class="form-group">
           <label for="image">Image:</label>
           <input type="file" name="image" id="image" accept="image/*" value="<?php echo $image; ?>">
           <img src="<?php echo $image; ?>" id="preview-image" alt="" class="thumbnail" style="width:100%; height: auto;"> 

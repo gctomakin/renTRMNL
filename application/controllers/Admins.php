@@ -285,6 +285,7 @@ class Admins extends CI_Controller {
     | field name, error message, validation rules
     */
     $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[4]|xss_clean');
 
     if($this->form_validation->run() == FALSE):
 
@@ -297,7 +298,8 @@ class Admins extends CI_Controller {
         $picture = file_get_contents($_FILES['image']['tmp_name']);
         $data = array(
           'category_type' => $this->input->post('category'),
-          'category_image' => $picture
+          'category_image' => $picture,
+          'category_desc' => $this->input->post('description')
         );
         $this->Category->create($data);
 
@@ -315,6 +317,7 @@ class Admins extends CI_Controller {
     | field name, error message, validation rules
     */
     $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[4]|xss_clean');
+    $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[4]|xss_clean');
     $id = $this->input->post('id');
     if($this->form_validation->run() == FALSE):
 
@@ -324,33 +327,36 @@ class Admins extends CI_Controller {
     else:
       $imageError = $this->_validateImage();
       if (empty($imageError)) {
-        $picture = file_get_contents($_FILES['image']['tmp_name']);
         $data = array(
           'category_id' => $id,
           'category_type' => $this->input->post('category'),
-          'category_image' => $picture
+          'category_desc' => $this->input->post('description')
         );
+        if ($_FILES['image']['size'] > 0) {
+          $picture = file_get_contents($_FILES['image']['tmp_name']);
+          $data['category_image'] = $picture;
+        }
         $this->Category->update($data);
         
         $this->session->set_flashdata('success', TRUE);
         redirect("admin/categories/edit/$id",'refresh');
       } else {
         $this->session->set_flashdata('error', $imageError);
-        redirect("admin/categories/add/$id",'refresh');
+        redirect("admin/categories/edit/$id",'refresh');
       }
     endif; 
   }
 
   private function _validateImage() {
-    $message = '';
+    $message = empty($this->input->post('id')) ? 'Image required' : '';
     if (!empty($_FILES['image']) && $_FILES['image']['size'] != 0) { // check if image has been upload
       $this->load->library('MyFile', $_FILES['image']); // Load My File Library
       $validate = $this->myfile->validateImage(); // Validate Image
       if (!$validate['result']) {
         $message = implode(', ', $validate['message']); // Specify Image validate errors
+      } else {
+        $message = '';
       }
-    } else {
-      $message = "Image is required";
     }
     return $message;
   }
