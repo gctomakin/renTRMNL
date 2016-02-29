@@ -380,6 +380,7 @@ class Item extends CI_Model{
       $this->rentalMode => $obj->item_rental_mode,
       $this->penalty => $obj->item_penalty,
       $this->shopId => $obj->shop_id,
+      "shop" => $obj->shop_name . ' - ' . $obj->shop_branch,
       $this->subscriberId => $obj->subscriber_id,
       $this->name => $obj->item_name,
       'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode),
