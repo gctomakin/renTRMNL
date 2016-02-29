@@ -49,6 +49,7 @@ $(document).ready(function(){
     var item_name = $(this).data('item-name');
 
     $('#confirm-modal-content').empty().html('Do you want to remove' + ' <strong>' + item_name + '</strong> ?');
+    $('#remove-myinterest').attr('href', action);
     $('#confirm-modal').modal('show');
 
   });
