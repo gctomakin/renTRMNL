@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 	<title>renTRMNL - <?php echo empty($title) ? 'a Software-as-a-Service for Rental Shops' : $title; ?></title>
-
+  <link rel="icon" type="image/png" href="<?php echo site_url('assets/img/rentrmnllogo.png'); ?>">
 	<!-- DEFAULT STYLES -->
   <?php if (empty($hasNewBootrstap)) { ?>
 	<!-- Bootstrap Core CSS -->
