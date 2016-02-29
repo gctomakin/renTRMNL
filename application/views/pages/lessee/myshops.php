@@ -37,7 +37,7 @@
           <div class="col-md-5">
               <h3><?php echo $myshop->shop_name .' - '. $myshop->shop_branch; ?></h3>
               <h4><?php echo $myshop->shop_branch; ?></h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
+              <p><?php echo $myshop->shop_desc; ?></p>
               <div class="btn-group" role="group" aria-label="Shop Actions">
               <button class="btn btn-info map-modal-trigger" data-shop-name="<?php echo $myshop->shop_name; ?>" data-address="<?php echo $myshop->address; ?>" data-shop-id="<?php echo $myshop->shop_id; ?>"><span class="fa fa-info"> More Info</span></button>
               <a class="btn btn-success locate-trigger" href="#" data-address="<?php echo $myshop->address; ?>"><span class="fa fa-map-marker"> Locate</span></a>
