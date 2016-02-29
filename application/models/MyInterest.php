@@ -76,11 +76,38 @@ class MyInterest extends CI_Model
     return true;
   }
 
+  private $shopAlias = 's';
+  private $subscriberAlias = 'sub';
+  private $itemAlias = 'i';
+  private $shopId = "shop_id";
+  private $subscriberId = "subscriber_id";
+
+  private function _joinShop() {
+    $this->load->model('RentalShop');
+    $table = $this->RentalShop->getTable() . " as " . $this->shopAlias;
+    $on = $this->shopAlias. "." .  $this->RentalShop->getId();
+    $on .= " = " . $this->itemAlias . "." . $this->shopId;
+    return array('table' => $table, 'on' => $on, 'type' => 'left');
+  }
+
+  private function _joinSubscriber() {
+    $this->load->model('Subscriber');
+    $table = $this->Subscriber->getTable() . " as " . $this->subscriberAlias;
+    $on = $this->subscriberAlias. "." . $this->Subscriber->getId();
+    $on .= " = " . $this->itemAlias. "." . $this->subscriberId;
+    return array('table' => $table, 'on' => $on, 'type' => 'left');
+  }
+
   public function all()
   {
+    $joinShop = $this->_joinShop();
+    $joinSubs = $this->_joinSubscriber();
+
     $this->db->select('*');
-    $this->db->from('items');
-    $this->db->join($this->my_interests_table, 'my_interests.item_id = items.item_id');
+    $this->db->from('items' . ' as ' . $this->itemAlias);
+    $this->db->join($this->my_interests_table, 'my_interests.item_id = i.item_id');
+    $this->db->join($joinShop['table'], $joinShop['on'], $joinShop['type']);
+    $this->db->join($joinSubs['table'], $joinSubs['on'], $joinSubs['type']);
     $this->db->limit($this->limit, $this->offset);
     $query  = $this->db->get();
     $result = $query->result();
