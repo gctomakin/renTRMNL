@@ -351,7 +351,7 @@ class Lessees extends CI_Controller
      
     // Configuring Pagination
     $config['base_url'] = site_url('lessee/shops/');
-    $config['total_rows'] = $this->RentalShop->allCount() - 1;
+    $config['total_rows'] = $this->RentalShop->allCount();
     $config['per_page'] = $this->Item->getLimit();
     $this->pagination->initialize($config);
 
@@ -447,13 +447,11 @@ class Lessees extends CI_Controller
       
       // Configuring Pagination
       $config['base_url'] = site_url("lessee/shops/category/$categoryId/");
-      $config['total_rows'] = $shops['count'];
+      $config['total_rows'] = count($shops['count']);
       $config['per_page'] = $this->Item->getLimit();
       $this->pagination->initialize($config);
 
-      if (!empty($items['count'])) {
-        $content['pagination'] = $this->pagination->create_links();
-      }
+      $content['pagination'] = $this->pagination->create_links();
       $content['shops'] = $this->RentalShop->processGroupShop($shops['data'], $categoryId);
       $content['myinterests'] = $this->MyInterest->getMyInterestId();
       $content['action'] = site_url('lessee/add-myinterest');
