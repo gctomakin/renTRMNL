@@ -380,7 +380,7 @@ class Item extends CI_Model{
       $this->rentalMode => $obj->item_rental_mode,
       $this->penalty => $obj->item_penalty,
       $this->shopId => $obj->shop_id,
-      "shop" => $obj->shop_name . ' - ' . $obj->shop_branch,
+      "shop" => empty($obj->shop_name) ? '' : $obj->shop_name . ' - ' . $obj->shop_branch,
       $this->subscriberId => $obj->subscriber_id,
       $this->name => $obj->item_name,
       'mode_label' => $this->rentalmodes->getMode($obj->item_rental_mode),
@@ -394,7 +394,8 @@ class Item extends CI_Model{
     $this->load->model('ItemCategory');
     return array(
       'info' => $this->processItem($data), //$data,
-      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id)
+      'categories' => $this->ItemCategory->findCategoryByItem($data->item_id),
+      'myinterest' => empty($data->interest_id)? '' : $data->interest_id
     );
   }
 
