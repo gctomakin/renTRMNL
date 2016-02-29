@@ -21,6 +21,8 @@ class RentalShop extends CI_Model{
 	private $limit = 10;
 	private $offset = 0;
 
+	private $whereId = "";
+
 	public function __construct() {
 		parent::__construct();
 	}
@@ -49,12 +51,18 @@ class RentalShop extends CI_Model{
 	}
 
 	public function all($select = "*") {
+		if (!empty($this->whereId)) {
+			$this->db->where(array($this->id => $this->whereId));
+		}
 		$this->db->select($select);
 		$query = $this->db->from($this->table)->limit($this->limit, $this->offset)->get();
 		return $query->result();
 	}
 
 	public function allCount() {
+		if (!empty($this->whereId)) {
+			$this->db->where(array($this->id => $this->whereId));
+		}
 		return $this->db->from($this->table)->count_all_results();
 	}
 
@@ -120,6 +128,10 @@ class RentalShop extends CI_Model{
 
 	public function setOffset($offset) {
 		$this->offset = $offset;
+	}
+
+	public function setId($id) {
+		$this->whereId = $id;
 	}
 
 	public function setLimit($limit) {
