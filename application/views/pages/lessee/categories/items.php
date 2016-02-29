@@ -33,9 +33,7 @@
             <br>
             <?php echo number_format($itemLeft); ?> pcs left
           </p>
-          <?php if (isset($item['info']['shop_name'])) { ?>
-          <p><?php echo $item['info']['shop_name'] . ' - ' . $item['info']['shop_branch']; ?></p>
-          <?php } ?>
+          <p><a href="<?php echo site_url('lessee/shops?id=' . $item['info']['shop_id']); ?>"><?php echo $item['info']['shop']; ?></a></p>
           <p>
             <?php 
               if (!empty($item['categories'])) {
