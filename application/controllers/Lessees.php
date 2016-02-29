@@ -255,6 +255,7 @@ class Lessees extends CI_Controller
 
   public function myInterestsPage($page = 1) {
     $this->load->library('pagination');
+    $this->load->library('RentalModes');
 
     $offset = ($page - 1) * $this->MyInterest->getLimit();
     $this->MyInterest->setOffset($offset);
@@ -265,9 +266,19 @@ class Lessees extends CI_Controller
     $config['per_page'] = $this->Item->getLimit();
     $this->pagination->initialize($config);
 
+    $content['items'] = array_map(
+      array(
+        $this->Item,
+        'mapItemsWithCategory'
+      ), $this->MyInterest->all()
+    );
+    // echo "<pre>";
+    // print_r($content['items']);
+    // echo "</pre>";
+    // exit();
     $data['title'] = 'MY INTERESTS';
     $content['pagination'] = $this->pagination->create_links();
-    $content['myinterests'] = $this->MyInterest->all();
+    $content['rentalMode'] = $this->rentalmodes->getModes();
     $data['content'] = $this->load->view('pages/lessee/myinterests', $content, TRUE);
     $data['script'] = array(
       'libs/pnotify.core',
