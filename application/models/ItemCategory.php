@@ -75,20 +75,22 @@ class ItemCategory extends CI_Model {
 		$joinItem = $this->_joinItem();
 		$joinShop = $this->_joinShop();
 		$from = $this->table . ' as ' . $this->iCategoryAlias;
+		$groupBy = "{$this->shopAlias}." . $this->RentalShop->getId();
 		$data['count'] = $this->db
+			->select($groupBy)
 			->from($from)
 			->join($joinItem['table'], $joinItem['on'])
 			->join($joinShop['table'], $joinShop['on'])
 			->where($where)
-			->group_by("{$this->shopAlias}." . $this->RentalShop->getId())
-			->count_all_results();
+			->group_by($groupBy)
+			->get()->result();
 		$data['data'] = $this->db
 			->select("{$this->shopAlias}.*")
 			->from($from)
 			->join($joinItem['table'], $joinItem['on'])
 			->join($joinShop['table'], $joinShop['on'])
 			->where($where)
-			->group_by("{$this->shopAlias}." . $this->RentalShop->getId())
+			->group_by($groupBy)
 			->limit($this->limit, $this->offset)
 			->get()->result();
 		return $data;
