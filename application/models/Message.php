@@ -51,6 +51,7 @@ class Message extends CI_Model{
 		$where .= "{$this->toId} = $lesseeId && {$this->toType} = 'lessee') OR ";
 		$where .= "({$this->fromId} = $lesseeId && {$this->fromType} = 'lessee' && ";
 		$where .= "{$this->toId} = $lessorId && {$this->toType} = 'lessor')";
+		$this->db->order_by($this->sent, 'ASC');
 		$query = $this->db->get_where($this->table, $where);
 		return $query->result();
 	}
