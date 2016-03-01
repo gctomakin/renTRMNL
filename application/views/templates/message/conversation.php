@@ -17,7 +17,7 @@
       </div>
       <div class="col-lg-2">
       <?php if ($position != "pull-right") {  ?>
-        <img src="http://placehold.it/50x50" class="thumbnail" data-toggle="popover" data-placement="right" title="<?php echo $name; ?>" style="width:50px; height:50px;"><br/>
+        <img src="http://placehold.it/140x100" class="thumbnail" data-toggle="popover" data-placement="right" title="<?php echo $name; ?>" style="width:140px; height:100px;"><br/>
       <?php }  ?>
       </div>
       <!-- {/if} -->
