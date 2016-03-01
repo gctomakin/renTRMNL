@@ -18,7 +18,7 @@
       </div>
       <!-- {/if} -->
       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <p style='word-wrap: break-word; height: 70px;' height='70px' class='dotdotdotWrapper'>
+        <p style='word-wrap: break-word; min-height: 70px;' class='dotdotdotWrapper'>
           <%= message %>
         </p>
         <span style='font-size:10px;'>
