@@ -26,6 +26,7 @@
               </h2>
             </div>
             <div class="panel-body" id="body-convo" style="background:#eee; height: 350px; overflow-y: scroll;" id="">
+              <?php echo empty($conversation) ? '' : $conversation; ?>
             </div>
             <div class="panel-footer" style="background:rgba(0,0,0, .5);">
               <div class="col-xs-10">
@@ -47,4 +48,5 @@
 <script type="text/javascript">
   var lessorListUrl = "<?php echo site_url('lessees/lessorsList'); ?>";
   var messageSendUrl = "<?php echo site_url('messages/send'); ?>";
+  var messageConverstationUrl = "<?php echo site_url('messages/conversation'); ?>";
 </script>
