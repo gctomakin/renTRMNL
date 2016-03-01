@@ -5,6 +5,7 @@ class Messages extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct(3);
+		$this->load->model('Message');
 	}
 
 	public function send() {
@@ -48,6 +49,34 @@ class Messages extends CI_Controller {
 	      'name' => $post['name']
 	    );
 	    $this->mypusher->Message('chat-channel', 'chat-event', $data);
+	    $messageData = array(
+				$this->Message->getMessage() => $post['message'],
+				$this->Message->getFromId() => $post['from'],
+				$this->Message->getToId() => $post['to'],
+				$this->Message->getFromType() => $post['fromType'],
+				$this->Message->getToType() => $post['toType'],
+				$this->Message->getStatus() => 'active',
+				$this->Message->getSent() => date('Y-m-d H:i:s'),
+			);
+			$this->Message->create($messageData);
+			$res['result'] = TRUE;
+		}
+		echo json_encode($res);
+	}
+
+	public function conversation() {
+		$this->isAjax();
+		$post = $this->input->post();
+		$res['result'] = FALSE;
+
+		if (empty($post['lesseeId']) || empty($post['lessorId'])) {
+			$res['message'] = 'Invalid Parameter';
+		} else {
+			$content['messages'] = $this->Message->findByConversation(
+				$post['lesseeId'],
+				$post['lessorId']
+			);
+			$res['view'] = $this->load->view('templates/message/conversation', $content, TRUE);
 			$res['result'] = TRUE;
 		}
 		echo json_encode($res);
