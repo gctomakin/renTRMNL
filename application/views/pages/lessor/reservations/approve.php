@@ -31,7 +31,7 @@
 					<td class="text-right"><?php echo $rev->total_amt; ?></td>
 					<td class="text-right penalty"><?php echo $rev->penalty; ?></td>
 					<td class="text-right balance"><?php echo $rev->total_balance; ?></td>
-					<td class="status"><?php echo $rev->rent_status; ?></td>
+					<td class="status"><?php echo (empty($rev->rent_status)) ? $rev->reserved_status : $rev->rent_status; ?></td>
 					<td class="text-center">
 						<div class="btn-group" role="group" aria-label="reservation-options">
 							<?php
