@@ -35,8 +35,9 @@ $(document).ready(function() {
 	});
 
 	$('#receiver').change(function() {
-		console.log($('#receiver :selected').text());
-		$('#name-convo').text($('#receiver :selected').text());
+		var currentReceiver = $('#receiver :selected');
+		console.log(currentReceiver.text());
+		$('#name-convo').text(currentReceiver.text());
 		$('#btn-convo').prop('disabled', false);
 		$('#text-convo').prop('disabled', false);
 		$('#body-convo').html('');
@@ -45,7 +46,12 @@ $(document).ready(function() {
 			$('#text-convo').focus();
 		}, 200);
 
-		$.post(messageConverstationUrl, {lesseeId: $('#receiver :selected').val(), lessorId: session_id}, function(data) {
+		var name = currentReceiver.text().split(',');
+		$.post(messageConverstationUrl, {
+			lesseeId: currentReceiver.val(),
+			lessorId: session_id,
+			name: name[1]
+		}, function(data) {
 			if (data['result']) {
 				body.html(data['view']);
 				toDown();	
