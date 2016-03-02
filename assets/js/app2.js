@@ -87,7 +87,7 @@ chat_channel.bind('chat-event', function(data) {
   console.log(data);
   if(data.to == session_id && data.toType == user_type) {
     var receiver = $('#receiver :selected').val();
-    if (data.to == receiver) {
+    if (data.from == receiver) {
       var body = $('#body-convo');
       body.append(detailTemplate({
         name: data.name,
