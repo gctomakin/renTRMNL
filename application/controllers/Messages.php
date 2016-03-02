@@ -35,7 +35,7 @@ class Messages extends CI_Controller {
 			$link = ($post['fromType'] == 'lessor') ?
 				site_url('lessee/message?lessor=' . $post['from']) :
 				site_url('lessor/message?lessee=' . $post['from']);
-			$link .= '&message=' . urlencode($post['message']);
+			// $link .= '&message=' . urlencode($post['message']);
 			
 			$this->load->library('MyPusher');
 			$data = array(
@@ -46,7 +46,7 @@ class Messages extends CI_Controller {
 	      'date' => date('M/d/Y H:i:s'),
 	      'message' => $post['message'],
 	      'link' => $link,
-	      'name' => $post['name']
+	      'name' => $this->session->userdata('first_name')
 	    );
 	    $this->mypusher->Message('chat-channel', 'chat-event', $data);
 	    $messageData = array(
@@ -69,13 +69,18 @@ class Messages extends CI_Controller {
 		$post = $this->input->post();
 		$res['result'] = FALSE;
 
-		if (empty($post['lesseeId']) || empty($post['lessorId'])) {
+		if (
+			empty($post['lesseeId']) ||
+			empty($post['lessorId']) ||
+			empty($post['name'])
+		) {
 			$res['message'] = 'Invalid Parameter';
 		} else {
 			$content['messages'] = $this->Message->findByConversation(
 				$post['lesseeId'],
 				$post['lessorId']
 			);
+			$content['conName'] = $post['name'];
 			$res['view'] = $this->load->view('templates/message/conversation', $content, TRUE);
 			$res['result'] = TRUE;
 		}
