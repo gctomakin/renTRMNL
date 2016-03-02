@@ -319,8 +319,15 @@ class Lessees extends CI_Controller
       $content['lessors'] = $this->Subscriber->all($select = "*",$status="active");
       $content['lessor'] = $this->Subscriber->findId($this->input->get('lessor'));
       $content['isDisable'] = empty($content['lessor']) ? 'disabled' : '';
-      $content['message'] = $this->input->get('message');
-      
+      if (!empty($content['lessor'])) {
+        $this->load->model('Message');
+        $con['messages'] = $this->Message->findByConversation(
+          $this->session->userdata('lessee_id'),
+          $this->input->get('lessor')
+        );
+        $con['conName'] = $content['lessor'][$this->Subscriber->getFname()]; 
+        $content['conversation'] = $this->load->view('templates/message/conversation', $con, TRUE);
+      }
       $data['content'] = $this->load->view('pages/lessee/message', $content, TRUE);
       $data['script'] = array(
         'libs/moment.min2',
