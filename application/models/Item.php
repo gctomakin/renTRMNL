@@ -412,7 +412,8 @@ class Item extends CI_Model{
         'reserve_by' => $item->lessee_fname . ' ' . $item->lessee_lname,
         'duration' => date('M d, Y', strtotime($item->date_rented)) . ' - ' . date('M d, Y', strtotime($item->date_returned)),
         'reserve_id' => $item->reserve_id,
-        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---'
+        'shop' => isset($item->shop_id) ? $item->shop_name . ' - ' . $item->shop_branch : '---',
+        'total_balance' => $item->total_balance
       );
     } else {
       return NULL;
