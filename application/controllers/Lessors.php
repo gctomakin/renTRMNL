@@ -449,6 +449,7 @@ class Lessors extends CI_Controller {
         $this->input->get('lessee'),
         $this->session->userdata('lessor_id')
       );
+      $con['conName'] = $content['lessee']['lessee_fname'];
       $content['conversation'] = $this->load->view('templates/message/conversation', $con, TRUE);
     }
 
