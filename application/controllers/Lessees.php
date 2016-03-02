@@ -492,9 +492,11 @@ class Lessees extends CI_Controller
     $this->load->model('ReservationDetail');
     $data['title'] = 'Reservation List';
     $lesseId = $this->session->userdata('lessee_id');
-    $reservations = $this->Reservation->findComplete(array(
-      'r.'. $this->Reservation->getLesseeId() => $lesseId
-    ));
+    $where = array('r.'. $this->Reservation->getLesseeId() => $lesseId);
+    if (!empty($this->input->get('id')) && is_numeric($this->input->get('id'))) {
+      $where['r.' . $this->Reservation->getId()] = $this->input->get('id');
+    }
+    $reservations = $this->Reservation->findComplete($where);
     $content['reservations'] = array_map(array($this->Reservation, 'mapDetailItem'), $reservations);
     $data['content'] = $this->load->view('pages/lessee/categories/reservations', $content, TRUE);
     $data['style'] = array('libs/dataTables.min', 'libs/pnotify');  
