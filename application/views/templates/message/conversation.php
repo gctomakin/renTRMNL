@@ -1,7 +1,15 @@
 <?php
 	foreach ($messages as $message) {
-		$position = ($this->session->has_userdata('lessor_logged_in') && $message->from_type == 'lessor') ? 'pull-right' : 'pull-left';
-		$name = "ME";
+    if (
+      ($this->session->has_userdata('lessor_logged_in') && $message->from_type == 'lessor' ) ||
+      ($this->session->has_userdata('lessee_id') && $message->from_type == 'lessee' )
+    ) {
+      $position = 'pull-right';
+      $name = "ME";
+    } else {
+      $position = 'pull-left';
+      $name = $conName;
+    }
 ?>
 	<div class="col-lg-12" id="">
     <blockquote class='<?php echo $position; ?>' style='width:100%; display:block; border-bottom: 1px #bbb solid; margin-bottom: 20px;'>
