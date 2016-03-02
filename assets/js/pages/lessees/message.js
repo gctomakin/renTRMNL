@@ -1,17 +1,17 @@
 $(document).ready(function() {
-
+	var body = $('#body-convo');
+	toDown();
 	$('#message-form').submit(function(e) {
 		e.preventDefault();
 		var text = $('#text-convo');
 		if (text.val() != '') {
-			var body = $('#body-convo');
 			body.append(detailTemplate({
 				name: 'Me',
 				message: _.escape(text.val()),
 				position: 'pull-right',
 				date: moment().format('MM/DD/YYYY HH:mm:SS')
 			}));
-			body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
+			toDown();
 			$.post(messageSendUrl, {
 				to: $('#receiver :selected').val(),
 				from: session_id,
@@ -41,6 +41,19 @@ $(document).ready(function() {
 		setTimeout(function() {
 			$('#text-convo').focus();
 		}, 200);
+		var name = $('#receiver :selected').text().split(',');		
+		$.post(messageConverstationUrl, {
+			lessorId: $('#receiver :selected').val(),
+			lesseeId: session_id,
+			name: name[1]
+		}, function(data) {
+			if (data['result']) {
+				body.html(data['view']);
+				toDown();	
+			} else {
+				errorMessage(data['message']);
+			}
+		}, 'JSON');
 	});
 
 	$('#receiver').select2({
@@ -62,17 +75,7 @@ $(document).ready(function() {
 		}
 	});
 
-	var message = $('#message').val();
-	if (message != '') {
-		var body = $('#body-convo');
-		body.append(detailTemplate({
-			name: $('#receiver :selected').text(),
-			message: _.escape(message),
-			position: 'pull-left',
-			date: moment().format('MM/DD/YYYY HH:mm:SS'),
-			image : 'http://placehold.it/140x100'
-		}));
-		body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");	
+	function toDown() {
+		body.animate({ scrollTop: body[0].scrollHeight - body.height() }, "slow");
 	}
-
 }); 
