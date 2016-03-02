@@ -80,7 +80,7 @@ class Reservations extends CI_Controller {
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
           $res['resid'] = $id;
-          $smsMessage = "Reservation # $id: $message";
+          $smsMessage = "Reservation # $id: " . str_replace('<br>', ' ', $message);
           $res['sms'] = $this->_sendSMSToSubId($post['subscriber'], $smsMessage);
         } else {
           $this->Reservation->delete($id);
