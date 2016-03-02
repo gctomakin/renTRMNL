@@ -80,6 +80,8 @@ class Reservations extends CI_Controller {
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
           $res['resid'] = $id;
+          $smsMessage = "Reservation # $id: $message";
+          $res['sms'] = $this->_sendSMSToSubId($post['subscriber'], $smsMessage);
         } else {
           $this->Reservation->delete($id);
           $res['message'] = "Reservation Detail: Internal Server Error : " . implode(', ', $error);
@@ -100,6 +102,8 @@ class Reservations extends CI_Controller {
         $this->session->userdata('lessee_fname'),
         site_url('lessor/reservations/pending')
       );
+      $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been cancelled";
+      $res['sms'] = $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
     }
     echo json_encode($res);
   }
@@ -113,6 +117,8 @@ class Reservations extends CI_Controller {
         $this->session->userdata('lessor_fullname'),
         site_url('lessee/reserved')
       );
+      $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been approve";
+      $res['sms'] = $this->_sendSMSToLesseeId($res['reservation']['lessee_id'], $message);
     }
     echo json_encode($res);
   }
@@ -126,6 +132,8 @@ class Reservations extends CI_Controller {
         $this->session->userdata('lessor_fullname'),
         site_url('lessee/reserved')
       );
+      $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been disapprove";
+      $res['sms'] = $this->_sendSMSToLesseeId($res['reservation']['lessee_id'], $message);
     }
     echo json_encode($res);
   }
@@ -268,6 +276,15 @@ class Reservations extends CI_Controller {
     $this->load->model('Subscriber');
     $subs = $this->Subscriber->findId($subId);
     $number = $subs[$this->Subscriber->getTelno()];
+    return empty($number) ? -1 : $this->itextmo->itexmo($number, $message);
+  }
+
+  private function _sendSMSToLesseeId($lesId, $message) {
+    $this->load->library('ITextMo');
+    $this->load->model('Lessee');
+    $this->Lessee->setId($lesId);
+    $lessee = $this->Lessee->findById();
+    $number = $lessee['lessee_phoneno'];
     return empty($number) ? -1 : $this->itextmo->itexmo($number, $message);
   }
 
