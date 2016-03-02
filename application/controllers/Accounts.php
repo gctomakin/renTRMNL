@@ -148,7 +148,8 @@ class Accounts extends CI_Controller {
     			$userdata = array(
 		      	'lessor_id' => $user[$this->Subscriber->getId()],
 		        'lessor_fullname' => $user[$this->Subscriber->getFname()] . ' ' . $user[$this->Subscriber->getLname()],
-		        'lessor_logged_in' => TRUE
+		        'lessor_logged_in' => TRUE,
+		        'first_name' => $user[$this->Subscriber->getFname()]
 		      );
 		      $redirectTo = 'lessors';
 		      break;
@@ -165,7 +166,8 @@ class Accounts extends CI_Controller {
             'lessee_email' => $user['lessee_email'],
             'lessee_phoneno' => $user['lessee_phoneno'],
             'image' => $user['image'],
-            'logged_in' => TRUE
+            'logged_in' => TRUE,
+            'first_name' => $user['lessee_fname']
           );
 		    	break;
 		    case 'admin':
