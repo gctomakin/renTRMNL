@@ -1,6 +1,8 @@
 <?php
 
-$data['content'] = $this->load->view('templates/lessor/nav', '', true);
+$nav['messageNav'] = $this->Message->findByTo($this->session->userdata('lessor_id'), 'lessor');
+
+$data['content'] = $this->load->view('templates/lessor/nav', $nav, true);
 $data['content'] .= $this->load->view('templates/lessor/sidebar', '', true);
 
 $wrapper = array(

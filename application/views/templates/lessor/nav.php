@@ -17,6 +17,28 @@
                 <i class="fa fa-envelope fa-fw"></i><span class="badge nav-badge" style="display: none;">0</span> <i class="fa fa-caret-down"></i>
             </a>
             <ul id="top-message-notification-list" class="dropdown-menu dropdown-messages">
+                <?php if (empty($messageNav)) { ?>
+                <li>
+                    <a class="text-center" href="#">
+                        <strong>No Messages</strong>
+                    </a>
+                </li>
+                <?php } else { ?>
+                    <?php foreach($messageNav['result'] as $message) { ?>
+                <li>
+                  <a href="<?php echo site_url('lessor/message?lessee=' . $message->lessee_id) ?>">
+                    <div>
+                      <strong><?php echo $message->first_name; ?></strong>
+                      <span class="pull-right text-muted">
+                          <em><?php echo date('M/d/Y H:i:s', strtotime($message->sent)); ?></em>
+                      </span>
+                    </div>
+                    <div><?php echo $message->message; ?></div>
+                  </a>
+                </li>
+                <li class="divider"></li>
+                    <?php } ?>
+                <?php } ?>
             </ul>
             <!-- /.dropdown-messages -->
         </li>
