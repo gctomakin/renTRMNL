@@ -56,6 +56,61 @@ class Message extends CI_Model{
 		return $query->result();
 	}
 
+	public function findByTo($id, $type, $order = 'DESC') {
+		$where = array(
+			$this->toId => $id,
+			$this->toType => $type
+		);
+
+		if ($type == 'lessee') {
+			$join = $this->_joinFromLessor();
+		} else {
+			$join = $this->_joinFromLessee();
+		}
+
+		$data['count'] = $this->db
+			->from($this->table)
+			->where($where)
+			->count_all_results();
+
+		$data['result'] = $this->db
+			->select($join['alias'] . '.*, ' . $this->mAlias . '.*, ' . $join['fname'])
+			->from($this->table . ' as ' . $this->mAlias)
+			->join($join['table'], $join['on'], 'LEFT')
+			->where($where)
+			->limit($this->limit)
+			->offset($this->offset)
+			->order_by($this->id, $order)
+			->get()
+			->result();
+
+		return $data;
+	}
+
+	private function _joinFromLessee() {
+		$this->load->model('Lessee');
+		$data['table'] = 'lessees as ' . $this->lAlias;
+		$data['on'] = $this->lAlias . '.lessee_id = ';
+		$data['on'] .= $this->mAlias . '.' . $this->fromId;
+		$data['alias'] = $this->lAlias;
+		$data['fname'] = $this->lAlias .'.lessee_fname as first_name';
+		return $data; 
+	}
+
+	private function _joinFromLessor() {
+		$this->load->model('Subscriber');
+		$data['table'] = $this->Subscriber->getTable() . ' as ' . $this->sAlias;
+		$data['on'] = $this->sAlias . '.' . $this->Subscriber->getId() . ' = ';
+		$data['on'] .= $this->mAlias . '.' . $this->fromId;
+		$data['alias'] = $this->sAlias;
+		$data['fname'] = $this->sAlias . '.' . $this->Subscriber->getFname() . ' as first_name';
+		return $data; 
+	}
+
+	private $lAlias = 'l';
+	private $mAlias = 'm';
+	private $sAlias = 's';
+
 	// GETTERS
 	public function getTable() { return $this->table; }
 	public function getId() { return $this->id; }
