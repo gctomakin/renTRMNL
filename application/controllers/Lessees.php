@@ -14,6 +14,7 @@ class Lessees extends CI_Controller
       $this->load->model('MyInterest');
       $this->load->model('Category');
       $this->load->model('Subscriber');
+      $this->load->model('Message');
       $this->load->library('MyPusher');
       $this->Lessee->setId($this->session->userdata('lessee_id'));
       $this->MyShop->setLesseeId($this->session->userdata('lessee_id'));
