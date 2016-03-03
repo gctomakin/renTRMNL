@@ -1,6 +1,7 @@
 <?php
 
 $nav['messageNav'] = $this->Message->findByTo($this->session->userdata('lessor_id'), 'lessor');
+$nav['notificationNav'] = $this->Notification->findByTo($this->session->userdata('lessor_id'), 'lessor');
 
 $data['content'] = $this->load->view('templates/lessor/nav', $nav, true);
 $data['content'] .= $this->load->view('templates/lessor/sidebar', '', true);
