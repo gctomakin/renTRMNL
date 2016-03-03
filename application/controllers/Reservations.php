@@ -75,7 +75,7 @@ class Reservations extends CI_Controller {
             $post['subscriber'],
             $message,
             $this->session->userdata('lessee_fname'),
-            site_url('lessor/reservations/pending')
+            'lessor/reservations/pending?id=' . $id
           );
           $res['result'] = TRUE;
           $res['message'] = 'Reservation Added';
@@ -100,7 +100,7 @@ class Reservations extends CI_Controller {
         $res['reservation']['subscriber_id'],
         $res['message'],
         $this->session->userdata('lessee_fname'),
-        site_url('lessor/reservations/pending')
+        'lessor/reservations/pending?id=' . $res['reservation']['reserve_id']
       );
       $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been cancelled";
       $res['sms'] = $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
@@ -115,7 +115,7 @@ class Reservations extends CI_Controller {
         $res['reservation']['lessee_id'],
         $res['message'],
         $this->session->userdata('lessor_fullname'),
-        site_url('lessee/reserved')
+        'lessee/reserved?id=' . $res['reservation']['reserve_id']
       );
       $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been approve";
       $res['sms'] = $this->_sendSMSToLesseeId($res['reservation']['lessee_id'], $message);
@@ -130,7 +130,7 @@ class Reservations extends CI_Controller {
         $res['reservation']['lessee_id'],
         $res['message'],
         $this->session->userdata('lessor_fullname'),
-        site_url('lessee/reserved')
+        'lessee/reserved?id=' . $res['reservation']['reserve_id'] 
       );
       $message = "Reservation / Rental # {$res['reservation']['reserve_id']} has been disapprove";
       $res['sms'] = $this->_sendSMSToLesseeId($res['reservation']['lessee_id'], $message);
@@ -145,7 +145,7 @@ class Reservations extends CI_Controller {
         $res['reservation']['subscriber_id'],
         $res['message'],
         $this->session->userdata('lessee_fname'),
-        site_url('lessor/reservations/approve')
+        'lessor/reservations/approve?id=' . $res['reservation']['reserve_id']
       );
       $message = "Reservation / Rental # {$res['reservation']['reserve_id']} is ready for return";
       $res['sms'] = $this->_sendSMSToSubId($res['reservation']['subscriber_id'], $message);
@@ -232,9 +232,22 @@ class Reservations extends CI_Controller {
       'receiver' => $receiver,
       'notification' => $message,
       'sender' => $sender,
-      'link' => $link
+      'link' => site_url($link)
     );
-    $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification); 
+    $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
+    $this->load->model('Notification');
+    $fromId = $userType == 'lessor' ? $this->session->userdata('lessee_id') : $this->session->userdata('lessor_id');
+    $data = array(
+      $this->Notification->getFromId() => $fromId,
+      $this->Notification->getToId() => $receiver,
+      $this->Notification->getFromType() => $userType == 'lessor' ? 'lessee' : 'lessor',
+      $this->Notification->getToType() => $userType,
+      $this->Notification->getSent() => date('Y-m-d H:i:s'),
+      $this->Notification->getLink() => $link,
+      $this->Notification->getNotification() => $message,
+      $this->Notification->getStatus() => 'pending'
+    );
+    $this->Notification->create($data);
   }
 
   private function _processItem($obj) {
