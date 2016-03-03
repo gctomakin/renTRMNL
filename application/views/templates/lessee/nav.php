@@ -50,7 +50,33 @@
                 <i class="fa fa-bell fa-fw"></i><span class="badge nav-badge" style="display: none;">0</span>  <i class="fa fa-caret-down"></i>
             </a>
             <ul id="top-notification-list" class="dropdown-menu dropdown-alerts">
-                
+                <?php if (empty($notificationNav['count'])) { ?>
+                <li>
+                    <a class="text-center" href="#">
+                        <strong>No Notification</strong>
+                    </a>
+                </li>   
+                <?php } else { ?>
+                    <?php foreach($notificationNav['result'] as $notification) {
+                        $sender = "Unknown";
+                        switch($notification->from_type) {
+                            case 'admin' : $sender = 'Admin'; break;
+                            case 'lessor' : $sender = $notification->subscriber_fname; break;
+                            case 'lessee' : $sender = $notification->lessee_fname; break;
+                        }
+                    ?>
+                <li>
+                    <a href="<?php echo site_url($notification->link); ?>">
+                        <div>
+                          <i class="fa fa-exclamation fa-fw"></i> <?php echo $notification->notification; ?> 
+                          <br><small> from - <?php echo $sender; ?></small>
+                          <span class="pull-right text-muted small"><?php echo date('Y/m/d', strtotime($notification->sent)); ?></span>
+                        </div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                    <?php } ?>
+                <?php } ?>                
             </ul>
             <!-- /.dropdown-alerts -->
         </li>
