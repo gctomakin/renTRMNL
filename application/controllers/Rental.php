@@ -233,15 +233,30 @@ class Rental extends CI_Controller {
           $this->load->library('MyPusher');
           $message = 'Rental Payment for Reservation # '. $paypal['reservation_id'];
           $message .= ' <br> <b>' . $paypal['reservation_type'] . ' Payment</b>';
+          $link = 'lessor/payments/pending?id=' . $paypal['reservation_id'];
           $notification = array(
             'usertype' => 'lessor',
             'date' => date('Y/m/d'),
             'receiver' => $reservation[$this->Reservation->getSubscriberId()],
             'notification' => $message,
             'sender' => $this->session->userdata('lessee_fname'),
-            'link' => site_url('lessor/payments/pending')
+            'link' => site_url($link)
           );
           $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
+
+          // INSERT TO DB
+          $this->load->model('Notification');
+          $data = array(
+            $this->Notification->getFromId() => $this->session->userdata('lessee_id'),
+            $this->Notification->getToId() => $reservation[$this->Reservation->getSubscriberId()],
+            $this->Notification->getFromType() => 'lessee',
+            $this->Notification->getToType() => 'lessor',
+            $this->Notification->getSent() => date('Y-m-d H:i:s'),
+            $this->Notification->getLink() => $link,
+            $this->Notification->getNotification() => $message,
+            $this->Notification->getStatus() => 'pending'
+          );
+          $this->Notification->create($data);
         } else {
           $content['message'] = 'Internal Server Error: Reservation Payment';
         } 
@@ -288,6 +303,8 @@ class Rental extends CI_Controller {
           if ($this->RentalPayment->update()) {
             $res['result'] = TRUE;
             $res['message'] = 'Payment has been ' . ucfirst($status);
+            $message = "Payment for Reservation # $resId has been " . ucfirst($status);
+            $link = 'lessee/reserved?id=' . $resId;
             $this->load->model('Reservation');
             $reservation = $this->Reservation->findById($resId);
             $this->load->library('MyPusher');
@@ -295,11 +312,23 @@ class Rental extends CI_Controller {
               'usertype' => 'lessee',
               'date' => date('Y/m/d'),
               'receiver' => $reservation[$this->Reservation->getLesseeId()],
-              'notification' => "Payment for Reservation # $resId",
+              'notification' => $message,
               'sender' => $this->session->userdata('lessor_fullname'),
-              'link' => site_url('lessee/reserved')
+              'link' => site_url($link)
             );
             $this->mypusher->Message('top-notify-channel', 'top-notify-event', $notification);
+            $this->load->model('Notification');
+            $data = array(
+              $this->Notification->getFromId() => $this->session->userdata('lessor_id'),
+              $this->Notification->getToId() => $reservation[$this->Reservation->getLesseeId()],
+              $this->Notification->getFromType() => 'lessor',
+              $this->Notification->getToType() => 'lessee',
+              $this->Notification->getSent() => date('Y-m-d H:i:s'),
+              $this->Notification->getLink() => $link,
+              $this->Notification->getNotification() => $message,
+              $this->Notification->getStatus() => 'pending'
+            );
+            $this->Notification->create($data);
           } else {
             $res['message'] = 'Internal Server Error';
           }
