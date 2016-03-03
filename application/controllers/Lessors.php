@@ -7,6 +7,7 @@ class Lessors extends CI_Controller {
       parent::__construct(2);
       $this->load->model('Subscriber');
       $this->load->model('Message');
+      $this->load->model('Notification');
   }
 
   public function index() {
