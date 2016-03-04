@@ -287,7 +287,8 @@ class Lessees extends CI_Controller
       'libs/pnotify.buttons',
       'libs/moment.min2',
       'libs/daterangepicker',
-      'pages/reservations/daterange',
+      'pages/reservations/singledate',
+      // 'pages/reservations/daterange',
       'pages/lessees/items'
     );
     $data['style'] = array('libs/pnotify', 'libs/datepicker');

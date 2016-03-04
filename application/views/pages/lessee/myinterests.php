@@ -122,11 +122,11 @@
           <p id="confirm-item-details"></p>
         </div>
         <div class="other-details">
-          <div id="reportrange" style="z-index: 99999; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-          </div>
+          <p id="confirm-item-details"></p>  
           <input type="hidden" id="min-date" value="<?php echo date('m/d/Y'); ?>">
+          <label for="end-date">Rent Until</label>
+          <input type="text" id="end-date" class="single-datepicker" value="<?php echo date('Y-m-d', strtotime('+1 days')); ?>">
+          <input type="hidden" id="startDate" value="<?php echo date('Y-m-d'); ?>">
         </div>
       </div>
       <div class="modal-footer">
