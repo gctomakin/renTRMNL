@@ -7,6 +7,8 @@ class Reservations extends CI_Controller {
 		parent::__construct(3);
 		$this->load->model('Reservation');
 		$this->load->model('ReservationDetail');
+    $this->load->model('Message');
+    $this->load->model('Notification');
 	}
 
   public function item($itemId = "") {
