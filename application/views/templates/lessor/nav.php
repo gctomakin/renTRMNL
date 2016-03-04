@@ -33,7 +33,7 @@
                           <em><?php echo date('M/d/Y H:i:s', strtotime($message->sent)); ?></em>
                       </span>
                     </div>
-                    <div><?php echo $message->message; ?></div>
+                    <div><?php echo $this->truncate->trap($message->message, 80, ' '); ?></div>
                   </a>
                 </li>
                 <li class="divider"></li>
@@ -66,7 +66,7 @@
                 <li>
                     <a href="<?php echo site_url($notification->link); ?>">
                         <div>
-                          <i class="fa fa-exclamation fa-fw"></i> <?php echo $notification->notification; ?> 
+                          <i class="fa fa-exclamation fa-fw"></i> <?php echo $this->truncate->trap($notification->notification, 80, ' '); ?> 
                           <br><small> from - <?php echo $sender; ?></small>
                           <span class="pull-right text-muted small"><?php echo date('Y/m/d', strtotime($notification->sent)); ?></span>
                         </div>
