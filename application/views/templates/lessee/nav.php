@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="<?php echo site_url('lessees');?>">
-            <img src="<?php echo site_url('assets/img/rentrmnllogo.png'); ?>" alt="" style="width: 100%; height: 200%; margin-top: -10px;">
+            <img src="<?php echo site_url('assets/img/rentrmnllogo.png'); ?>" alt="" style="width: 10rem; height: 4.5rem; margin-top: -10px;">
         </a>
     </div>
     <!-- /.navbar-header -->
