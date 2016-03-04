@@ -8,6 +8,7 @@ class Lessors extends CI_Controller {
       $this->load->model('Subscriber');
       $this->load->model('Message');
       $this->load->model('Notification');
+      $this->load->library('Truncate');
   }
 
   public function index() {

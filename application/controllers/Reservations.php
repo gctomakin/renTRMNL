@@ -9,6 +9,7 @@ class Reservations extends CI_Controller {
 		$this->load->model('ReservationDetail');
     $this->load->model('Message');
     $this->load->model('Notification');
+    $this->load->library('Truncate');
 	}
 
   public function item($itemId = "") {
