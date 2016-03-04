@@ -130,6 +130,20 @@
         </div>
       </div>
       <div class="modal-footer">
+        <div class="pull-left">
+          <div class="form-group">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default active">
+                    Full Payment
+                    <input type="radio" class="rentType" name="rentType" value="full" checked />
+                </label>
+                <label class="btn btn-default">
+                    Half Payment
+                    <input type="radio" class="rentType" name="rentType" value="half" />
+                </label>
+            </div>
+          </div>
+        </div>
         <button type="button" class="btn btn-default" id="btn-cancel-modal" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" id="btn-confirm-modal">Submit Reservation</button>
       </div>
