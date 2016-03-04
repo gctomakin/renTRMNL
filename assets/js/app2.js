@@ -66,7 +66,7 @@ top_notify_channel.bind('top-notify-event', function(data) {
     badge.text(parseFloat(count) + 1);
     badge.fadeIn('fast');
     var tmpl = top_template({link:data.link, sender: data.sender, notification: data.notification, date: data.date});
-    $('#top-notification-list').append(tmpl);
+    $('#top-notification-list').prepend(tmpl);
   }
   return false;
 });
@@ -78,7 +78,7 @@ top_notify_channel.bind('top-notify-all-event', function(data) {
     badge.text(parseFloat(count) + 1);
     badge.fadeIn('fast');
     var tmpl = top_template({link:data.link, sender: "System", notification: data.notification, date: data.date});
-    $('#top-notification-list').append(tmpl);
+    $('#top-notification-list').prepend(tmpl);
   }
   return false;
 });
@@ -108,7 +108,7 @@ chat_channel.bind('chat-event', function(data) {
         message: data.message,
         link: data.link
       });
-      $('#top-message-notification-list').append(tmpl);   
+      $('#top-message-notification-list').prepend(tmpl);   
     }
   }
 });
